@@ -83,6 +83,8 @@ func getCryptoImplementation(alg addresscodec.CryptoAlgorithm) CryptoImplementat
 	switch alg {
 	case addresscodec.ED25519:
 		return &ed25519Alg{}
+	case addresscodec.SECP256K1:
+		return &secp256k1Alg{}
 	default:
 		return nil
 	}

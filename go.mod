@@ -5,11 +5,13 @@ go 1.19
 require (
 	github.com/gorilla/websocket v1.5.0
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/stretchr/testify v1.7.5
+	github.com/stretchr/testify v1.8.0
 	github.com/ugorji/go/codec v1.2.11
 )
 
 require (
+	github.com/btcsuite/btcd/btcec/v2 v2.3.4 // indirect
+	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/stretchr/objx v0.4.0 // indirect
