@@ -2,6 +2,8 @@ package keypairs
 
 import (
 	"encoding/hex"
+	"fmt"
+	"math/big"
 	"strings"
 
 	"github.com/btcsuite/btcd/btcec/v2"
@@ -14,18 +16,22 @@ type secp256k1Alg struct{}
 
 func (c *secp256k1Alg) deriveKeypair(decodedSeed []byte, validator bool) (string, string, error) {
 	derived := derivePrivateKey(decodedSeed, validator, 0)
-
+	fmt.Println("derived: ", derived)
 	// get the private key
-	privateKeyBytes := append([]byte{0x00}, derived.Bytes()...)
-	// privateKey := hex.EncodeToString(privateKeyBytes)
 
-	// Step 3: Create a new btcec.PrivateKey from the private key bytes.
-	privateKey, publicKey := btcec.PrivKeyFromBytes(privateKeyBytes)
+	// privateKeyBytes := NumberToBytesBE(big.NewInt(derived.Int64()), 32)
+	privateKey := SECP256K1_PREFIX + BytesToHex(NumberToBytesBE(big.NewInt(derived.Int64()), 32))
+	privateKeyBytes, err := hex.DecodeString(privateKey)
+	if err != nil {
+		return "", "", err
+	}
 
-	// Step 4: Derive the public key from the private key.
-	// publicKey := privateKey.PubKey()
+	p, _ := btcec.PrivKeyFromBytes(privateKeyBytes)
+	publicKey := p.PubKey()
 
-	return hex.EncodeToString(privateKey.Serialize()), hex.EncodeToString(publicKey.SerializeCompressed()), nil
+	fmt.Println(hex.EncodeToString(publicKey.SerializeCompressed()))
+
+	return privateKey, hex.EncodeToString(publicKey.SerializeCompressed()), nil
 }
 
 func (c *secp256k1Alg) sign(msg, privKey string) (string, error) {

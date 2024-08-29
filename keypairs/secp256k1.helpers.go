@@ -1,12 +1,12 @@
 package keypairs
 
 import (
-	"crypto/sha512"
-	"fmt"
-	"math"
+	"encoding/hex"
 	"math/big"
+	"strings"
 
 	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 )
 
 func derivePrivateKey(seed []byte, validator bool, accountIndex uint) *big.Int {
@@ -22,34 +22,26 @@ func derivePrivateKey(seed []byte, validator bool, accountIndex uint) *big.Int {
 		return privateGenerator
 	}
 
-	x, y := btcec.S256().ScalarBaseMult(privateGenerator.Bytes())
+	// convert this typescript code to Golang:
+	// const publicGen = secp256k1.ProjectivePoint.BASE.multiply(privateGen).toRawBytes(true)
+	publicKey := new(btcec.PublicKey)
+	x, y := secp256k1.S256().ScalarBaseMult(privateGenerator.Bytes())
 
-	// Convert x and y to Uint8Array
-	xBytes := x.Bytes()
-	yBytes := y.Bytes()
+	publicKey.X().SetBytes(x.Bytes())
+	publicKey.Y().SetBytes(y.Bytes())
 
-	// Create a Uint8Array with the concatenated x and y bytes
-	uint8Array := make([]uint8, len(xBytes)+len(yBytes))
-	copy(uint8Array[:len(xBytes)], xBytes)
-	copy(uint8Array[len(xBytes):], yBytes)
+	// A seed can generate many keypairs as a function of the seed and a uint32.
+	// Almost everyone just uses the first account, `0`.
+	var acctIndex uint
+	if accountIndex != 0 {
+		acctIndex = accountIndex
+	}
 
-	// Get the public generator point
-	// publicGenerator := secp256k1.NewPublicKey(&secp256k1.FieldVal{X: *x}, &secp256k1.FieldVal{Y: *y})
-	// var publicGenerator = btcec.NewPublicKey(x, y)
+	res := new(big.Int).Add(deriveScalar(publicKey.SerializeCompressed(), acctIndex), privateGenerator)
 
-	result := new(big.Int).Add(deriveScalar(uint8Array, accountIndex), privateGenerator)
-	// module := math.Mod(result, order)
-	resultFloat := new(big.Float).SetInt(result)
-	resultFloat64, _ := resultFloat.Float64()
-
-	orderFloat := new(big.Float).SetInt(order)
-	orderFloat64, _ := orderFloat.Float64()
-
-	modResult := math.Mod(resultFloat64, orderFloat64)
-	// convert modResult to big.Int
-	modResultInt := new(big.Int).SetInt64(int64(modResult))
-	fmt.Println(modResultInt)
-	return modResultInt
+	result := new(big.Int)
+	result.Mod(res, order)
+	return result
 }
 
 func deriveScalar(bytes []uint8, discrim uint) *big.Int {
@@ -58,18 +50,17 @@ func deriveScalar(bytes []uint8, discrim uint) *big.Int {
 	for i := 0; i <= 0xffff_ffff; i++ {
 		// We hash the bytes to find a 256-bit number, looping until we are sure it
 		// is less than the order of the curve.
-		var hasher = sha512.New()
-		hasher.Write(bytes)
+		var hasher = NewSha512().Add(bytes)
 
 		// If the optional discriminator index was passed in, update the hash.
 		if discrim != 0 {
-			hasher.Write([]byte{byte(discrim)})
+			hasher.AddU32(uint32(discrim))
 		}
 
-		hasher.Write([]byte{byte(i >> 24), byte(i >> 16), byte(i >> 8), byte(i)})
-		key := new(big.Int).SetBytes(hasher.Sum(nil))
+		hasher.AddU32(uint32(i))
 
-		fmt.Println(key)
+		key := hasher.First256BigInt()
+
 		// Check if the key is within the valid range
 		if key.Cmp(big.NewInt(0)) > 0 && key.Cmp(order) < 0 {
 			return key
@@ -77,4 +68,56 @@ func deriveScalar(bytes []uint8, discrim uint) *big.Int {
 	}
 
 	panic("failed to derive scalar")
+}
+
+const HEX_REGEX = "^[A-F0-9]*$"
+
+// bytesToHex converts a byte slice to a hexadecimal string in uppercase.
+func BytesToHex(bytes []byte) string {
+	hexStr := hex.EncodeToString(bytes)
+	return strings.ToUpper(hexStr)
+}
+
+// bytesToNumberBE converts a big-endian byte slice to a big integer.
+func BytesToNumberBE(bytes []byte) *big.Int {
+	n := new(big.Int)
+	n.SetBytes(bytes)
+	return n
+}
+
+// bytesToNumberLE converts a little-endian byte slice to a big integer.
+func BytesToNumberLE(bytes []byte) *big.Int {
+	reversedBytes := ReverseBytes(bytes)
+	return BytesToNumberBE(reversedBytes)
+}
+
+// numberToBytesBE converts a big integer to a big-endian byte slice of the specified length.
+func NumberToBytesBE(n *big.Int, length int) []byte {
+	bytes := n.Bytes()
+	if len(bytes) < length {
+		paddedBytes := make([]byte, length)
+		copy(paddedBytes[length-len(bytes):], bytes)
+		return paddedBytes
+	}
+	return bytes
+}
+
+// numberToBytesLE converts a big integer to a little-endian byte slice of the specified length.
+func NumberToBytesLE(n *big.Int, length int) []byte {
+	bytes := NumberToBytesBE(n, length)
+	return ReverseBytes(bytes)
+}
+
+// numberToVarBytesBE converts a big integer to an unpadded big-endian byte slice.
+func NumberToVarBytesBE(n *big.Int) []byte {
+	return n.Bytes()
+}
+
+// reverseBytes reverses the order of bytes in a slice.
+func ReverseBytes(bytes []byte) []byte {
+	reversed := make([]byte, len(bytes))
+	for i, b := range bytes {
+		reversed[len(bytes)-1-i] = b
+	}
+	return reversed
 }
