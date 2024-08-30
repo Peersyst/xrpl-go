@@ -5,6 +5,8 @@ import (
 	"encoding/binary"
 	"hash"
 	"math/big"
+
+	"github.com/Peersyst/xrpl-go/isomorphic/utils"
 )
 
 type Sha512 struct {
@@ -50,6 +52,9 @@ func (s *Sha512) First256() []byte {
 
 // First256BigInt converts the first 256 bits of the hash to a big integer
 func (s *Sha512) First256BigInt() *big.Int {
-	// return Bytes new(big.Int).SetBytes(s.First256())
-	return BytesToNumberBE(s.First256())
+	result, err := utils.BytesToNumberBE(s.First256())
+	if err != nil {
+		return nil
+	}
+	return result
 }

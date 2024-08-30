@@ -3,9 +3,9 @@ package keypairs
 import (
 	"encoding/hex"
 	"fmt"
-	"math/big"
 	"strings"
 
+	"github.com/Peersyst/xrpl-go/isomorphic/utils"
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
 )
@@ -17,11 +17,8 @@ type secp256k1Alg struct{}
 func (c *secp256k1Alg) deriveKeypair(decodedSeed []byte, validator bool) (string, string, error) {
 	derived := derivePrivateKey(decodedSeed, validator, 0)
 	fmt.Println("derived: ", derived)
-	// get the private key
 
-	// privateKeyBytes := NumberToBytesBE(big.NewInt(derived.Int64()), 32)
-	privateKey := SECP256K1_PREFIX + BytesToHex(NumberToBytesBE(big.NewInt(derived.Int64()), 32))
-	privateKeyBytes, err := hex.DecodeString(privateKey)
+	privateKeyBytes, err := utils.NumberToBytesBE(derived, 32)
 	if err != nil {
 		return "", "", err
 	}
@@ -29,9 +26,9 @@ func (c *secp256k1Alg) deriveKeypair(decodedSeed []byte, validator bool) (string
 	p, _ := btcec.PrivKeyFromBytes(privateKeyBytes)
 	publicKey := p.PubKey()
 
-	fmt.Println(hex.EncodeToString(publicKey.SerializeCompressed()))
+	privateKey := SECP256K1_PREFIX + formatKey(privateKeyBytes)
 
-	return privateKey, hex.EncodeToString(publicKey.SerializeCompressed()), nil
+	return privateKey, formatKey(publicKey.SerializeCompressed()), nil
 }
 
 func (c *secp256k1Alg) sign(msg, privKey string) (string, error) {

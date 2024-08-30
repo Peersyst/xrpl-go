@@ -1,12 +1,9 @@
 package keypairs
 
 import (
-	"encoding/hex"
 	"math/big"
-	"strings"
 
 	"github.com/btcsuite/btcd/btcec/v2"
-	"github.com/ethereum/go-ethereum/crypto/secp256k1"
 )
 
 func derivePrivateKey(seed []byte, validator bool, accountIndex uint) *big.Int {
@@ -22,10 +19,8 @@ func derivePrivateKey(seed []byte, validator bool, accountIndex uint) *big.Int {
 		return privateGenerator
 	}
 
-	// convert this typescript code to Golang:
-	// const publicGen = secp256k1.ProjectivePoint.BASE.multiply(privateGen).toRawBytes(true)
 	publicKey := new(btcec.PublicKey)
-	x, y := secp256k1.S256().ScalarBaseMult(privateGenerator.Bytes())
+	x, y := btcec.S256().ScalarBaseMult(privateGenerator.Bytes())
 
 	publicKey.X().SetBytes(x.Bytes())
 	publicKey.Y().SetBytes(y.Bytes())
@@ -68,56 +63,4 @@ func deriveScalar(bytes []uint8, discrim uint) *big.Int {
 	}
 
 	panic("failed to derive scalar")
-}
-
-const HEX_REGEX = "^[A-F0-9]*$"
-
-// bytesToHex converts a byte slice to a hexadecimal string in uppercase.
-func BytesToHex(bytes []byte) string {
-	hexStr := hex.EncodeToString(bytes)
-	return strings.ToUpper(hexStr)
-}
-
-// bytesToNumberBE converts a big-endian byte slice to a big integer.
-func BytesToNumberBE(bytes []byte) *big.Int {
-	n := new(big.Int)
-	n.SetBytes(bytes)
-	return n
-}
-
-// bytesToNumberLE converts a little-endian byte slice to a big integer.
-func BytesToNumberLE(bytes []byte) *big.Int {
-	reversedBytes := ReverseBytes(bytes)
-	return BytesToNumberBE(reversedBytes)
-}
-
-// numberToBytesBE converts a big integer to a big-endian byte slice of the specified length.
-func NumberToBytesBE(n *big.Int, length int) []byte {
-	bytes := n.Bytes()
-	if len(bytes) < length {
-		paddedBytes := make([]byte, length)
-		copy(paddedBytes[length-len(bytes):], bytes)
-		return paddedBytes
-	}
-	return bytes
-}
-
-// numberToBytesLE converts a big integer to a little-endian byte slice of the specified length.
-func NumberToBytesLE(n *big.Int, length int) []byte {
-	bytes := NumberToBytesBE(n, length)
-	return ReverseBytes(bytes)
-}
-
-// numberToVarBytesBE converts a big integer to an unpadded big-endian byte slice.
-func NumberToVarBytesBE(n *big.Int) []byte {
-	return n.Bytes()
-}
-
-// reverseBytes reverses the order of bytes in a slice.
-func ReverseBytes(bytes []byte) []byte {
-	reversed := make([]byte, len(bytes))
-	for i, b := range bytes {
-		reversed[len(bytes)-1-i] = b
-	}
-	return reversed
 }

@@ -29,7 +29,7 @@ func HexToBytes(hexStr string) ([]byte, error) {
 /**
  * @example bytesToHex(Uint8Array.from([0xca, 0xfe, 0x01, 0x23])) // 'cafe0123'
  */
-func bytesToHex(bytes []byte) string {
+func BytesToHex(bytes []byte) string {
 	hex := ""
 	for i := 0; i < len(bytes); i++ {
 		hex += fmt.Sprintf("%02x", bytes[i])
@@ -39,7 +39,7 @@ func bytesToHex(bytes []byte) string {
 
 // BE: Big Endian, LE: Little Endian
 func BytesToNumberBE(bytes []byte) (*big.Int, error) {
-	return HexToNumber(bytesToHex(bytes))
+	return HexToNumber(BytesToHex(bytes))
 }
 
 func BytesToNumberLE(bytes []byte) (*big.Int, error) {
@@ -48,7 +48,7 @@ func BytesToNumberLE(bytes []byte) (*big.Int, error) {
 	for i, j := 0, len(reversedBytes)-1; i < j; i, j = i+1, j-1 {
 		reversedBytes[i], reversedBytes[j] = reversedBytes[j], reversedBytes[i]
 	}
-	return HexToNumber(bytesToHex(reversedBytes))
+	return HexToNumber(BytesToHex(reversedBytes))
 }
 
 func NumberToBytesBE(n *big.Int, length int) ([]byte, error) {
