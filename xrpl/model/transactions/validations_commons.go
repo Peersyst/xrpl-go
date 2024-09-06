@@ -110,7 +110,7 @@ func ValidateOptionalField(tx FlatTransaction, paramName string, checkValidity f
 func validateMemos(tx FlatTransaction) error {
 	// Check if the field Memos is set
 	if tx["Memos"] != nil {
-		flatMemoWrappers, ok := tx["Memos"].([]FlatMemoWrapper)
+		flatMemoWrappers, ok := tx["Memos"].([]map[string]interface{})
 		if !ok {
 			return fmt.Errorf("BaseTransaction: invalid Memos conversion to []FlatMemoWrapper")
 		}
@@ -126,9 +126,9 @@ func validateMemos(tx FlatTransaction) error {
 }
 
 // validateSigners validates the Signers field in the transaction map.
-func validateSigners(tx FlatTransaction) error {
+func validateSigners(tx map[string]interface{}) error {
 	if tx["Signers"] != nil {
-		signers, ok := tx["Signers"].([]FlatTransaction)
+		signers, ok := tx["Signers"].([]map[string]interface{})
 		if !ok {
 			return fmt.Errorf("BaseTransaction: invalid Signers")
 		}

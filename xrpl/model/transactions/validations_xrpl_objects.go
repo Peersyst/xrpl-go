@@ -10,14 +10,14 @@ import (
 const MEMO_SIZE = 3
 
 // IsMemo checks if the given object is a valid Memo object.
-func IsMemo(obj FlatMemoWrapper) bool {
+func IsMemo(obj map[string]interface{}) bool {
 	// Check if the object is not nil and if it has a Memo field.
 	if obj == nil || obj["Memo"] == nil {
 		return false
 	}
 
 	// Check if the Memo field is a map.
-	memo, isFlatMemo := obj["Memo"].(FlatMemo)
+	memo, isFlatMemo := obj["Memo"].(map[string]interface{})
 	if !isFlatMemo {
 		return false
 	}

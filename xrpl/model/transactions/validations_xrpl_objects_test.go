@@ -159,8 +159,8 @@ func TestCheckIssuedCurrencyIsNotXrp(t *testing.T) {
 
 func TestIsMemo(t *testing.T) {
 	t.Run("Valid Memo object with all fields", func(t *testing.T) {
-		obj := FlatMemoWrapper{
-			"Memo": FlatMemo{
+		obj := map[string]interface{}{
+			"Memo": map[string]interface{}{
 				"MemoData":   "0123456789abcdef",
 				"MemoFormat": "abcdef0123456789",
 				"MemoType":   "abcdef0123456789",
@@ -172,8 +172,8 @@ func TestIsMemo(t *testing.T) {
 	})
 
 	t.Run("Memo object with missing fields", func(t *testing.T) {
-		obj := FlatMemoWrapper{
-			"Memo": FlatMemo{
+		obj := map[string]interface{}{
+			"Memo": map[string]interface{}{
 				"MemoData": "0123456789abcdef",
 			},
 		}
@@ -183,8 +183,8 @@ func TestIsMemo(t *testing.T) {
 	})
 
 	t.Run("Memo object with non hex values", func(t *testing.T) {
-		obj := FlatMemoWrapper{
-			"Memo": FlatMemo{
+		obj := map[string]interface{}{
+			"Memo": map[string]interface{}{
 				"MemoData":   "bob",
 				"MemoFormat": "alice",
 			},
@@ -195,8 +195,8 @@ func TestIsMemo(t *testing.T) {
 	})
 
 	t.Run("Memo object with extra fields", func(t *testing.T) {
-		obj := FlatMemoWrapper{
-			"Memo": FlatMemo{
+		obj := map[string]interface{}{
+			"Memo": map[string]interface{}{
 				"MemoData":   "0123456789abcdef",
 				"MemoFormat": "abcdef0123456789",
 				"MemoType":   "abcdef0123456789",
@@ -209,7 +209,7 @@ func TestIsMemo(t *testing.T) {
 	})
 
 	t.Run("Empty object", func(t *testing.T) {
-		obj := FlatMemoWrapper{}
+		obj := map[string]interface{}{}
 		if IsMemo(obj) {
 			t.Errorf("Expected IsMemo to return false, but got true")
 		}
