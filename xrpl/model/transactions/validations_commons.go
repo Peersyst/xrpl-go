@@ -126,7 +126,7 @@ func validateMemos(tx FlatTransaction) error {
 }
 
 // validateSigners validates the Signers field in the transaction map.
-func validateSigners(tx map[string]interface{}) error {
+func validateSigners(tx FlatTransaction) error {
 	if tx["Signers"] != nil {
 		signers, ok := tx["Signers"].([]map[string]interface{})
 		if !ok {
