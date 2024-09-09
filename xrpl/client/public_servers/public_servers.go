@@ -2,88 +2,88 @@ package publicservers
 
 // WSPublicServersUrls is a struct representing the enum-like structure.
 type WSPublicServersUrls struct {
-	mainnet mainnetUrls
-	testnet TestnetUrls
-	devnet  DevnetUrls
+	mainnet mainnetWsUrls
+	testnet testnetWsUrls
+	devnet  devnetWsUrls
 }
 
 // The mainnet public servers.
-func (w WSPublicServersUrls) Mainnet() mainnetUrls {
+func (w WSPublicServersUrls) Mainnet() mainnetWsUrls {
 	return w.mainnet
 }
 
 // The testnet public servers.
-func (w WSPublicServersUrls) Testnet() TestnetUrls {
+func (w WSPublicServersUrls) Testnet() testnetWsUrls {
 	return w.testnet
 }
 
 // The devnet public servers.
-func (w WSPublicServersUrls) Devnet() DevnetUrls {
+func (w WSPublicServersUrls) Devnet() devnetWsUrls {
 	return w.devnet
 }
 
-type MainnetUrl string
+type MainnetWsUrl string
 
-// mainnetUrls is a struct representing the subfields for the Mainnet enum.
-type mainnetUrls struct {
-	xrpLedgerFoundation MainnetUrl
-	rippleS1            MainnetUrl
-	rippleS2            MainnetUrl
+// mainnetWsUrls is a struct representing the subfields for the Mainnet enum.
+type mainnetWsUrls struct {
+	xrpLedgerFoundation MainnetWsUrl
+	rippleS1            MainnetWsUrl
+	rippleS2            MainnetWsUrl
 }
 
 const (
-	xrpLedgerFoundation MainnetUrl = "wss://xrplcluster.com/"
-	rippleS1            MainnetUrl = "wss://s1.ripple.com/"
-	rippleS2            MainnetUrl = "wss://s2.ripple.com/"
+	xrpLedgerFoundation MainnetWsUrl = "wss://xrplcluster.com/"
+	rippleS1            MainnetWsUrl = "wss://s1.ripple.com/"
+	rippleS2            MainnetWsUrl = "wss://s2.ripple.com/"
 )
 
 // Full history server cluster with CORS support - xrplcluster.com.
-func (m mainnetUrls) XRPLedgerFoundation() MainnetUrl {
+func (m mainnetWsUrls) XRPLedgerFoundation() MainnetWsUrl {
 	return xrpLedgerFoundation
 }
 
 // General purpose server cluster - s1.ripple.com.
-func (m mainnetUrls) RippleS1() MainnetUrl {
+func (m mainnetWsUrls) RippleS1() MainnetWsUrl {
 	return m.rippleS1
 }
 
 // Full-history server cluster - s2.ripple.com
-func (m mainnetUrls) RippleS2() MainnetUrl {
+func (m mainnetWsUrls) RippleS2() MainnetWsUrl {
 	return m.rippleS2
 }
 
-// TestnetUrls is a struct representing the subfields for the Testnet enum.
-type TestnetUrls struct {
-	rippleTestnet TestnetUrl
-	xrplLabs      TestnetUrl
-	clio          TestnetUrl
+// testnetWsUrls is a struct representing the subfields for the Testnet enum.
+type testnetWsUrls struct {
+	rippleTestnet TestnetWsUrl
+	xrplLabs      TestnetWsUrl
+	clio          TestnetWsUrl
 }
 
-type TestnetUrl string
+type TestnetWsUrl string
 
 const (
-	rippleTestnet TestnetUrl = "wss://s.altnet.rippletest.net:51233"
-	xrplLabs      TestnetUrl = "wss://testnet.xrpl-labs.com"
-	clio          TestnetUrl = "wss://clio.altnet.rippletest.net:51233"
+	rippleTestnet TestnetWsUrl = "wss://s.altnet.rippletest.net:51233"
+	xrplLabs      TestnetWsUrl = "wss://testnet.xrpl-labs.com"
+	clio          TestnetWsUrl = "wss://clio.altnet.rippletest.net:51233"
 )
 
 // Testnet public server - s.altnet.rippletest.net:51233
-func (t TestnetUrls) Ripple() TestnetUrl {
+func (t testnetWsUrls) Ripple() TestnetWsUrl {
 	return t.rippleTestnet
 }
 
 // Testnet public server with CORS support - testnet.xrpl-labs.com
-func (t TestnetUrls) XRPLLabs() TestnetUrl {
+func (t testnetWsUrls) XRPLLabs() TestnetWsUrl {
 	return t.xrplLabs
 }
 
 // Testnet public server with Clio - clio.altnet.rippletest.net:51233
-func (t TestnetUrls) Clio() TestnetUrl {
+func (t testnetWsUrls) Clio() TestnetWsUrl {
 	return t.clio
 }
 
-// DevnetUrls is a struct representing the subfields for the Devnet enum.
-type DevnetUrls struct {
+// devnetWsUrls is a struct representing the subfields for the Devnet enum.
+type devnetWsUrls struct {
 	rippleDevnet     DevnetUrl
 	rippleDevnetClio DevnetUrl
 }
@@ -96,29 +96,29 @@ const (
 )
 
 // Devnet public server - s.devnet.rippletest.net:51233
-func (d DevnetUrls) RippleDevnet() DevnetUrl {
+func (d devnetWsUrls) RippleDevnet() DevnetUrl {
 	return d.rippleDevnet
 }
 
 // Devnet public server with Clio - clio.devnet.rippletest.net:51233
-func (d DevnetUrls) RippleDevnetClio() DevnetUrl {
+func (d devnetWsUrls) RippleDevnetClio() DevnetUrl {
 	return d.rippleDevnetClio
 }
 
 // func to initialize WSPublicServersUrls struct
 func NewWSPublicServersUrls() WSPublicServersUrls {
 	return WSPublicServersUrls{
-		mainnet: mainnetUrls{
+		mainnet: mainnetWsUrls{
 			xrpLedgerFoundation: xrpLedgerFoundation,
 			rippleS1:            rippleS1,
 			rippleS2:            rippleS2,
 		},
-		testnet: TestnetUrls{
+		testnet: testnetWsUrls{
 			rippleTestnet: rippleTestnet,
 			xrplLabs:      xrplLabs,
 			clio:          clio,
 		},
-		devnet: DevnetUrls{
+		devnet: devnetWsUrls{
 			rippleDevnet:     rippleDevnet,
 			rippleDevnetClio: rippleDevnetClio,
 		},

@@ -30,9 +30,9 @@ func (wc WebsocketClientConfig) WithHost(host interface{}) WebsocketClientConfig
 	switch v := host.(type) {
 	case string:
 		wc.host = v
-	case publicservers.MainnetUrl:
+	case publicservers.MainnetWsUrl:
 		wc.host = string(v)
-	case publicservers.TestnetUrl:
+	case publicservers.TestnetWsUrl:
 		wc.host = string(v)
 	case publicservers.DevnetUrl:
 		wc.host = string(v)
