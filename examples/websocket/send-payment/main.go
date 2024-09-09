@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Peersyst/xrpl-go/xrpl"
+	public_servers "github.com/Peersyst/xrpl-go/xrpl/client/public_servers"
 	"github.com/Peersyst/xrpl-go/xrpl/client/websocket"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/model/transactions"
@@ -26,9 +27,12 @@ func main() {
 		return
 	}
 
+	// init public urls for websocket client
+	publicServers := public_servers.NewServerUrls()
+
 	client := websocket.NewWebsocketClient(
 		websocket.NewWebsocketClientConfig().
-			WithHost("wss://s.altnet.rippletest.net:51233").
+			WithHost(publicServers.TestnetWebSocket().Ripple()).
 			WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
 	)
 
