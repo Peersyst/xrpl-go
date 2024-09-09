@@ -20,12 +20,12 @@ func main() {
 	//
 	// Configure client
 	//
-	publicServers := public_servers.NewWSPublicServersUrls()
+	publicServers := public_servers.NewServerUrls()
 
 	fmt.Println("⏳ Setting up client...")
 	client := websocket.NewWebsocketClient(
 		websocket.NewWebsocketClientConfig().
-			WithHost(publicServers.Testnet().Ripple()).
+			WithHost(publicServers.TestnetWebSocket().Ripple()).
 			WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
 	)
 	fmt.Println("✅ Client configured!")
