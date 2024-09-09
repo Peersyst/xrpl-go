@@ -5,6 +5,7 @@ import (
 
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
 	"github.com/Peersyst/xrpl-go/xrpl"
+	public_servers "github.com/Peersyst/xrpl-go/xrpl/client/public_servers"
 	"github.com/Peersyst/xrpl-go/xrpl/client/websocket"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/model/transactions"
@@ -19,10 +20,12 @@ func main() {
 	//
 	// Configure client
 	//
+	publicServers := public_servers.NewWSPublicServers()
+
 	fmt.Println("⏳ Setting up client...")
 	client := websocket.NewWebsocketClient(
 		websocket.NewWebsocketClientConfig().
-			WithHost("wss://s.altnet.rippletest.net").
+			WithHost(publicServers.Testnet().Ripple()).
 			WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
 	)
 	fmt.Println("✅ Client configured!")

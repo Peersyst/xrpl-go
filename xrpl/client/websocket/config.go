@@ -1,5 +1,9 @@
 package websocket
 
+import (
+	publicservers "github.com/Peersyst/xrpl-go/xrpl/client/public_servers"
+)
+
 type WebsocketClientConfig struct {
 	// Connection config
 	host string
@@ -22,8 +26,20 @@ func NewWebsocketClientConfig() *WebsocketClientConfig {
 
 // WithHost sets the host of the websocket client.
 // Default: "localhost"
-func (wc WebsocketClientConfig) WithHost(host string) WebsocketClientConfig {
-	wc.host = host
+func (wc WebsocketClientConfig) WithHost(host interface{}) WebsocketClientConfig {
+	switch v := host.(type) {
+	case string:
+		wc.host = v
+	case publicservers.MainnetUrl:
+		wc.host = string(v)
+	case publicservers.TestnetUrl:
+		wc.host = string(v)
+	case publicservers.DevnetUrl:
+		wc.host = string(v)
+	default:
+		wc.host = "localhost"
+	}
+
 	return wc
 }
 
