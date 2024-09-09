@@ -4,6 +4,8 @@ import (
 	"encoding/hex"
 	"fmt"
 
+	public_servers "github.com/Peersyst/xrpl-go/xrpl/client/public_servers"
+
 	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/client/websocket"
 	"github.com/Peersyst/xrpl-go/xrpl/model/transactions"
@@ -12,9 +14,12 @@ import (
 
 func main() {
 
+	// init public urls for websocket client
+	publicServers := public_servers.NewServerUrls()
+
 	wsClient := websocket.NewWebsocketClient(
 		websocket.NewWebsocketClientConfig().
-			WithHost("wss://s.altnet.rippletest.net:51233"),
+			WithHost(publicServers.TestnetWebSocket().Ripple()),
 	)
 
 	wallet, err := xrpl.NewWalletFromSeed("sEdSMVV4dJ1JbdBxmakRR4Puu3XVZz2", "")
