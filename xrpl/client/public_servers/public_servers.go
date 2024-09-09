@@ -41,6 +41,7 @@ type testnetWebSocketUrls struct {
 	ripple   string
 	xrplLabs string
 	clio     string
+	xahau    string
 }
 
 type devnetWebSocketUrls struct {
@@ -60,6 +61,7 @@ type testnetJsonRpcUrls struct {
 	ripple   string
 	xrplLabs string
 	clio     string
+	xahau    string
 }
 
 type devnetJsonRpcUrls struct {
@@ -87,11 +89,13 @@ func NewServerUrls() ServerUrls {
 				ripple:   "wss://s.altnet.rippletest.net:51233",
 				xrplLabs: "wss://testnet.xrpl-labs.com",
 				clio:     "wss://clio.altnet.rippletest.net:51233",
+				xahau:    "wss://xahau-test.net",
 			},
 			jsonRpc: testnetJsonRpcUrls{
 				ripple:   "https://s.altnet.rippletest.net:51234",
 				xrplLabs: "https://testnet.xrpl-labs.com",
 				clio:     "https://clio.altnet.rippletest.net:51234",
+				xahau:    "https://xahau-test.net",
 			},
 		},
 		devnet: devnetUrls{
@@ -165,6 +169,11 @@ func (t testnetWebSocketUrls) Clio() string {
 	return t.clio
 }
 
+// Hooks-enabled Xahau Testnet - wss://xahau-test.net
+func (t testnetWebSocketUrls) Xahau() string {
+	return t.xahau
+}
+
 // Devnet public server - wss://s.devnet.rippletest.net:51233
 func (d devnetWebSocketUrls) Ripple() string {
 	return d.ripple
@@ -205,6 +214,11 @@ func (t testnetJsonRpcUrls) XRPLLabs() string {
 // Testnet public server with Clio - https://clio.altnet.rippletest.net:51234
 func (t testnetJsonRpcUrls) Clio() string {
 	return t.clio
+}
+
+// Hooks-enabled Xahau Testnet - https://xahau-test.net
+func (t testnetJsonRpcUrls) Xahau() string {
+	return t.xahau
 }
 
 // Devnet public server - https://s.devnet.rippletest.net:51234
