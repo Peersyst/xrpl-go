@@ -20,7 +20,7 @@ func main() {
 	//
 	// Configure client
 	//
-	publicServers := public_servers.NewWSPublicServers()
+	publicServers := public_servers.NewWSPublicServersUrls()
 
 	fmt.Println("⏳ Setting up client...")
 	client := websocket.NewWebsocketClient(

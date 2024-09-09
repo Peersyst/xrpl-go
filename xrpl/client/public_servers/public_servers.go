@@ -1,24 +1,24 @@
 package publicservers
 
-// WSPublicServers is a struct representing the enum-like structure.
-type WSPublicServers struct {
+// WSPublicServersUrls is a struct representing the enum-like structure.
+type WSPublicServersUrls struct {
 	mainnet mainnetUrls
 	testnet TestnetUrls
 	devnet  DevnetUrls
 }
 
-// getter to get mainnet
-func (w WSPublicServers) Mainnet() mainnetUrls {
+// The mainnet public servers.
+func (w WSPublicServersUrls) Mainnet() mainnetUrls {
 	return w.mainnet
 }
 
-// getter to get testnet
-func (w WSPublicServers) Testnet() TestnetUrls {
+// The testnet public servers.
+func (w WSPublicServersUrls) Testnet() TestnetUrls {
 	return w.testnet
 }
 
-// getter to get devnet
-func (w WSPublicServers) Devnet() DevnetUrls {
+// The devnet public servers.
+func (w WSPublicServersUrls) Devnet() DevnetUrls {
 	return w.devnet
 }
 
@@ -105,9 +105,9 @@ func (d DevnetUrls) RippleDevnetClio() DevnetUrl {
 	return d.rippleDevnetClio
 }
 
-// func to initialize WSPublicServers struct
-func NewWSPublicServers() WSPublicServers {
-	return WSPublicServers{
+// func to initialize WSPublicServersUrls struct
+func NewWSPublicServersUrls() WSPublicServersUrls {
+	return WSPublicServersUrls{
 		mainnet: mainnetUrls{
 			xrpLedgerFoundation: xrpLedgerFoundation,
 			rippleS1:            rippleS1,
