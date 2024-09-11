@@ -2,6 +2,7 @@ package transactions
 
 import (
 	"errors"
+	"strings"
 
 	maputils "github.com/Peersyst/xrpl-go/pkg/map_utils"
 	"github.com/Peersyst/xrpl-go/pkg/typecheck"
@@ -9,6 +10,10 @@ import (
 )
 
 const (
+	// field 'currency' only - https://xrpl.org/docs/references/protocol/transactions/types/ammbid#ammbid-fields
+	ASSET_XRP_ONLY_SIZE = 1
+	// fields 'issuer' and 'currency' - https://xrpl.org/docs/references/protocol/transactions/types/ammbid#ammbid-fields
+	ASSET_SIZE                 = 2
 	MEMO_SIZE                  = 3
 	SIGNER_SIZE                = 3
 	ISSUED_CURRENCY_SIZE       = 3
@@ -68,6 +73,33 @@ func IsAmount(amount interface{}) bool {
 
 	if IsIssuedCurrency(amt) {
 		return true
+	}
+
+	return false
+}
+
+// IsAsset checks if the given object is a valid Asset object. Typically used in AMM.
+// https://xrpl.org/docs/references/protocol/ledger-data/ledger-entry-types/amm#amm-fields
+func IsAsset(input interface{}) bool {
+	if !typecheck.IsMap(input) {
+		return false
+	}
+
+	currency := input.(map[string]interface{})
+	keys := maputils.GetKeys(currency)
+
+	// If the currency is not XRP, it should have both the currency and issuer fields
+	if len(keys) == ASSET_SIZE {
+		if typecheck.IsString((currency)["currency"]) && typecheck.IsString(currency["issuer"]) {
+			return true
+		}
+	}
+
+	// If the currency is XRP, it should only have the currency field
+	if len(keys) == ASSET_XRP_ONLY_SIZE {
+		if typecheck.IsString(currency["currency"]) && strings.ToUpper(currency["currency"].(string)) == "XRP" {
+			return true
+		}
 	}
 
 	return false
