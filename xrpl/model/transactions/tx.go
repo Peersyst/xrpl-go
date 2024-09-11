@@ -276,6 +276,11 @@ func ValidateTx(tx FlatTransaction) error {
 
 	// Validate transaction fields
 	switch tx["TransactionType"] {
+	case "AccountDelete":
+		err = ValidateAccountDelete(tx)
+		if err != nil {
+			return err
+		}
 	case "AccountSet":
 		err = ValidateAccountSet(tx)
 		if err != nil {
