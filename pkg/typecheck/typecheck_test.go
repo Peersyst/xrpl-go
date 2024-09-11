@@ -336,3 +336,49 @@ func TestIsMap(t *testing.T) {
 		})
 	}
 }
+func TestIsArrayOrSlice(t *testing.T) {
+	tests := []struct {
+		name  string
+		value interface{}
+		want  bool
+	}{
+		{
+			name:  "Valid array",
+			value: [3]int{1, 2, 3},
+			want:  true,
+		},
+		{
+			name:  "Valid slice",
+			value: []string{"apple", "banana", "cherry"},
+			want:  true,
+		},
+		{
+			name:  "Invalid array",
+			value: "not an array",
+			want:  false,
+		},
+		{
+			name:  "Invalid slice",
+			value: 42,
+			want:  false,
+		},
+		{
+			name:  "Empty array",
+			value: [0]int{},
+			want:  true,
+		},
+		{
+			name:  "Empty slice",
+			value: []int{},
+			want:  true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsArrayOrSlice(tt.value); got != tt.want {
+				t.Errorf("IsArrayOrSlice(%v) = %v, want %v", tt.value, got, tt.want)
+			}
+		})
+	}
+}

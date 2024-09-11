@@ -1,6 +1,9 @@
 package typecheck
 
-import "regexp"
+import (
+	"reflect"
+	"regexp"
+)
 
 // IsString checks if the given interface is a string.
 func IsString(str interface{}) bool {
@@ -49,4 +52,10 @@ func IsHex(s string) bool {
 func IsMap(m interface{}) bool {
 	_, ok := m.(map[string]interface{})
 	return ok
+}
+
+// IsArrayOrSlice checks if the given value is an array or a slice.
+func IsArrayOrSlice(value interface{}) bool {
+	v := reflect.ValueOf(value)
+	return v.Kind() == reflect.Array || v.Kind() == reflect.Slice
 }
