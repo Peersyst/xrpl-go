@@ -301,6 +301,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "DepositPreauth":
+		err = ValidateDepositPreauth(tx)
+		if err != nil {
+			return err
+		}
 	case "Payment":
 		err = ValidatePayment(tx)
 		if err != nil {
