@@ -306,6 +306,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "AMMWitdraw":
+		err = ValidateAMMWithdraw(tx)
+		if err != nil {
+			return err
+		}
 	case "Clawback":
 		err = ValidateClawback(tx)
 		if err != nil {
