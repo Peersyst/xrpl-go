@@ -81,14 +81,15 @@ func ValidateBaseTransaction(tx FlatTransaction) error {
 }
 
 func ValidateRequiredField(tx FlatTransaction, field string, checkValidity func(interface{}) bool) error {
+	transactionType, _ := tx["TransactionType"].(string)
+
 	// Check if the field is present in the transaction map.
 	if _, ok := tx[field]; !ok {
-		return fmt.Errorf("%s is missing", field)
+		return fmt.Errorf("%s: missing field %s", transactionType, field)
 	}
 
 	// Check if the field is valid.
 	if !checkValidity(tx[field]) {
-		transactionType, _ := tx["TransactionType"].(string)
 		return fmt.Errorf("%s: invalid field %s", transactionType, field)
 	}
 
