@@ -291,6 +291,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "AMMDeposit":
+		err = ValidateAMMDeposit(tx)
+		if err != nil {
+			return err
+		}
 	case "AMMCreate":
 		err = ValidateAMMCreate(tx)
 		if err != nil {
