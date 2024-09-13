@@ -31,28 +31,29 @@ func ValidateAMMBid(tx FlatTransaction) error {
 		return err
 	}
 
-	if tx["Asset"] == nil {
-		return errors.New("AMMBid: missing field Asset")
+	err = ValidateRequiredField(tx, "Asset", IsAsset)
+	if err != nil {
+		return err
 	}
 
-	if !IsAsset(tx["Asset"]) {
-		return errors.New("AMMBid: Asset must be a Currency")
+	err = ValidateRequiredField(tx, "Asset2", IsAsset)
+	if err != nil {
+		return err
 	}
 
-	if tx["Asset2"] == nil {
-		return errors.New("AMMBid: missing field Asset2")
+	err = ValidateOptionalField(tx, "Amount", IsAmount)
+	if err != nil {
+		return err
 	}
 
-	if !IsAsset(tx["Asset2"]) {
-		return errors.New("AMMBid: Asset2 must be a Currency")
+	err = ValidateOptionalField(tx, "BidMin", IsAmount)
+	if err != nil {
+		return err
 	}
 
-	if tx["BidMin"] != nil && !IsAmount(tx["BidMin"]) {
-		return errors.New("AMMBid: BidMin must be an Amount")
-	}
-
-	if tx["BidMax"] != nil && !IsAmount(tx["BidMax"]) {
-		return errors.New("AMMBid: BidMax must be an Amount")
+	err = ValidateOptionalField(tx, "BidMax", IsAmount)
+	if err != nil {
+		return err
 	}
 
 	if tx["AuthAccounts"] != nil {
