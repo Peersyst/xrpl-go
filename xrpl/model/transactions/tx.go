@@ -346,6 +346,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "EscrowFinish":
+		err = ValidateEscrowFinish(tx)
+		if err != nil {
+			return err
+		}
 	case "Payment":
 		err = ValidatePayment(tx)
 		if err != nil {
