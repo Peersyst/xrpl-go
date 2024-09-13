@@ -311,6 +311,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "CheckCancel":
+		err = ValidateCheckCancel(tx)
+		if err != nil {
+			return err
+		}
 	case "Clawback":
 		err = ValidateClawback(tx)
 		if err != nil {
