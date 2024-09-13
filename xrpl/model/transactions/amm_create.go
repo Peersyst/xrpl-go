@@ -1,7 +1,6 @@
 package transactions
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/Peersyst/xrpl-go/pkg/typecheck"
@@ -47,29 +46,19 @@ func ValidateAMMCreate(tx FlatTransaction) error {
 		return err
 	}
 
-	if tx["Amount"] == nil {
-		return errors.New("AMMCreate: missing field Amount")
+	err = ValidateRequiredField(tx, "Amount", IsAmount)
+	if err != nil {
+		return err
 	}
 
-	if !IsAmount(tx["Amount"]) {
-		return errors.New("AMMCreate: Amount must be an Amount")
+	err = ValidateRequiredField(tx, "Amount2", IsAmount)
+	if err != nil {
+		return err
 	}
 
-	if tx["Amount2"] == nil {
-		return errors.New("AMMCreate: missing field Amount2")
-	}
-
-	if !IsAmount(tx["Amount2"]) {
-		return errors.New("AMMCreate: Amount2 must be an Amount")
-	}
-
-	if tx["TradingFee"] == nil {
-		return errors.New("AMMCreate: missing field TradingFee")
-	}
-
-	// TODO: Check later if the type check is correct
-	if !typecheck.IsInt(tx["TradingFee"]) {
-		return errors.New("AMMCreate: TradingFee must be a number")
+	err = ValidateRequiredField(tx, "TradingFee", typecheck.IsInt)
+	if err != nil {
+		return err
 	}
 
 	if tx["TradingFee"].(int) < 0 || tx["TradingFee"].(int) > AMM_MAX_TRADING_FEE {
