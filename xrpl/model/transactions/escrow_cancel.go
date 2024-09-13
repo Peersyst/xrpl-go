@@ -29,9 +29,15 @@ func ValidateEscrowCancel(tx FlatTransaction) error {
 	}
 
 	// TODO: update to IsAccount when that function exists
-	ValidateRequiredField(tx, "Owner", typecheck.IsString)
+	err = ValidateRequiredField(tx, "Owner", typecheck.IsString)
+	if err != nil {
+		return err
+	}
 
-	ValidateRequiredField(tx, "OfferSequence", typecheck.IsUint)
+	err = ValidateRequiredField(tx, "OfferSequence", typecheck.IsUint)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
