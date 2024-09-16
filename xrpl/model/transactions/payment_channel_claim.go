@@ -1,6 +1,7 @@
 package transactions
 
 import (
+	"github.com/Peersyst/xrpl-go/pkg/typecheck"
 	"github.com/Peersyst/xrpl-go/xrpl/model/transactions/types"
 )
 
@@ -87,4 +88,20 @@ func (s *PaymentChannelClaim) SetRenewFlag() {
 // the source address.
 func (s *PaymentChannelClaim) SetCloseFlag() {
 	s.Flags |= tfClose
+}
+
+func ValidatePaymentChannelClaim(tx FlatTransaction) error {
+	err := ValidateBaseTransaction(tx)
+	if err != nil {
+		return err
+	}
+
+	ValidateRequiredField(tx, "Channel", typecheck.IsString)
+
+	ValidateOptionalField(tx, "Balance", typecheck.IsString)
+	ValidateOptionalField(tx, "Amount", typecheck.IsString)
+	ValidateOptionalField(tx, "Signature", typecheck.IsString)
+	ValidateOptionalField(tx, "PublicKey", typecheck.IsString)
+
+	return nil
 }
