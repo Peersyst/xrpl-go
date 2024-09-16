@@ -406,6 +406,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "SetRegularKey":
+		err = ValidateSetRegularKey(tx)
+		if err != nil {
+			return err
+		}
 	case "TrustSet":
 		err = ValidateTrustSet(tx)
 		if err != nil {
