@@ -376,6 +376,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "OfferCancel":
+		err = ValidateOfferCancel(tx)
+		if err != nil {
+			return err
+		}
 	case "Payment":
 		err = ValidatePayment(tx)
 		if err != nil {
