@@ -2,6 +2,7 @@ package transactions
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/Peersyst/xrpl-go/pkg/typecheck"
 	"github.com/Peersyst/xrpl-go/xrpl/model/transactions/types"
@@ -331,64 +332,49 @@ func ValidateAccountSet(tx FlatTransaction) error {
 		return err
 	}
 
-	// check ClearFlag is defined
-	if _, ok := tx["ClearFlag"]; ok {
-		// check if ClearFlag is a number
-		if !typecheck.IsUint(tx["ClearFlag"]) {
-			return errors.New("AccountSet: ClearFlag must be a number")
-		}
+	err = ValidateOptionalField(tx, "ClearFlag", typecheck.IsUint)
+	if err != nil {
+		return err
 	}
 
-	// check Domain is defined and a string
-	if _, ok := tx["Domain"]; ok {
-		if !typecheck.IsString(tx["Domain"]) {
-			return errors.New("AccountSet: Domain must be a string")
-		}
+	err = ValidateOptionalField(tx, "Domain", typecheck.IsString)
+	if err != nil {
+		return err
 	}
 
-	// check EmailHash is defined and a hash128/string
-	if _, ok := tx["EmailHash"]; ok {
-		if !typecheck.IsString(tx["EmailHash"]) {
-			return errors.New("AccountSet: EmailHash must be a Hash128")
-		}
+	err = ValidateOptionalField(tx, "EmailHash", typecheck.IsString)
+	if err != nil {
+		return err
 	}
 
-	// check MessageKey is defined and a string
-	if _, ok := tx["MessageKey"]; ok {
-		if !typecheck.IsString(tx["MessageKey"]) {
-			return errors.New("AccountSet: MessageKey must be a string")
-		}
+	err = ValidateOptionalField(tx, "MessageKey", typecheck.IsString)
+	if err != nil {
+		return err
 	}
 
-	// check SetFlag is defined and a number
-	if _, ok := tx["SetFlag"]; ok {
-		if !typecheck.IsUint(tx["SetFlag"]) {
-			return errors.New("AccountSet: SetFlag must be a number")
-		}
-
-		// check if SetFlag is within the valid range
-		if tx["SetFlag"].(uint) < asfRequireDest || tx["SetFlag"].(uint) > asfAllowTrustLineClawback {
-			return errors.New("AccountSet: SetFlag must be between asfRequireDest (1) and asfAllowTrustLineClawback (16)")
-		}
+	err = ValidateOptionalField(tx, "SetFlat", typecheck.IsUint)
+	if err != nil {
+		return err
 	}
 
-	// check TransferRate is defined and a number
-	if _, ok := tx["TransferRate"]; ok {
-		if !typecheck.IsUint(tx["TransferRate"]) {
-			return errors.New("AccountSet: TransferRate must be a number")
-		}
+	// check if SetFlag is within the valid range
+	if tx["SetFlag"].(uint) < asfRequireDest || tx["SetFlag"].(uint) > asfAllowTrustLineClawback {
+		return errors.New("AccountSet: SetFlag must be between asfRequireDest (1) and asfAllowTrustLineClawback (16)")
 	}
 
-	// check TickSize is defined and a number
-	if _, ok := tx["TickSize"]; ok {
-		if !typecheck.IsUint(tx["TickSize"]) {
-			return errors.New("AccountSet: TickSize must be a number")
-		}
+	err = ValidateOptionalField(tx, "TransferRate", typecheck.IsUint)
+	if err != nil {
+		return err
+	}
 
-		// check if TickSize is within the valid range and different from 0
-		if tx["TickSize"].(uint) != 0 && (tx["TickSize"].(uint) < MIN_TICK_SIZE || tx["TickSize"].(uint) > MAX_TICK_SIZE) {
-			return errors.New("AccountSet: TickSize must be between 3 and 15")
-		}
+	err = ValidateOptionalField(tx, "TickSize", typecheck.IsUint)
+	if err != nil {
+		return err
+	}
+
+	// check if TickSize is within the valid range and different from 0
+	if tx["TickSize"].(uint) != 0 && (tx["TickSize"].(uint) < MIN_TICK_SIZE || tx["TickSize"].(uint) > MAX_TICK_SIZE) {
+		return fmt.Errorf("AccountSet: TickSize must be between %d and %d", MIN_TICK_SIZE, MAX_TICK_SIZE)
 	}
 
 	return nil
