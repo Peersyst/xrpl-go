@@ -371,6 +371,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "NFTokenMint":
+		err = ValidateNFTokenMint(tx)
+		if err != nil {
+			return err
+		}
 	case "Payment":
 		err = ValidatePayment(tx)
 		if err != nil {
