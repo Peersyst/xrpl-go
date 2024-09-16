@@ -356,6 +356,11 @@ func ValidateTx(tx FlatTransaction) error {
 		if err != nil {
 			return err
 		}
+	case "NFTokenBurn":
+		err = ValidateNFTokenAcceptOffer(tx)
+		if err != nil {
+			return err
+		}
 	case "Payment":
 		err = ValidatePayment(tx)
 		if err != nil {
