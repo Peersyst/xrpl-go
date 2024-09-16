@@ -1,5 +1,14 @@
 package transactions
 
+import (
+	"fmt"
+
+	"github.com/Peersyst/xrpl-go/pkg/typecheck"
+)
+
+// https://xrpl.org/docs/references/protocol/transactions/types/ticketcreate#ticketcreate-fields
+const MAX_TICKETS = 250
+
 // A TicketCreate transaction sets aside one or more sequence numbers as Tickets.
 type TicketCreate struct {
 	// Base transaction fields
@@ -24,4 +33,23 @@ func (t *TicketCreate) Flatten() FlatTransaction {
 	}
 
 	return flattened
+}
+
+func ValidateTicketCreate(tx FlatTransaction) error {
+	err := ValidateBaseTransaction(tx)
+	if err != nil {
+		return err
+	}
+
+	err = ValidateRequiredField(tx, "TicketCount", typecheck.IsUint)
+	if err != nil {
+		return err
+	}
+
+	// check if the ticket count is between 1 and MAX_TICKETS
+	if tx["TicketCount"].(uint) < 1 || tx["TicketCount"].(uint) > MAX_TICKETS {
+		return fmt.Errorf("field 'TicketCount' must be between 1 and %v", MAX_TICKETS)
+	}
+
+	return nil
 }
