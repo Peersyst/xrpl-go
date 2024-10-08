@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/Peersyst/xrpl-go/pkg/typecheck"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -108,7 +109,7 @@ func (tx *BaseTx) Flatten() FlatTransaction {
 		flattened["Account"] = tx.Account.String()
 	}
 	if tx.TransactionType != "" {
-		flattened["TransactionType"] = tx.TransactionType
+		flattened["TransactionType"] = tx.TransactionType.String()
 	}
 	if tx.Fee != 0 {
 		flattened["Fee"] = tx.Fee.String()
@@ -117,7 +118,7 @@ func (tx *BaseTx) Flatten() FlatTransaction {
 		flattened["Sequence"] = tx.Sequence
 	}
 	if tx.AccountTxnID != "" {
-		flattened["AccountTxnID"] = tx.AccountTxnID
+		flattened["AccountTxnID"] = tx.AccountTxnID.String()
 	}
 	if tx.Flags != 0 {
 		flattened["Flags"] = int(tx.Flags)
@@ -265,25 +266,76 @@ func UnmarshalTx(data json.RawMessage) (Tx, error) {
 	return tx, nil
 }
 
-func ValidateTx(tx FlatTransaction) error {
-	var err error
+func (tx *BaseTx) Validate() (bool, error) {
+	flattenTx := tx.Flatten()
 
-	// Check in the case it is an issued currency, that the currency is not XRP
-	err = CheckIssuedCurrencyIsNotXrp(tx)
+	err := ValidateRequiredField(flattenTx, "TransactionType", typecheck.IsString)
 	if err != nil {
-		return err
+		return false, err
 	}
 
-	// Validate transaction fields
-	switch tx["TransactionType"] {
-	case "Payment":
-		err = ValidatePayment(tx)
-		if err != nil {
-			return err
-		}
-	default:
-		return (fmt.Errorf("unsupported transaction type %s", tx["TransactionType"]))
+	err = ValidateRequiredField(flattenTx, "Account", typecheck.IsString)
+	if err != nil {
+		return false, err
 	}
 
-	return nil
+	// optional fields
+	err = ValidateOptionalField(flattenTx, "Fee", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flattenTx, "Sequence", typecheck.IsUint)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flattenTx, "AccountTxnID", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flattenTx, "LastLedgerSequence", typecheck.IsUint)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flattenTx, "SourceTag", typecheck.IsUint)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flattenTx, "SigningPubKey", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flattenTx, "TicketSequence", typecheck.IsUint)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flattenTx, "TxnSignature", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flattenTx, "NetworkID", typecheck.IsUint)
+	if err != nil {
+		return false, err
+	}
+
+	// memos
+	err = validateMemos(tx.Memos)
+	if err != nil {
+		return false, err
+	}
+
+	// signers
+	err = validateSigners(tx.Signers)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }

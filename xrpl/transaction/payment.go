@@ -103,7 +103,18 @@ func (p *Payment) Flatten() FlatTransaction {
 	}
 
 	if len(p.Paths) > 0 {
-		flattened["Paths"] = p.Paths
+		flattenedPaths := make([][]interface{}, 0)
+		for _, path := range p.Paths {
+			flattenedPath := make([]interface{}, 0)
+			for _, step := range path {
+				flattenedStep := step.Flatten()
+				if flattenedStep != nil {
+					flattenedPath = append(flattenedPath, flattenedStep)
+				}
+			}
+			flattenedPaths = append(flattenedPaths, flattenedPath)
+		}
+		flattened["Paths"] = flattenedPaths
 	}
 
 	if p.SendMax != nil {
@@ -185,102 +196,96 @@ func (p *Payment) UnmarshalJSON(data []byte) error {
 }
 
 // ValidatePayment validates the Payment struct and make sure all the fields are correct.
-func ValidatePayment(tx FlatTransaction) error {
-	var err error
+func (tx *Payment) Validate() (bool, error) {
+	flattenTx := tx.Flatten()
 
-	err = ValidateBaseTransaction(tx)
+	// Validate the base transaction
+	_, err := tx.BaseTx.Validate()
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	// Check if the field Amount is set
-	if _, ok := tx["Amount"]; !ok {
-		return errors.New("missing field Amount")
+	if tx.Amount == nil {
+		return false, errors.New("missing field Amount")
 	}
 
 	// Check if the field Amount is valid
-	if !IsAmount(tx["Amount"]) {
-		return errors.New("invalid field Amount")
+	if !IsAmount(tx.Amount) {
+		return false, errors.New("invalid field Amount")
 	}
 
 	// Check if the field Destination is set and valid
-	err = ValidateRequiredField(tx, "Destination", typecheck.IsString)
+	err = ValidateRequiredField(flattenTx, "Destination", typecheck.IsString)
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	// Check if the field DestinationTag is valid
-	err = ValidateOptionalField(tx, "DestinationTag", typecheck.IsUint32)
+	err = ValidateOptionalField(flattenTx, "DestinationTag", typecheck.IsUint32)
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	// Check if the field InvoiceId is valid
-	err = ValidateOptionalField(tx, "InvoiceId", typecheck.IsString)
+	err = ValidateOptionalField(flattenTx, "InvoiceId", typecheck.IsString)
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	// Check if the field Paths is valid
-	if tx["Paths"] != nil {
-		if !IsPaths(tx["Paths"].([][]map[string]interface{})) {
-			return errors.New("invalid field Paths")
+	if tx.Paths != nil {
+		if ok, err := IsPaths(tx.Paths); !ok {
+			return false, err
 		}
 	}
 
 	// Check if the field SendMax is valid
-	err = ValidateOptionalField(tx, "SendMax", IsAmount)
-	if err != nil {
-		return err
+	if tx.SendMax != nil {
+		if ok := IsAmount(tx.SendMax); !ok {
+			return false, errors.New("invalid field SendMax")
+		}
 	}
 
 	// Check if the field DeliverMax is valid
-	err = ValidateOptionalField(tx, "DeliverMax", IsAmount)
-	if err != nil {
-		return err
+	if tx.DeliverMax != nil {
+		if ok := IsAmount(tx.DeliverMax); !ok {
+			return false, err
+		}
 	}
 
 	// Check if the field DeliverMin is valid
-	err = ValidateOptionalField(tx, "DeliverMin", IsAmount)
-	if err != nil {
-		return err
+	if tx.DeliverMin != nil {
+		if ok := IsAmount(tx.DeliverMin); !ok {
+			return false, err
+		}
 	}
 
 	// Check partial payment fields
-	err = checkPartialPayment(tx)
-	if err != nil {
-		return err
+	if ok, err := checkPartialPayment(tx); !ok {
+		return false, err
 	}
 
-	return nil
+	return true, nil
 }
 
-func checkPartialPayment(tx FlatTransaction) error {
-	// Check if DeliverMin is set
-	if _, ok := tx["DeliverMin"]; ok {
-		// Check if Flags flag is set
-		if _, ok := tx["Flags"]; !ok {
-			return errors.New("Payment transaction: tfPartialPayment flag required with DeliverMin")
-		}
-
-		// Extract Flags
-		flagsField, isUint := (tx["Flags"]).(uint)
-		var isTfPartialPayment bool
-		if isUint {
-			isTfPartialPayment = IsFlagEnabled(flagsField, uint(tfPartialPayment))
-		}
-
-		// TODO: check if tfPartialPayment is enabled if/when Flags is an object/map instead of a uint
-
-		if !isTfPartialPayment {
-			return errors.New("Payment transaction: tfPartialPayment flag required with DeliverMin")
-		}
-
-		err := ValidateOptionalField(tx, "DeliverMin", IsAmount)
-		if err != nil {
-			return err
-		}
+func checkPartialPayment(tx *Payment) (bool, error) {
+	if tx.DeliverMin == nil {
+		return true, nil
 	}
 
-	return nil
+	if tx.Flags == 0 {
+		return false, errors.New("payment transaction: tfPartialPayment flag required with DeliverMin")
+	}
+
+	if !IsFlagEnabled(tx.Flags, uint(tfPartialPayment)) {
+		return false, errors.New("payment transaction: tfPartialPayment flag required with DeliverMin")
+	}
+
+	if ok := IsAmount(tx.DeliverMin); !ok {
+		return false, errors.New("payment transaction: invalid amount field DeliverMin")
+	}
+
+	return true, nil
+
 }

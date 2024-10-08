@@ -36,3 +36,7 @@ const (
 	HashedTx               TxType = "HASH"   // TX stored as a string, rather than complete tx obj
 	BinaryTx               TxType = "BINARY" // TX stored as a string, json tagged as 'tx_blob'
 )
+
+func (t TxType) String() string {
+	return string(t)
+}

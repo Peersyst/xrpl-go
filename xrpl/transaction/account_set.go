@@ -1,6 +1,9 @@
 package transaction
 
 import (
+	"errors"
+
+	"github.com/Peersyst/xrpl-go/pkg/typecheck"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -125,7 +128,7 @@ func (s *AccountSet) Flatten() FlatTransaction {
 		flattened["TransferRate"] = int(s.TransferRate)
 	}
 	if s.TickSize != 0 {
-		flattened["TickSize"] = s.TickSize
+		flattened["TickSize"] = int(s.TickSize)
 	}
 	if s.WalletLocator != "" {
 		flattened["WalletLocator"] = s.WalletLocator.String()
@@ -315,4 +318,85 @@ func (s *AccountSet) SetAsfAllowTrustLineClawback() {
 // ClearAsfAllowTrustLineClawback clears the allow trust line clawback flag.
 func (s *AccountSet) ClearAsfAllowTrustLineClawback() {
 	s.ClearFlag = asfAllowTrustLineClawback
+}
+
+// Tick size to use for offers involving a currency issued by this address.
+// The exchange rates of those offers is rounded to this many significant digits.
+// Valid values are 3 to 15 inclusive, or 0 to disable.
+const MIN_TICK_SIZE = 3
+const MAX_TICK_SIZE = 15
+
+// Validate the AccountSet transaction fields.
+func (s *AccountSet) Validate() (bool, error) {
+	flatten := s.Flatten()
+
+	// validate the base transaction
+	_, err := s.BaseTx.Validate()
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "ClearFlag", typecheck.IsInt)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "Domain", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "EmailHash", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "MessageKey", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "SetFlag", typecheck.IsInt)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "TransferRate", typecheck.IsInt)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "TickSize", typecheck.IsInt)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "NFTokenMinter", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "WalletLocator", typecheck.IsString)
+	if err != nil {
+		return false, err
+	}
+
+	err = ValidateOptionalField(flatten, "WalletSize", typecheck.IsInt)
+	if err != nil {
+		return false, err
+	}
+
+	// check if SetFlag is within the valid range
+	if s.SetFlag != 0 {
+		if s.SetFlag < asfRequireDest || s.SetFlag > asfAllowTrustLineClawback {
+			return false, errors.New("accountSet: SetFlag must be an integer between asfRequireDest (1) and asfAllowTrustLineClawback (16)")
+		}
+	}
+
+	// check if TickSize is within the valid range
+	if s.TickSize != 0 && (s.TickSize < MIN_TICK_SIZE || s.TickSize > MAX_TICK_SIZE) {
+		return false, errors.New("accountSet: TickSize must be between 3 and 15")
+	}
+
+	return true, nil
 }

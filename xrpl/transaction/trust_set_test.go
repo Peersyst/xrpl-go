@@ -155,3 +155,82 @@ func TestTrustSetFlags(t *testing.T) {
 		})
 	}
 }
+func TestTrustSetValidate(t *testing.T) {
+	tests := []struct {
+		name     string
+		trustSet *TrustSet
+		valid    bool
+		err      error
+	}{
+		{
+			name: "ValidTrustSet",
+			trustSet: &TrustSet{
+				BaseTx: BaseTx{
+					Account:            "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
+					TransactionType:    TrustSetTx,
+					Fee:                types.XRPCurrencyAmount(12),
+					Flags:              262144,
+					Sequence:           12,
+					LastLedgerSequence: 8007750,
+				},
+				LimitAmount: types.IssuedCurrencyAmount{
+					Issuer:   "rsP3mgGb2tcYUrxiLFiHJiQXhsziegtwBc",
+					Currency: "USD",
+					Value:    "100",
+				},
+				QualityIn:  100,
+				QualityOut: 200,
+			},
+			valid: true,
+		},
+		{
+			name: "MissingLimitAmount",
+			trustSet: &TrustSet{
+				BaseTx: BaseTx{
+					Account:            "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
+					TransactionType:    TrustSetTx,
+					Fee:                types.XRPCurrencyAmount(12),
+					Flags:              262144,
+					Sequence:           12,
+					LastLedgerSequence: 8007750,
+				},
+				QualityIn:  100,
+				QualityOut: 200,
+			},
+			valid: false,
+		},
+		{
+			name: "InvalidLimitAmount",
+			trustSet: &TrustSet{
+				BaseTx: BaseTx{
+					Account:            "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
+					TransactionType:    TrustSetTx,
+					Fee:                types.XRPCurrencyAmount(12),
+					Flags:              262144,
+					Sequence:           12,
+					LastLedgerSequence: 8007750,
+				},
+				LimitAmount: types.IssuedCurrencyAmount{
+					Issuer:   "r123",
+					Currency: "USD",
+				},
+				QualityIn:  100,
+				QualityOut: 200,
+			},
+			valid: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			valid, err := tt.trustSet.Validate()
+			if valid != tt.valid {
+				t.Errorf("Expected valid to be %v, got %v", tt.valid, valid)
+			}
+			if (err != nil && tt.valid) || (err == nil && !tt.valid) {
+				t.Errorf("Got error: %v", err)
+			}
+
+		})
+	}
+}

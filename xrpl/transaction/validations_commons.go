@@ -2,83 +2,7 @@ package transaction
 
 import (
 	"fmt"
-
-	"github.com/Peersyst/xrpl-go/pkg/typecheck"
 )
-
-func ValidateBaseTransaction(tx FlatTransaction) error {
-	var err error
-
-	err = ValidateRequiredField(tx, "TransactionType", typecheck.IsString)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateRequiredField(tx, "Account", typecheck.IsString)
-	if err != nil {
-		return err
-	}
-
-	// optional fields
-	err = ValidateOptionalField(tx, "Fee", typecheck.IsString)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateOptionalField(tx, "Sequence", typecheck.IsInt)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateOptionalField(tx, "AccountTxnID", typecheck.IsString)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateOptionalField(tx, "LastLedgerSequence", typecheck.IsInt)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateOptionalField(tx, "SourceTag", typecheck.IsInt)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateOptionalField(tx, "SigningPubKey", typecheck.IsString)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateOptionalField(tx, "TicketSequence", typecheck.IsInt)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateOptionalField(tx, "TxnSignature", typecheck.IsString)
-	if err != nil {
-		return err
-	}
-
-	err = ValidateOptionalField(tx, "NetworkID", typecheck.IsInt)
-	if err != nil {
-		return err
-	}
-
-	// memos
-	err = validateMemos(tx)
-	if err != nil {
-		return err
-	}
-
-	// signers
-	err = validateSigners(tx)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
 
 func ValidateRequiredField(tx FlatTransaction, field string, checkValidity func(interface{}) bool) error {
 	// Check if the field is present in the transaction map.
@@ -110,18 +34,12 @@ func ValidateOptionalField(tx FlatTransaction, paramName string, checkValidity f
 }
 
 // validateMemos validates the Memos field in the transaction map.
-func validateMemos(tx FlatTransaction) error {
-	// Check if the field Memos is set
-	if tx["Memos"] != nil {
-		memos, ok := tx["Memos"].([]map[string]interface{})
-		if !ok {
-			return fmt.Errorf("BaseTransaction: invalid Memos conversion to []map[string]interface{}")
-		}
-		// loop through each memo and validate it
-		for _, memo := range memos {
-			if !IsMemo(memo) {
-				return fmt.Errorf("BaseTransaction: invalid Memos. A memo can only have hexadecimals values. See https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field")
-			}
+func validateMemos(memoWrapper []MemoWrapper) error {
+	// loop through each memo and validate it
+	for _, memo := range memoWrapper {
+		isMemo, err := IsMemo(memo.Memo)
+		if !isMemo {
+			return err
 		}
 	}
 
@@ -129,16 +47,12 @@ func validateMemos(tx FlatTransaction) error {
 }
 
 // validateSigners validates the Signers field in the transaction map.
-func validateSigners(tx FlatTransaction) error {
-	if tx["Signers"] != nil {
-		signers, ok := tx["Signers"].([]FlatTransaction)
-		if !ok {
-			return fmt.Errorf("BaseTransaction: invalid Signers")
-		}
-		for _, signer := range signers {
-			if !IsSigner(signer) {
-				return fmt.Errorf("BaseTransaction: invalid Signers")
-			}
+func validateSigners(signers []Signer) error {
+	// loop through each signer and validate it
+	for _, signer := range signers {
+		isSigner, err := IsSigner(signer.SignerData)
+		if !isSigner {
+			return err
 		}
 	}
 

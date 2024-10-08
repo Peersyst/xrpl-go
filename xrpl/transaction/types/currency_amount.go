@@ -49,9 +49,18 @@ func (IssuedCurrencyAmount) Kind() CurrencyKind {
 
 func (i IssuedCurrencyAmount) Flatten() interface{} {
 	json := make(map[string]interface{})
-	json["issuer"] = i.Issuer.String()
-	json["currency"] = i.Currency
-	json["value"] = i.Value
+
+	if i.Issuer != "" {
+		json["issuer"] = i.Issuer.String()
+	}
+
+	if i.Currency != "" {
+		json["currency"] = i.Currency
+	}
+
+	if i.Value != "" {
+		json["value"] = i.Value
+	}
 	return json
 }
 

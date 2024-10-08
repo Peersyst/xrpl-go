@@ -5,82 +5,90 @@ import (
 
 	maputils "github.com/Peersyst/xrpl-go/pkg/map_utils"
 	"github.com/Peersyst/xrpl-go/pkg/typecheck"
+	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
 const (
-	MEMO_SIZE                  = 3
-	SIGNER_SIZE                = 3
+	// The Memos field includes arbitrary messaging data with the transaction.
+	// It is presented as an array of objects. Each object has only one field, Memo,
+	// which in turn contains another object with one or more of the following fields:
+	// MemoData, MemoFormat, and MemoType. https://xrpl.org/docs/references/protocol/transactions/common-fields#memos-field
+	MEMO_SIZE   = 3
+	SIGNER_SIZE = 3
+	// For a token, must have the following fields: currency, issuer, value. https://xrpl.org/docs/references/protocol/data-types/basic-data-types#specifying-currency-amounts
 	ISSUED_CURRENCY_SIZE       = 3
 	STANDARD_CURRENCY_CODE_LEN = 3
 )
 
 // IsMemo checks if the given object is a valid Memo object.
-func IsMemo(obj map[string]interface{}) bool {
-	// Check if the object is not nil and if it has a Memo field.
-	if obj == nil || obj["Memo"] == nil {
-		return false
-	}
-
-	// Check if the Memo field is a map.
-	memo, isMap := obj["Memo"].(map[string]interface{})
-	if !isMap {
-		return false
-	}
-
+func IsMemo(memo Memo) (bool, error) {
 	// Get the size of the Memo object.
-	size := len(maputils.GetKeys(memo))
+	size := len(maputils.GetKeys(memo.Flatten()))
 
-	validData := memo["MemoData"] == nil || typecheck.IsHex(memo["MemoData"].(string))
-	validFormat := memo["MemoFormat"] == nil || typecheck.IsHex(memo["MemoFormat"].(string))
-	validType := memo["MemoType"] == nil || typecheck.IsHex(memo["MemoType"].(string))
-
-	return size >= 1 && size <= MEMO_SIZE && validData && validFormat && validType && onlyHasFields(memo, []string{"MemoFormat", "MemoData", "MemoType"})
-}
-
-// onlyHasFields checks if the given object has only the specified fields or a subset of them.
-func onlyHasFields(obj map[string]interface{}, fields []string) bool {
-	fieldSet := make(map[string]struct{}, len(fields))
-	for _, field := range fields {
-		fieldSet[field] = struct{}{}
+	if size == 0 {
+		return false, errors.New("memo object should have at least one field, MemoData, MemoFormat or MemoType")
 	}
 
-	for key := range obj {
-		if _, ok := fieldSet[key]; !ok {
-			return false
-		}
+	if size > MEMO_SIZE {
+		return false, errors.New("memo object should have at most three fields, MemoData, MemoFormat and MemoType")
 	}
-	return true
+
+	validData := memo.MemoData == "" || typecheck.IsHex(memo.MemoData)
+	if !validData {
+		return false, errors.New("memoData should be a hexadecimal string")
+	}
+
+	validFormat := memo.MemoFormat == "" || typecheck.IsHex(memo.MemoFormat)
+	if !validFormat {
+		return false, errors.New("memoFormat should be a hexadecimal string")
+	}
+
+	validType := memo.MemoType == "" || typecheck.IsHex(memo.MemoType)
+	if !validType {
+		return false, errors.New("memoType should be a hexadecimal string")
+	}
+
+	return true, nil
 }
 
 // IsSigner checks if the given object is a valid Signer object.
-func IsSigner(obj map[string]interface{}) bool {
-	signer, ok := obj["Signer"].(map[string]interface{})
-	if !ok {
-		return false
+func IsSigner(signerData SignerData) (bool, error) {
+	size := len(maputils.GetKeys(signerData.Flatten()))
+	if size != SIGNER_SIZE {
+		return false, errors.New("signers: Signer should have 3 fields: Account, TxnSignature, SigningPubKey")
 	}
 
-	size := len(maputils.GetKeys(signer))
-	validAccount := signer["Account"] != nil && typecheck.IsString(signer["Account"])
-	validTxnSignature := signer["TxnSignature"] != nil && typecheck.IsString(signer["TxnSignature"])
-	validSigningPubKey := signer["SigningPubKey"] != nil && typecheck.IsString(signer["SigningPubKey"])
+	// TODO: Update to check if the account is valid when the "isAccount" function exists
+	validAccount := signerData.Account != "" && typecheck.IsString(signerData.Account.String())
+	if !validAccount {
+		return false, errors.New("signers: Account should be a string")
+	}
 
-	return size == SIGNER_SIZE && validAccount && validTxnSignature && validSigningPubKey
+	validTxnSignature := signerData.TxnSignature != "" && typecheck.IsString(signerData.TxnSignature)
+	if !validTxnSignature {
+		return false, errors.New("signers: TxnSignature should be a string")
+	}
+
+	validSigningPubKey := signerData.SigningPubKey != "" && typecheck.IsString(signerData.SigningPubKey)
+	if !validSigningPubKey {
+		return false, errors.New("signers: SigningPubKey should be a string")
+	}
+
+	return true, nil
 
 }
 
 // IsAmount checks if the given object is a valid Amount object.
 // It is a string for an XRP amount or a map for an IssuedCurrency amount.
-func IsAmount(amount interface{}) bool {
-	if typecheck.IsString(amount) {
+func IsAmount(amount types.CurrencyAmount) bool {
+	if amount == nil {
+		return false
+	}
+	if amount.Kind() == types.XRP {
 		return true
 	}
 
-	amt, ok := amount.(map[string]interface{})
-	if !ok {
-		return false
-	}
-
-	if IsIssuedCurrency(amt) {
+	if ok, _ := IsIssuedCurrency(amount); ok {
 		return true
 	}
 
@@ -88,11 +96,23 @@ func IsAmount(amount interface{}) bool {
 }
 
 // IsIssuedCurrency checks if the given object is a valid IssuedCurrency object.
-func IsIssuedCurrency(input map[string]interface{}) bool {
-	return len(maputils.GetKeys(input)) == ISSUED_CURRENCY_SIZE &&
-		typecheck.IsString(input["value"]) &&
-		typecheck.IsString(input["issuer"]) &&
-		typecheck.IsString(input["currency"])
+func IsIssuedCurrency(input types.CurrencyAmount) (bool, error) {
+	if input.Kind() == types.XRP {
+		return false, errors.New("an issued currency cannot be of type XRP")
+	}
+
+	issuedAmount, _ := input.(types.IssuedCurrencyAmount)
+	if issuedAmount.Currency == "" {
+		return false, errors.New("currency field is required for an issued currency")
+	}
+	if issuedAmount.Currency == "XRP" {
+		return false, errors.New("cannot have an issued currency with a similar standard code as XRP")
+	}
+	if !typecheck.IsFloat32(issuedAmount.Value) {
+		return false, errors.New("value field should be a valid number")
+	}
+
+	return true, nil
 }
 
 // IsPathStep checks if the given map is a valid PathStep.
@@ -124,51 +144,53 @@ func IsPathStep(pathStep map[string]interface{}) bool {
 	return false
 }
 
-// IsPath checks if the given slice of maps is a valid Path.
-func IsPath(path []map[string]interface{}) bool {
+// IsPath checks if the given pathstep is valid.
+func IsPath(path []PathStep) (bool, error) {
 	for _, pathStep := range path {
-		if !IsPathStep(pathStep) {
-			return false
+
+		hasAccount := pathStep.Account != ""
+		hasCurrency := pathStep.Currency != ""
+		hasIssuer := pathStep.Issuer != ""
+
+		/**
+		In summary, the following combination of fields are valid, optionally with type, type_hex, or both (but these two are deprecated):
+
+		- account by itself
+		- currency by itself
+		- currency and issuer as long as the currency is not XRP
+		- issuer by itself
+
+		Any other use of account, currency, and issuer fields in a path step is invalid.
+
+		https://xrpl.org/docs/concepts/tokens/fungible-tokens/paths#path-specifications
+		*/
+		if (hasAccount && !hasCurrency && !hasIssuer) || (hasCurrency && !hasAccount && !hasIssuer) || (hasIssuer && !hasAccount && !hasCurrency) {
+			return true, nil
+		} else if hasIssuer && hasCurrency && pathStep.Currency != "XRP" {
+			return true, nil
+		} else {
+			return false, errors.New("invalid path step, check the valid fields combination at https://xrpl.org/docs/concepts/tokens/fungible-tokens/paths#path-specifications")
 		}
+
 	}
-	return true
+	return true, nil
 }
 
 // IsPaths checks if the given slice of slices of maps is a valid Paths.
-func IsPaths(paths [][]map[string]interface{}) bool {
-	if len(paths) == 0 {
-		return false
+func IsPaths(pathsteps [][]PathStep) (bool, error) {
+	if len(pathsteps) == 0 {
+		return false, errors.New("paths should have at least one path")
 	}
 
-	for _, path := range paths {
+	for _, path := range pathsteps {
 		if len(path) == 0 {
-			return false
+			return false, errors.New("path should have at least one path step")
 		}
 
-		if !IsPath(path) {
-			return false
-		}
-	}
-
-	return true
-}
-
-// CheckIssuedCurrencyIsNotXrp checks if the given transaction map does not have an issued currenc as XRP.
-func CheckIssuedCurrencyIsNotXrp(tx map[string]interface{}) error {
-	keys := maputils.GetKeys(tx)
-	for _, value := range keys {
-		result, isFlatTxn := (tx[value]).(map[string]interface{})
-
-		// Check if the value is an issued currency
-		if isFlatTxn && IsIssuedCurrency(result) {
-			// Check if the issued currency is XRP (which is incorrect)
-			currency := tx[value].(map[string]interface{})["currency"].(string)
-
-			if len(currency) == STANDARD_CURRENCY_CODE_LEN && currency == "XRP" {
-				return errors.New("cannot have an issued currency with a similar standard code as XRP")
-			}
+		if ok, err := IsPath(path); !ok {
+			return false, err
 		}
 	}
 
-	return nil
+	return true, nil
 }
