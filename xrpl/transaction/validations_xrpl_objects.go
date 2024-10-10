@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"errors"
+	"strconv"
 
 	maputils "github.com/Peersyst/xrpl-go/pkg/map_utils"
 	"github.com/Peersyst/xrpl-go/pkg/typecheck"
@@ -108,8 +109,11 @@ func IsIssuedCurrency(input types.CurrencyAmount) (bool, error) {
 	if issuedAmount.Currency == "XRP" {
 		return false, errors.New("cannot have an issued currency with a similar standard code as XRP")
 	}
-	if !typecheck.IsFloat32(issuedAmount.Value) {
-		return false, errors.New("value field should be a valid number")
+
+	// Check if the value is a valid positive number
+	value, err := strconv.ParseFloat(issuedAmount.Value, 64)
+	if err != nil || value < 0 {
+		return false, errors.New("value field should be a valid positive number")
 	}
 
 	return true, nil

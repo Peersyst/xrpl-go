@@ -10,6 +10,7 @@ type LedgerEntryType string
 const (
 	AccountRootEntry       LedgerEntryType = "AccountRoot"
 	AmendmentsEntry        LedgerEntryType = "Amendments"
+	AMMEntry               LedgerEntryType = "AMM"
 	CheckEntry             LedgerEntryType = "Check"
 	DepositPreauthObjEntry LedgerEntryType = "DepositPreauth"
 	DirectoryNodeEntry     LedgerEntryType = "DirectoryNode"
@@ -42,6 +43,8 @@ func EmptyLedgerObject(t string) (LedgerObject, error) {
 		return &AccountRoot{}, nil
 	case AmendmentsEntry:
 		return &Amendments{}, nil
+	case AMMEntry:
+		return &AMM{}, nil
 	case CheckEntry:
 		return &Check{}, nil
 	case DepositPreauthObjEntry:
