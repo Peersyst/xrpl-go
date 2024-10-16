@@ -114,13 +114,21 @@
 				
 				<option value="file21">github.com/Peersyst/xrpl-go/binary-codec/types/serialized_type.go (88.9%)</option>
 				
+<<<<<<< HEAD
 				<option value="file22">github.com/Peersyst/xrpl-go/binary-codec/types/st_array.go (90.3%)</option>
+=======
+				<option value="file22">github.com/Peersyst/xrpl-go/binary-codec/types/uint16.go (84.2%)</option>
+>>>>>>> 6f8d0fa (feat(binary-codec): improve test coverage for uint8 and uint16 types)
 				
 				<option value="file23">github.com/Peersyst/xrpl-go/binary-codec/types/st_object.go (88.3%)</option>
 				
 				<option value="file24">github.com/Peersyst/xrpl-go/binary-codec/types/uint16.go (94.7%)</option>
 				
+<<<<<<< HEAD
 				<option value="file25">github.com/Peersyst/xrpl-go/binary-codec/types/uint32.go (88.9%)</option>
+=======
+				<option value="file25">github.com/Peersyst/xrpl-go/binary-codec/types/uint8.go (94.4%)</option>
+>>>>>>> 6f8d0fa (feat(binary-codec): improve test coverage for uint8 and uint16 types)
 				
 				<option value="file26">github.com/Peersyst/xrpl-go/binary-codec/types/uint64.go (95.2%)</option>
 				
@@ -3327,10 +3335,18 @@ func (u *UInt16) FromJSON(value any) ([]byte, error) <span class="cov8" title="1
 
         <span class="cov8" title="1">buf := new(bytes.Buffer)
 
+<<<<<<< HEAD
         if !IsUint16(value.(int)) </span><span class="cov8" title="1">{
                 return nil, errors.New("uint16: value out of range")
         }</span>
 
+=======
+        if !IsUint16(value.(int)) </span><span class="cov0" title="0">{
+                return nil, errors.New("uint16: value out of range")
+        }</span>
+
+
+>>>>>>> 6f8d0fa (feat(binary-codec): improve test coverage for uint8 and uint16 types)
         <span class="cov8" title="1">err := binary.Write(buf, binary.BigEndian, uint16(value.(int)))
 
         if err != nil </span><span class="cov0" title="0">{
@@ -3475,12 +3491,17 @@ type UInt8 struct{}
 // FromJSON converts a JSON value into a serialized byte slice representing an 8-bit unsigned integer.
 // If the input value is a string, it's assumed to be a transaction result name, and the method will
 // attempt to convert it into a transaction result type code. If the conversion fails, an error is returned.
+<<<<<<< HEAD
 func (u *UInt8) FromJSON(value any) ([]byte, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
         if s, ok := value.(string); ok </span><span class="cov8" title="1">{
 =======
         if s, ok := value.(string); ok </span><span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+func (u *UInt8) FromJson(value any) ([]byte, error) <span class="cov8" title="1">{
+        if s, ok := value.(string); ok </span><span class="cov8" title="1">{
+>>>>>>> 6f8d0fa (feat(binary-codec): improve test coverage for uint8 and uint16 types)
                 tc, err := definitions.Get().GetTransactionResultTypeCodeByTransactionResultName(s)
                 if err != nil </span><span class="cov8" title="1">{
                         return nil, err
