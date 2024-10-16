@@ -43,7 +43,10 @@ func (p *BinaryParser) ReadField() (*definitions.FieldInstance, error) {
 // readFieldHeader reads the header of the next field in the data.
 func (p *BinaryParser) readFieldHeader() (*definitions.FieldHeader, error) {
 	// Read the first byte of the field header
-	typeCode, _ := p.ReadByte()
+	typeCode, err := p.ReadByte()
+	if err != nil {
+		return nil, err
+	}
 
 	// The field code is the last 4 bits of the first byte
 	fieldCode := typeCode & 15
@@ -51,7 +54,10 @@ func (p *BinaryParser) readFieldHeader() (*definitions.FieldHeader, error) {
 
 	// Read the type code if it's not in the first byte
 	if typeCode == 0 {
-		typeCode, _ = p.ReadByte()
+		typeCode, err = p.ReadByte()
+		if err != nil {
+			return nil, err
+		}
 		if typeCode == 0 || typeCode < 16 {
 			return nil, errors.New("invalid typecode")
 		}
@@ -59,7 +65,10 @@ func (p *BinaryParser) readFieldHeader() (*definitions.FieldHeader, error) {
 
 	// Read the field code if it's not in the first byte
 	if fieldCode == 0 {
-		fieldCode, _ = p.ReadByte()
+		fieldCode, err = p.ReadByte()
+		if err != nil {
+			return nil, err
+		}
 		if fieldCode == 0 || fieldCode < 16 {
 			return nil, errors.New("invalid fieldcode")
 		}
@@ -75,10 +84,10 @@ func (p *BinaryParser) readFieldHeader() (*definitions.FieldHeader, error) {
 // ReadByte reads the next byte in the data.
 // It returns an error if no more data is available.
 func (p *BinaryParser) ReadByte() (byte, error) {
-	if len(p.data) < 1 {
-		return 0, ErrParserOutOfBound
+	b, err := p.Peek()
+	if err != nil {
+		return 0, err
 	}
-	b := p.data[0]
 	p.data = p.data[1:]
 	return b, nil
 }
@@ -95,14 +104,11 @@ func (p *BinaryParser) Peek() (byte, error) {
 // ReadBytes reads the next n bytes in the data.
 // It returns an error if fewer than n bytes are available.
 func (p *BinaryParser) ReadBytes(n int) ([]byte, error) {
-	var bytes []byte
-	for i := 0; i < n; i++ {
-		b, err := p.ReadByte()
-		if err != nil {
-			return nil, err
-		}
-		bytes = append(bytes, b)
+	if len(p.data) < n {
+		return nil, ErrParserOutOfBound
 	}
+	bytes := p.data[:n]
+	p.data = p.data[n:]
 	return bytes, nil
 }
 
@@ -118,18 +124,16 @@ func (p *BinaryParser) ReadVariableLength() (int, error) {
 	b1, err := p.ReadByte()
 	if err != nil {
 		return 0, err
-	}
-	if b1 < 193 {
+	} else if b1 < 193 {
 		return int(b1), nil
-	}
-	if b1 > 192 && b1 < 241 {
+	} else if b1 > 192 && b1 < 241 {
 		b2, err := p.ReadByte()
 		if err != nil {
 			return 0, err
 		}
 		return 193 + ((int(b1) - 193) * 256) + int(b2), nil
-	}
-	if b1 > 240 && b1 < 255 {
+	} else {
+		// b1 > 240 && b1 < 255 
 		b2, err := p.ReadByte()
 		if err != nil {
 			return 0, err
@@ -140,5 +144,4 @@ func (p *BinaryParser) ReadVariableLength() (int, error) {
 		}
 		return 12481 + ((int(b1) - 241) * 65536) + (int(b2) * 256) + int(b3), nil
 	}
-	return 0, nil
 }
