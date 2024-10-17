@@ -155,25 +155,25 @@ func TestBinaryParser_ReadByte(t *testing.T) {
 
 func TestBinaryParser_ReadBytes(t *testing.T) {
 	tt := []struct {
-		description string
-		input       []byte
-		n           int
-		output      []byte
+		description  string
+		input        []byte
+		n            int
+		output       []byte
 		expectedData []byte
-		expectedErr error
+		expectedErr  error
 	}{
 		{
-			description: "read bytes",
-			input:       []byte{190, 230, 131},
-			n:           2,
-			output:      []byte{190, 230},
+			description:  "read bytes",
+			input:        []byte{190, 230, 131},
+			n:            2,
+			output:       []byte{190, 230},
 			expectedData: []byte{131},
 		},
 		{
-			description: "read bytes with no data",
-			input:       []byte{},
-			n:           2,
-			output:      []byte(nil),
+			description:  "read bytes with no data",
+			input:        []byte{},
+			n:            2,
+			output:       []byte(nil),
 			expectedErr:  ErrParserOutOfBound,
 			expectedData: []byte{},
 		},
@@ -199,7 +199,7 @@ func TestBinaryParser_readFieldHeader(t *testing.T) {
 		{
 			description: "read field header",
 			input:       []byte{190, 230, 131},
-			output:      &definitions.FieldHeader{
+			output: &definitions.FieldHeader{
 				TypeCode:  11,
 				FieldCode: 14,
 			},

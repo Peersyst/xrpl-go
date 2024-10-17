@@ -133,7 +133,7 @@ func (p *BinaryParser) ReadVariableLength() (int, error) {
 		}
 		return 193 + ((int(b1) - 193) * 256) + int(b2), nil
 	} else {
-		// b1 > 240 && b1 < 255 
+		// b1 > 240 && b1 < 255
 		b2, err := p.ReadByte()
 		if err != nil {
 			return 0, err
