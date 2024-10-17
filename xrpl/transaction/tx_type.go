@@ -7,6 +7,7 @@ const (
 	AccountDeleteTx        TxType = "AccountDelete"
 	AMMBidTx               TxType = "AMMBid"
 	AMMCreateTx            TxType = "AMMCreate"
+	AMMDeleteTx            TxType = "AMMDelete"
 	AMMDepositTx           TxType = "AMMDeposit"
 	AMMVoteTx              TxType = "AMMVote"
 	AMMWithdrawTx          TxType = "AMMWithdraw"

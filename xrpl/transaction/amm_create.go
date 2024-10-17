@@ -1,7 +1,6 @@
 package transaction
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -22,40 +21,6 @@ type AMMCreate struct {
 
 func (*AMMCreate) TxType() TxType {
 	return AMMCreateTx
-}
-
-// UnmarshalJSON unmarshals the Payment transaction from JSON.
-func (p *AMMCreate) UnmarshalJSON(data []byte) error {
-	type pHelper struct {
-		BaseTx
-		Amount     json.RawMessage
-		Amount2    json.RawMessage
-		TradingFee uint16
-	}
-	var h pHelper
-	if err := json.Unmarshal(data, &h); err != nil {
-		return err
-	}
-	*p = AMMCreate{
-		BaseTx:     h.BaseTx,
-		TradingFee: h.TradingFee,
-	}
-	var amount, amount2 types.CurrencyAmount
-	var err error
-
-	amount, err = types.UnmarshalCurrencyAmount(h.Amount)
-	if err != nil {
-		return err
-	}
-	amount2, err = types.UnmarshalCurrencyAmount(h.Amount2)
-	if err != nil {
-		return err
-	}
-
-	p.Amount = amount
-	p.Amount2 = amount2
-
-	return nil
 }
 
 func (s *AMMCreate) Flatten() FlatTransaction {

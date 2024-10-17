@@ -203,16 +203,16 @@ func IsAsset(asset ledger.Asset) (bool, error) {
 		return false, errors.New("asset object should have at least one field 'currency', or two fields 'currency' and 'issuer'")
 	}
 
-	if asset.Currency == "" {
+	if strings.TrimSpace(asset.Currency) == "" {
 		return false, errors.New("currency field is required for an asset")
 	}
 
-	if strings.ToUpper(asset.Currency) == "XRP" && asset.Issuer == "" {
+	if strings.ToUpper(asset.Currency) == "XRP" && strings.TrimSpace(asset.Issuer.String()) == "" {
 		return true, nil
 	}
 
-	if asset.Currency != "" && asset.Issuer == "" {
-		return false, errors.New("issuer field is required for an asset")
+	if asset.Currency != "" && !addresscodec.IsValidClassicAddress(asset.Issuer.String()) {
+		return false, errors.New("issuer field must be a valid XRPL classic address")
 	}
 
 	return true, nil

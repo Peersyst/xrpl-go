@@ -1,61 +1,13 @@
 package transaction
 
 import (
-	"encoding/json"
-	"reflect"
 	"testing"
 
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestAMMCreateTransaction(t *testing.T) {
-	s := AMMCreate{
-		BaseTx: BaseTx{
-			Account:         "abcdef",
-			TransactionType: AMMCreateTx,
-			Fee:             types.XRPCurrencyAmount(1),
-			Sequence:        1234,
-			SigningPubKey:   "ghijk",
-			TxnSignature:    "A1B2C3D4E5F6",
-		},
-		Amount: types.XRPCurrencyAmount(100),
-		Amount2: types.IssuedCurrencyAmount{
-			Currency: "USD",
-			Value:    "200",
-			Issuer:   "ra5nK24KXen9AHvsdFTKHSANinZseWnPcQ",
-		},
-		TradingFee: 10,
-	}
-
-	j := `{
-	"Account": "abcdef",
-	"TransactionType": "AMMCreate",
-	"Fee": "1",
-	"Sequence": 1234,
-	"SigningPubKey": "ghijk",
-	"TxnSignature": "A1B2C3D4E5F6",
-	"Amount": "100",
-	"Amount2": {
-		"issuer": "ra5nK24KXen9AHvsdFTKHSANinZseWnPcQ",
-		"currency": "USD",
-		"value": "200"
-	},
-	"TradingFee": 10
-}`
-
-	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
-		t.Error(err)
-	}
-
-	tx, err := UnmarshalTx(json.RawMessage(j))
-	if err != nil {
-		t.Errorf("UnmarshalTx error: %s", err.Error())
-	}
-	if !reflect.DeepEqual(tx, &s) {
-		t.Error("UnmarshalTx result differs from expected")
-	}
-}
 func TestAMMCreateFlatten(t *testing.T) {
 	s := AMMCreate{
 		BaseTx: BaseTx{
@@ -98,6 +50,7 @@ func TestAMMCreateFlatten(t *testing.T) {
 		t.Error(err)
 	}
 }
+
 func TestAMMCreateValidate(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -109,7 +62,7 @@ func TestAMMCreateValidate(t *testing.T) {
 			name: "valid AMMCreate",
 			amm: AMMCreate{
 				BaseTx: BaseTx{
-					Account:         "abcdef",
+					Account:         "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 					TransactionType: AMMCreateTx,
 					Fee:             types.XRPCurrencyAmount(1),
 					Sequence:        1234,
@@ -127,10 +80,30 @@ func TestAMMCreateValidate(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "Invalid BaseTx for AMMCreate, missing Account",
+			amm: AMMCreate{
+				BaseTx: BaseTx{
+					TransactionType: AMMCreateTx,
+					Fee:             types.XRPCurrencyAmount(1),
+					Sequence:        1234,
+					SigningPubKey:   "ghijk",
+					TxnSignature:    "A1B2C3D4E5F6",
+				},
+				Amount: types.XRPCurrencyAmount(100),
+				Amount2: types.IssuedCurrencyAmount{
+					Currency: "USD",
+					Value:    "200",
+					Issuer:   "ra5nK24KXen9AHvsdFTKHSANinZseWnPcQ",
+				},
+				TradingFee: 10,
+			},
+			wantErr: true,
+		},
+		{
 			name: "missing Amount",
 			amm: AMMCreate{
 				BaseTx: BaseTx{
-					Account:         "abcdef",
+					Account:         "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 					TransactionType: AMMCreateTx,
 					Fee:             types.XRPCurrencyAmount(1),
 					Sequence:        1234,
@@ -150,7 +123,7 @@ func TestAMMCreateValidate(t *testing.T) {
 			name: "invalid Amount value",
 			amm: AMMCreate{
 				BaseTx: BaseTx{
-					Account:         "abcdef",
+					Account:         "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 					TransactionType: AMMCreateTx,
 					Fee:             types.XRPCurrencyAmount(1),
 					Sequence:        1234,
@@ -175,7 +148,7 @@ func TestAMMCreateValidate(t *testing.T) {
 			name: "missing Amount2",
 			amm: AMMCreate{
 				BaseTx: BaseTx{
-					Account:         "abcdef",
+					Account:         "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 					TransactionType: AMMCreateTx,
 					Fee:             types.XRPCurrencyAmount(1),
 					Sequence:        1234,
@@ -191,7 +164,7 @@ func TestAMMCreateValidate(t *testing.T) {
 			name: "invalid Amount2 value",
 			amm: AMMCreate{
 				BaseTx: BaseTx{
-					Account:         "abcdef",
+					Account:         "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 					TransactionType: AMMCreateTx,
 					Fee:             types.XRPCurrencyAmount(1),
 					Sequence:        1234,
@@ -212,7 +185,7 @@ func TestAMMCreateValidate(t *testing.T) {
 			name: "trading fee too high",
 			amm: AMMCreate{
 				BaseTx: BaseTx{
-					Account:         "abcdef",
+					Account:         "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 					TransactionType: AMMCreateTx,
 					Fee:             types.XRPCurrencyAmount(1),
 					Sequence:        1234,
@@ -244,4 +217,9 @@ func TestAMMCreateValidate(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestAMMCreate_TxType(t *testing.T) {
+	tx := &AMMCreate{}
+	assert.Equal(t, AMMCreateTx, tx.TxType())
 }

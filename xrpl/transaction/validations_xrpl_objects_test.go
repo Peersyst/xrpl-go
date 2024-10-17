@@ -269,7 +269,7 @@ func TestIsAsset(t *testing.T) {
 	t.Run("Valid Asset object with currency and issuer", func(t *testing.T) {
 		obj := ledger.Asset{
 			Currency: "USD",
-			Issuer:   "r1234567890",
+			Issuer:   "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
 		}
 
 		ok, err := IsAsset(obj)
@@ -281,7 +281,7 @@ func TestIsAsset(t *testing.T) {
 
 	t.Run("Asset object with missing currency", func(t *testing.T) {
 		obj := ledger.Asset{
-			Issuer: "r1234567890",
+			Issuer: "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
 		}
 
 		ok, err := IsAsset(obj)
