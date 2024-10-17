@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 // ErrNoLengthPrefix error is raised when no length prefix size is given.
@@ -28,7 +28,7 @@ func (b *Blob) FromJson(json any) ([]byte, error) {
 // ToJson method for Blob reads a certain number of bytes from a BinaryParser
 // and converts it into a hexadecimal string.
 // It returns an error if no length prefix is specified or if the read operation fails.
-func (b *Blob) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (b *Blob) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 	// If no length prefix is specified, return an error.
 	if opts == nil {
 		return nil, ErrNoLengthPrefix

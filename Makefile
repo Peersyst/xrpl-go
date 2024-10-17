@@ -1,16 +1,28 @@
 .PHONY: lint test benchmark
 
-
 EXCLUDED_TEST_PACKAGES = $(shell go list ./... | grep -v /faucet | grep -v /examples)
-EXCLUDED_COVERAGE_PACKAGES = $(shell go list ./... | grep -v /faucet | grep -v /examples)
+EXCLUDED_COVERAGE_PACKAGES = $(shell go list ./... | grep -v /faucet | grep -v /examples | grep -v /testutil | grep -v /interfaces)
 
 PARALLEL_TESTS = 4
 TEST_TIMEOUT = 5m
+
+################################################################################
+############################### LINTING ########################################
+################################################################################
 
 lint:
 	@echo "Linting Go code..."
 	@golangci-lint run
 	@echo "Linting complete!"
+
+lint-fix:
+	@echo "Fixing Go code..."
+	@gofmt -w -s .
+	@echo "Fixing complete!"
+
+################################################################################
+############################### TESTING ########################################
+################################################################################
 
 test-all:
 	@echo "Running Go tests..."

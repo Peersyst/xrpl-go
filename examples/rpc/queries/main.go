@@ -8,7 +8,6 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/rpc"
 )
 
-
 func main() {
 	fmt.Println("Starting JSON RPC client")
 	// init new config object with desired node address
@@ -24,7 +23,7 @@ func main() {
 	req := &account.AccountInfoRequest{
 		Account: "rPUK1iYbtS6LP9sA2jbUDHtTnbnQqLBnac",
 	}
-	
+
 	fmt.Println("Sending GetAccountInfo request")
 	ac, err := client.GetAccountInfo(req)
 	if err != nil {

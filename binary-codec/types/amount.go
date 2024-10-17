@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 	bigdecimal "github.com/Peersyst/xrpl-go/pkg/big-decimal"
 )
 
@@ -88,7 +88,7 @@ func (a *Amount) FromJson(value any) ([]byte, error) {
 }
 
 // ToJson deserializes a binary-encoded Amount object from a BinaryParser into a JSON representation.
-func (a *Amount) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (a *Amount) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 	b, err := p.Peek()
 	if err != nil {
 		return nil, err

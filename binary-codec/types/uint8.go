@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 
 	"github.com/Peersyst/xrpl-go/binary-codec/definitions"
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 // UInt8 represents an 8-bit unsigned integer.
@@ -43,7 +43,7 @@ func (u *UInt8) FromJson(value any) ([]byte, error) {
 // ToJson takes a BinaryParser and optional parameters, and converts the serialized byte data
 // back into a JSON integer value. This method assumes the parser contains data representing
 // an 8-bit unsigned integer. If the parsing fails, an error is returned.
-func (u *UInt8) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (u *UInt8) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 	b, err := p.ReadBytes(1)
 	if err != nil {
 		return nil, err

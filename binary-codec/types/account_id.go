@@ -2,7 +2,7 @@ package types
 
 import (
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 // AccountID struct represents an account ID.
@@ -32,7 +32,7 @@ func (a *AccountID) FromJson(value any) ([]byte, error) {
 // The method reads the bytes using the binary parser,
 // then encodes the result to an AccountID format.
 // If no length prefix size is given, it returns an ErrNoLengthPrefix error.
-func (a *AccountID) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (a *AccountID) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 	if opts == nil {
 		return nil, ErrNoLengthPrefix
 	}

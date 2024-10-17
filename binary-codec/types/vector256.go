@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 const HashLengthBytes = 32
@@ -61,7 +61,7 @@ func vector256FromValue(value []string) ([]byte, error) {
 // ToJson takes a BinaryParser and optional parameters, and converts the serialized byte data
 // back into an array of JSON string values representing Hash256 values.
 // If the parsing fails, an error is returned.
-func (v *Vector256) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (v *Vector256) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 
 	b, _ := p.ReadBytes(opts[0])
 	var value []string
