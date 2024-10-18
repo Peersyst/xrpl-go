@@ -254,6 +254,19 @@ func TestIsAsset(t *testing.T) {
 		}
 	})
 
+	t.Run("Invalid Asset object with currency XRP and an issuer defined", func(t *testing.T) {
+		obj := ledger.Asset{
+			Currency: "xrP", // will be converted to XRP in the Validate function
+			Issuer:   "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+		}
+
+		ok, err := IsAsset(obj)
+
+		if ok {
+			t.Errorf("Expected IsAsset to return true, but got false with error: %v", err)
+		}
+	})
+
 	t.Run("Invalid Asset object with currency only and different than XRP", func(t *testing.T) {
 		obj := ledger.Asset{
 			Currency: "USD", // missing issuer
