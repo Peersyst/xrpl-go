@@ -1,44 +1,184 @@
 package transaction
 
 import (
-	"encoding/json"
-	"reflect"
 	"testing"
 
+	ledger "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestAMMVoteTransaction(t *testing.T) {
-	s := AMMVote{
+func TestAMMVote_TxType(t *testing.T) {
+	tx := &AMMVote{}
+	assert.Equal(t, AMMVoteTx, tx.TxType())
+}
+
+func TestAMMVote_Flatten(t *testing.T) {
+	tx := &AMMVote{
 		BaseTx: BaseTx{
-			Account:         "abcdef",
-			TransactionType: AMMVoteTx,
-			Fee:             types.XRPCurrencyAmount(1),
-			Sequence:        1234,
-			SigningPubKey:   "ghijk",
-			TxnSignature:    "A1B2C3D4E5F6",
+			Account:         "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+			TransactionType: "AMMVote",
+			Fee:             types.XRPCurrencyAmount(10),
+			Flags:           2147483648,
+			Sequence:        8,
+		},
+		Asset: ledger.Asset{
+			Currency: "XRP",
+		},
+		Asset2: ledger.Asset{
+			Currency: "TST",
+			Issuer:   "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd",
+		},
+		TradingFee: 600,
+	}
+
+	flattened := tx.Flatten()
+
+	expected := `{
+		"Account":         "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+		"Fee":             "10",
+		"Flags":           2147483648,
+		"Sequence":        8,
+		"TransactionType": "AMMVote",
+		"Asset": {
+			"currency": "XRP"
+		},
+		"Asset2": {
+			"currency": "TST",
+			"issuer":   "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd"
+		},
+		"TradingFee": 600
+	}`
+
+	err := testutil.CompareFlattenAndExpected(flattened, []byte(expected))
+	if err != nil {
+		t.Error(err)
+	}
+}
+
+func TestAMMVote_Validate(t *testing.T) {
+	tests := []struct {
+		name    string
+		tx      *AMMVote
+		wantErr bool
+	}{
+		{
+			name: "valid AMMVote",
+			tx: &AMMVote{
+				BaseTx: BaseTx{
+					Account:         "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+					TransactionType: "AMMVote",
+					Fee:             types.XRPCurrencyAmount(10),
+					Flags:           2147483648,
+					Sequence:        8,
+				},
+				Asset: ledger.Asset{
+					Currency: "XRP",
+				},
+				Asset2: ledger.Asset{
+					Currency: "TST",
+					Issuer:   "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd",
+				},
+				TradingFee: 600,
+			},
+			wantErr: false,
+		},
+		{
+			name: "Invalid AMMVote BaseTx, TransactionType missing",
+			tx: &AMMVote{
+				BaseTx: BaseTx{
+					Account:  "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+					Fee:      types.XRPCurrencyAmount(10),
+					Flags:    2147483648,
+					Sequence: 8,
+				},
+				Asset: ledger.Asset{
+					Currency: "XRP",
+				},
+				Asset2: ledger.Asset{
+					Currency: "TST",
+					Issuer:   "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd",
+				},
+				TradingFee: 600,
+			},
+			wantErr: true,
+		},
+		{
+			name: "invalid TradingFee",
+			tx: &AMMVote{
+				BaseTx: BaseTx{
+					Account:         "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+					TransactionType: "AMMVote",
+					Fee:             types.XRPCurrencyAmount(10),
+					Flags:           2147483648,
+					Sequence:        8,
+				},
+				Asset: ledger.Asset{
+					Currency: "XRP",
+				},
+				Asset2: ledger.Asset{
+					Currency: "TST",
+					Issuer:   "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd",
+				},
+				TradingFee: 1200,
+			},
+			wantErr: true,
+		},
+		{
+			name: "invalid Asset",
+			tx: &AMMVote{
+				BaseTx: BaseTx{
+					Account:         "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+					TransactionType: "AMMVote",
+					Fee:             types.XRPCurrencyAmount(10),
+					Flags:           2147483648,
+					Sequence:        8,
+				},
+				Asset: ledger.Asset{
+					Currency: " ",
+				},
+				Asset2: ledger.Asset{
+					Currency: "TST",
+					Issuer:   "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd",
+				},
+				TradingFee: 600,
+			},
+			wantErr: true,
+		},
+		{
+			name: "invalid Asset2",
+			tx: &AMMVote{
+				BaseTx: BaseTx{
+					Account:         "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+					TransactionType: "AMMVote",
+					Fee:             types.XRPCurrencyAmount(10),
+					Flags:           2147483648,
+					Sequence:        8,
+				},
+				Asset: ledger.Asset{
+					Currency: "XRP",
+				},
+				Asset2: ledger.Asset{
+					Currency: "TST",
+					Issuer:   " ",
+				},
+				TradingFee: 600,
+			},
+			wantErr: true,
 		},
 	}
 
-	j := `{
-	"Account": "abcdef",
-	"TransactionType": "AMMVote",
-	"Fee": "1",
-	"Sequence": 1234,
-	"SigningPubKey": "ghijk",
-	"TxnSignature": "A1B2C3D4E5F6"
-}`
-
-	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
-		t.Error(err)
-	}
-
-	tx, err := UnmarshalTx(json.RawMessage(j))
-	if err != nil {
-		t.Errorf("UnmarshalTx error: %s", err.Error())
-	}
-	if !reflect.DeepEqual(tx, &s) {
-		t.Error("UnmarshalTx result differs from expected")
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			valid, err := tt.tx.Validate()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("AMMVote.Validate() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if valid != !tt.wantErr {
+				t.Errorf("AMMVote.Validate() = %v, want %v", valid, !tt.wantErr)
+			}
+		})
 	}
 }
