@@ -333,7 +333,7 @@
 				
 				<option value="file138">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_delete.go (100.0%)</option>
 				
-				<option value="file139">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_deposit.go (0.0%)</option>
+				<option value="file139">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_deposit.go (100.0%)</option>
 				
 				<option value="file140">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_vote.go (0.0%)</option>
 				
@@ -397,7 +397,7 @@
 				
 				<option value="file170">github.com/Peersyst/xrpl-go/xrpl/transaction/trust_set.go (73.0%)</option>
 				
-				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/tx.go (82.4%)</option>
+				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/tx.go (81.6%)</option>
 				
 				<option value="file172">github.com/Peersyst/xrpl-go/xrpl/transaction/tx_type.go (100.0%)</option>
 				
@@ -8268,18 +8268,181 @@ func (a *AMMDelete) Validate() (bool, error) <span class="cov8" title="1">{
 		
 		<pre class="file" id="file139" style="display: none">package transaction
 
+import (
+        "errors"
+
+        "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+        "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+)
+
+// Deposit funds into an Automated Market Maker (AMM) instance and receive the AMM's liquidity provider tokens (LP Tokens) in exchange.
+// You can deposit one or both of the assets in the AMM's pool.
+// If successful, this transaction creates a trust line to the AMM Account (limit 0) to hold the LP Tokens.
+//
+// Example:
+//
+//        {
+//            "Account" : "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+//            "Amount" : {
+//                "currency" : "TST",
+//                "issuer" : "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd",
+//                "value" : "2.5"
+//            },
+//            "Amount2" : "30000000",
+//            "Asset" : {
+//                "currency" : "TST",
+//                "issuer" : "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd"
+//            },
+//            "Asset2" : {
+//                "currency" : "XRP"
+//            },
+//            "Fee" : "10",
+//            "Flags" : 1048576,
+//            "Sequence" : 7,
+//            "TransactionType" : "AMMDeposit"
+//        }
 type AMMDeposit struct {
         BaseTx
+        // The definition for one of the assets in the AMM's pool. In JSON, this is an object with currency and issuer fields (omit issuer for XRP).
+        Asset ledger.Asset
+        // The definition for the other asset in the AMM's pool. In JSON, this is an object with currency and issuer fields (omit issuer for XRP).
+        Asset2 ledger.Asset
+        // The amount of one asset to deposit to the AMM. If present, this must match the type of one of the assets (tokens or XRP) in the AMM's pool.
+        Amount types.CurrencyAmount `json:",omitempty"`
+        // The amount of another asset to add to the AMM. If present, this must match the type of the other asset in the AMM's pool and cannot be the same asset as Amount.
+        Amount2 types.CurrencyAmount `json:",omitempty"`
+        // The maximum effective price, in the deposit asset, to pay for each LP Token received.
+        EPrice types.CurrencyAmount `json:",omitempty"`
+        // How many of the AMM's LP Tokens to buy.
+        LPTokenOut types.CurrencyAmount `json:",omitempty"`
+        // Submit a vote for the AMM's trading fee, in units of 1/100,000; a value of 1 is equivalent to 0.001%. The maximum value is 1000, indicating a 1% fee.
+        TradingFee uint16 `json:",omitempty"`
 }
 
-func (*AMMDeposit) TxType() TxType <span class="cov0" title="0">{
+// ****************************
+// AMMDeposit Flags
+// ****************************
+
+// You must specify exactly one of these flags, plus any global flags.
+const (
+        // Perform a double-asset deposit and receive the specified amount of LP Tokens.
+        tfLPToken uint = 65536
+        // Perform a single-asset deposit with a specified amount of the asset to deposit.
+        tfSingleAsset uint = 524288
+        // Perform a double-asset deposit with specified amounts of both assets.
+        tfTwoAsset uint = 1048576
+        // Perform a single-asset deposit and receive the specified amount of LP Tokens.
+        tfOneAssetLPToken uint = 2097152
+        // Perform a single-asset deposit with a specified effective price.
+        tfLimitLPToken uint = 4194304
+        // Perform a special double-asset deposit to an AMM with an empty pool.
+        tfTwoAssetIfEmpty uint = 8388608
+)
+
+// Perform a double-asset deposit and receive the specified amount of LP Tokens.
+func (a *AMMDeposit) SetLPTokentFlag() <span class="cov8" title="1">{
+        a.Flags |= tfLPToken
+}</span>
+
+// Perform a single-asset deposit with a specified amount of the asset to deposit.
+func (a *AMMDeposit) SetSingleAssetFlag() <span class="cov8" title="1">{
+        a.Flags |= tfSingleAsset
+}</span>
+
+// Perform a double-asset deposit with specified amounts of both assets.
+func (a *AMMDeposit) SetTwoAssetFlag() <span class="cov8" title="1">{
+        a.Flags |= tfTwoAsset
+}</span>
+
+// Perform a single-asset deposit and receive the specified amount of LP Tokens.
+func (a *AMMDeposit) SetOneAssetLPTokenFlag() <span class="cov8" title="1">{
+        a.Flags |= tfOneAssetLPToken
+}</span>
+
+// Perform a single-asset deposit with a specified effective price.
+func (a *AMMDeposit) SetLimitLPTokenFlag() <span class="cov8" title="1">{
+        a.Flags |= tfLimitLPToken
+}</span>
+
+// Perform a special double-asset deposit to an AMM with an empty pool.
+func (a *AMMDeposit) SetTwoAssetIfEmptyFlag() <span class="cov8" title="1">{
+        a.Flags |= tfTwoAssetIfEmpty
+}</span>
+
+func (*AMMDeposit) TxType() TxType <span class="cov8" title="1">{
         return AMMDepositTx
 }</span>
 
-// TODO: Implement flatten
-func (s *AMMDeposit) Flatten() FlatTransaction <span class="cov0" title="0">{
-        return nil
-}</span>
+func (a *AMMDeposit) Flatten() FlatTransaction <span class="cov8" title="1">{
+
+        // Add BaseTx fields
+        flattened := a.BaseTx.Flatten()
+
+        // Add AMMDeposit-specific fields
+        flattened["TransactionType"] = "AMMDeposit"
+
+        flattened["Asset"] = a.Asset.Flatten()
+        flattened["Asset2"] = a.Asset2.Flatten()
+
+        if a.Amount != nil </span><span class="cov8" title="1">{
+                flattened["Amount"] = a.Amount.Flatten()
+        }</span>
+
+        <span class="cov8" title="1">if a.Amount2 != nil </span><span class="cov8" title="1">{
+                flattened["Amount2"] = a.Amount2.Flatten()
+        }</span>
+
+        <span class="cov8" title="1">if a.EPrice != nil </span><span class="cov8" title="1">{
+                flattened["EPrice"] = a.EPrice.Flatten()
+        }</span>
+
+        <span class="cov8" title="1">if a.LPTokenOut != nil </span><span class="cov8" title="1">{
+                flattened["LPTokenOut"] = a.LPTokenOut.Flatten()
+        }</span>
+
+        <span class="cov8" title="1">if a.TradingFee != 0 </span><span class="cov8" title="1">{
+                flattened["TradingFee"] = a.TradingFee
+        }</span>
+
+        <span class="cov8" title="1">return flattened</span>
+}
+
+func (a *AMMDeposit) Validate() (bool, error) <span class="cov8" title="1">{
+        _, err := a.BaseTx.Validate()
+        if err != nil </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset2); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if a.Amount2 != nil &amp;&amp; a.Amount == nil </span><span class="cov8" title="1">{
+                return false, errors.New("ammDeposit: must set Amount with Amount2")
+        }</span> else<span class="cov8" title="1"> if a.EPrice != nil &amp;&amp; a.Amount == nil </span><span class="cov8" title="1">{
+                return false, errors.New("ammDeposit: must set Amount with EPrice")
+        }</span> else<span class="cov8" title="1"> if a.LPTokenOut == nil &amp;&amp; a.Amount == nil </span><span class="cov8" title="1">{
+                return false, errors.New("ammDeposit:  must set at least LPTokenOut or Amount")
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAmount(IsAmountArgs{field: a.Amount, fieldName: "Amount", isFieldRequired: false}); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAmount(IsAmountArgs{field: a.Amount2, fieldName: "Amount", isFieldRequired: false}); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAmount(IsAmountArgs{field: a.EPrice, fieldName: "EPrice", isFieldRequired: false}); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">return true, nil</span>
+}
 </pre>
 		
 		<pre class="file" id="file140" style="display: none">package transaction
@@ -9952,7 +10115,7 @@ func UnmarshalTx(data json.RawMessage) (Tx, error) <span class="cov8" title="1">
                 tx = &amp;AMMBid{}</span>
         case AMMCreateTx:<span class="cov0" title="0">
                 tx = &amp;AMMCreate{}</span>
-        case AMMDepositTx:<span class="cov8" title="1">
+        case AMMDepositTx:<span class="cov0" title="0">
                 tx = &amp;AMMDeposit{}</span>
         case AMMVoteTx:<span class="cov8" title="1">
                 tx = &amp;AMMVote{}</span>
@@ -10550,6 +10713,10 @@ func IsAsset(asset ledger.Asset) (bool, error) <span class="cov8" title="1">{
 
         <span class="cov8" title="1">if strings.ToUpper(asset.Currency) == "XRP" &amp;&amp; strings.TrimSpace(asset.Issuer.String()) == "" </span><span class="cov8" title="1">{
                 return true, nil
+        }</span>
+
+        <span class="cov8" title="1">if strings.ToUpper(asset.Currency) == "XRP" &amp;&amp; asset.Issuer != "" </span><span class="cov8" title="1">{
+                return false, errors.New("issuer field should be omitted for XRP currency")
         }</span>
 
         <span class="cov8" title="1">if asset.Currency != "" &amp;&amp; !addresscodec.IsValidClassicAddress(asset.Issuer.String()) </span><span class="cov8" title="1">{

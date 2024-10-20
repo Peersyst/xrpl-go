@@ -211,6 +211,10 @@ func IsAsset(asset ledger.Asset) (bool, error) {
 		return true, nil
 	}
 
+	if strings.ToUpper(asset.Currency) == "XRP" && asset.Issuer != "" {
+		return false, errors.New("issuer field should be omitted for XRP currency")
+	}
+
 	if asset.Currency != "" && !addresscodec.IsValidClassicAddress(asset.Issuer.String()) {
 		return false, errors.New("issuer field must be a valid XRPL classic address")
 	}
