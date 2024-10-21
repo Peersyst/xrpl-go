@@ -61,16 +61,6 @@ type AMMDeposit struct {
 
 // You must specify exactly one of these flags, plus any global flags.
 const (
-	// Perform a double-asset deposit and receive the specified amount of LP Tokens.
-	tfLPToken uint = 65536
-	// Perform a single-asset deposit with a specified amount of the asset to deposit.
-	tfSingleAsset uint = 524288
-	// Perform a double-asset deposit with specified amounts of both assets.
-	tfTwoAsset uint = 1048576
-	// Perform a single-asset deposit and receive the specified amount of LP Tokens.
-	tfOneAssetLPToken uint = 2097152
-	// Perform a single-asset deposit with a specified effective price.
-	tfLimitLPToken uint = 4194304
 	// Perform a special double-asset deposit to an AMM with an empty pool.
 	tfTwoAssetIfEmpty uint = 8388608
 )

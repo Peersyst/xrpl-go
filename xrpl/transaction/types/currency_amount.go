@@ -64,6 +64,11 @@ func (i IssuedCurrencyAmount) Flatten() interface{} {
 	return json
 }
 
+// IsZero returns true if the IssuedCurrencyAmount is the zero value (empty object).
+func (i IssuedCurrencyAmount) IsZero() bool {
+	return i == IssuedCurrencyAmount{}
+}
+
 type XRPCurrencyAmount uint64
 
 func (a XRPCurrencyAmount) Uint64() uint64 {

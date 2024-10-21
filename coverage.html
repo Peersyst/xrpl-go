@@ -337,7 +337,7 @@
 				
 				<option value="file140">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_vote.go (100.0%)</option>
 				
-				<option value="file141">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_withdraw.go (0.0%)</option>
+				<option value="file141">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_withdraw.go (100.0%)</option>
 				
 				<option value="file142">github.com/Peersyst/xrpl-go/xrpl/transaction/check_cancel.go (0.0%)</option>
 				
@@ -397,13 +397,13 @@
 				
 				<option value="file170">github.com/Peersyst/xrpl-go/xrpl/transaction/trust_set.go (73.0%)</option>
 				
-				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/tx.go (80.9%)</option>
+				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/tx.go (80.1%)</option>
 				
 				<option value="file172">github.com/Peersyst/xrpl-go/xrpl/transaction/tx_type.go (100.0%)</option>
 				
 				<option value="file173">github.com/Peersyst/xrpl-go/xrpl/transaction/types/address.go (100.0%)</option>
 				
-				<option value="file174">github.com/Peersyst/xrpl-go/xrpl/transaction/types/currency_amount.go (84.6%)</option>
+				<option value="file174">github.com/Peersyst/xrpl-go/xrpl/transaction/types/currency_amount.go (85.0%)</option>
 				
 				<option value="file175">github.com/Peersyst/xrpl-go/xrpl/transaction/types/hash128.go (100.0%)</option>
 				
@@ -8329,16 +8329,6 @@ type AMMDeposit struct {
 
 // You must specify exactly one of these flags, plus any global flags.
 const (
-        // Perform a double-asset deposit and receive the specified amount of LP Tokens.
-        tfLPToken uint = 65536
-        // Perform a single-asset deposit with a specified amount of the asset to deposit.
-        tfSingleAsset uint = 524288
-        // Perform a double-asset deposit with specified amounts of both assets.
-        tfTwoAsset uint = 1048576
-        // Perform a single-asset deposit and receive the specified amount of LP Tokens.
-        tfOneAssetLPToken uint = 2097152
-        // Perform a single-asset deposit with a specified effective price.
-        tfLimitLPToken uint = 4194304
         // Perform a special double-asset deposit to an AMM with an empty pool.
         tfTwoAssetIfEmpty uint = 8388608
 )
@@ -8532,18 +8522,171 @@ func (a *AMMVote) Validate() (bool, error) <span class="cov8" title="1">{
 		
 		<pre class="file" id="file141" style="display: none">package transaction
 
+import (
+        "errors"
+
+        "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+        "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+)
+
+// Withdraw assets from an Automated Market Maker (AMM) instance by returning the AMM's liquidity provider tokens (LP Tokens).
+//
+// # Example
+//
+// ```json
+//
+//        {
+//            "Account" : "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+//            "Amount" : {
+//                "currency" : "TST",
+//                "issuer" : "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd",
+//                "value" : "5"
+//            },
+//            "Amount2" : "50000000",
+//            "Asset" : {
+//                "currency" : "TST",
+//                "issuer" : "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd"
+//            },
+//            "Asset2" : {
+//                "currency" : "XRP"
+//            },
+//            "Fee" : "10",
+//            "Flags" : 1048576,
+//            "Sequence" : 10,
+//            "TransactionType" : "AMMWithdraw"
+//        }
+//
+// / ```
 type AMMWithdraw struct {
         BaseTx
+        // The definition for one of the assets in the AMM's pool. In JSON, this is an object with currency and issuer fields (omit issuer for XRP).
+        Asset ledger.Asset
+        // The definition for the other asset in the AMM's pool. In JSON, this is an object with currency and issuer fields (omit issuer for XRP).
+        Asset2 ledger.Asset
+        // The amount of one asset to withdraw from the AMM. This must match the type of one of the assets (tokens or XRP) in the AMM's pool.
+        Amount types.CurrencyAmount `json:",omitempty"`
+        // The amount of another asset to withdraw from the AMM. If present, this must match the type of the other asset in the AMM's pool and cannot be the same type as Amount.
+        Amount2 types.CurrencyAmount `json:",omitempty"`
+        // The minimum effective price, in LP Token returned, to pay per unit of the asset to withdraw.
+        EPrice types.CurrencyAmount `json:",omitempty"`
+        // How many of the AMM's LP Tokens to redeem.
+        LPTokenIn types.IssuedCurrencyAmount `json:",omitempty"`
 }
 
-func (*AMMWithdraw) TxType() TxType <span class="cov0" title="0">{
+// ****************************
+// AMMWithdraw Flags
+// ****************************
+
+const (
+        // Perform a double-asset withdrawal returning all your LP Tokens.
+        tfWithdrawAll uint = 131072
+        // Perform a single-asset withdrawal returning all of your LP Tokens.
+        tfOneAssetWithdrawAll uint = 262144
+)
+
+// Perform a double-asset withdrawal and receive the specified amount of LP Tokens.
+func (a *AMMWithdraw) SetLPTokentFlag() <span class="cov8" title="1">{
+        a.Flags |= tfLPToken
+}</span>
+
+// Perform a double-asset withdrawal returning all your LP Tokens.
+func (a *AMMWithdraw) SetWithdrawAllFlag() <span class="cov8" title="1">{
+        a.Flags |= tfWithdrawAll
+}</span>
+
+// Perform a single-asset withdrawal returning all of your LP Tokens.
+func (a *AMMWithdraw) SetOneAssetWithdrawAllFlag() <span class="cov8" title="1">{
+        a.Flags |= tfOneAssetWithdrawAll
+}</span>
+
+// Perform a single-asset withdrawal with a specified amount of the asset to withdrawal.
+func (a *AMMWithdraw) SetSingleAssetFlag() <span class="cov8" title="1">{
+        a.Flags |= tfSingleAsset
+}</span>
+
+// Perform a double-asset withdrawal with specified amounts of both assets.
+func (a *AMMWithdraw) SetTwoAssetFlag() <span class="cov8" title="1">{
+        a.Flags |= tfTwoAsset
+}</span>
+
+// Perform a single-asset withdrawal and receive the specified amount of LP Tokens.
+func (a *AMMWithdraw) SetOneAssetLPTokenFlag() <span class="cov8" title="1">{
+        a.Flags |= tfOneAssetLPToken
+}</span>
+
+// Perform a single-asset withdrawal with a specified effective price.
+func (a *AMMWithdraw) SetLimitLPTokenFlag() <span class="cov8" title="1">{
+        a.Flags |= tfLimitLPToken
+}</span>
+
+func (*AMMWithdraw) TxType() TxType <span class="cov8" title="1">{
         return AMMWithdrawTx
 }</span>
 
-// TODO: Implement flatten
-func (s *AMMWithdraw) Flatten() FlatTransaction <span class="cov0" title="0">{
-        return nil
-}</span>
+func (a *AMMWithdraw) Flatten() FlatTransaction <span class="cov8" title="1">{
+        // Add BaseTx fields
+        flattened := a.BaseTx.Flatten()
+
+        // Add AMMWithdraw-specific fields
+        flattened["TransactionType"] = "AMMWithdraw"
+
+        flattened["Asset"] = a.Asset.Flatten()
+        flattened["Asset2"] = a.Asset2.Flatten()
+
+        if a.Amount != nil </span><span class="cov8" title="1">{
+                flattened["Amount"] = a.Amount.Flatten()
+        }</span>
+        <span class="cov8" title="1">if a.Amount2 != nil </span><span class="cov8" title="1">{
+                flattened["Amount2"] = a.Amount2.Flatten()
+        }</span>
+        <span class="cov8" title="1">if a.EPrice != nil </span><span class="cov8" title="1">{
+                flattened["EPrice"] = a.EPrice.Flatten()
+        }</span>
+        <span class="cov8" title="1">if !a.LPTokenIn.IsZero() </span><span class="cov8" title="1">{
+                flattened["LPTokenIn"] = a.LPTokenIn.Flatten()
+        }</span>
+
+        <span class="cov8" title="1">return flattened</span>
+}
+
+func (a *AMMWithdraw) Validate() (bool, error) <span class="cov8" title="1">{
+        _, err := a.BaseTx.Validate()
+        if err != nil </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset2); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if a.Amount2 != nil &amp;&amp; a.Amount == nil </span><span class="cov8" title="1">{
+                return false, errors.New("ammWithdraw: must set Amount with Amount2")
+        }</span> else<span class="cov8" title="1"> if a.EPrice != nil &amp;&amp; a.Amount == nil </span><span class="cov8" title="1">{
+                return false, errors.New("ammWithdraw: must set Amount with EPrice")
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAmount(IsAmountArgs{field: a.Amount, fieldName: "Amount", isFieldRequired: false}); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAmount(IsAmountArgs{field: a.Amount2, fieldName: "Amount2", isFieldRequired: false}); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsAmount(IsAmountArgs{field: a.EPrice, fieldName: "EPrice", isFieldRequired: false}); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if ok, err := IsIssuedCurrency(a.LPTokenIn); !ok </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">return true, nil</span>
+}
 </pre>
 		
 		<pre class="file" id="file142" style="display: none">package transaction
@@ -10188,7 +10331,7 @@ func UnmarshalTx(data json.RawMessage) (Tx, error) <span class="cov8" title="1">
                 tx = &amp;AMMDeposit{}</span>
         case AMMVoteTx:<span class="cov0" title="0">
                 tx = &amp;AMMVote{}</span>
-        case AMMWithdrawTx:<span class="cov8" title="1">
+        case AMMWithdrawTx:<span class="cov0" title="0">
                 tx = &amp;AMMWithdraw{}</span>
         case AccountSetTx:<span class="cov8" title="1">
                 tx = &amp;AccountSet{}</span>
@@ -10443,6 +10586,11 @@ func (i IssuedCurrencyAmount) Flatten() interface{} <span class="cov8" title="1"
         }</span>
         <span class="cov8" title="1">return json</span>
 }
+
+// IsZero returns true if the IssuedCurrencyAmount is the zero value (empty object).
+func (i IssuedCurrencyAmount) IsZero() bool <span class="cov8" title="1">{
+        return i == IssuedCurrencyAmount{}
+}</span>
 
 type XRPCurrencyAmount uint64
 
