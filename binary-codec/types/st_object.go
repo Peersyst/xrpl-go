@@ -6,6 +6,7 @@ import (
 
 	"github.com/Peersyst/xrpl-go/binary-codec/definitions"
 	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 // STObject represents a map of serialized field instances, where each key is a field name
@@ -51,7 +52,7 @@ func (t *STObject) FromJson(json any) ([]byte, error) {
 // ToJson takes a BinaryParser and optional parameters, and converts the serialized byte data
 // back to a JSON value. It will continue parsing until it encounters an end marker for an object
 // or an array, or until the parser has no more data.
-func (t *STObject) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (t *STObject) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 	m := make(map[string]any)
 
 	for p.HasMore() {

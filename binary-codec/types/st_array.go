@@ -3,7 +3,7 @@ package types
 import (
 	"errors"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 const (
@@ -44,7 +44,7 @@ func (t *STArray) FromJson(json any) ([]byte, error) {
 // the serialized byte data back to a JSON value.
 // The method loops until the BinaryParser has no more data, and for each loop,
 // it calls the ToJson method of an STObject, appending the resulting JSON value to a "value" slice.
-func (t *STArray) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (t *STArray) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 	var value []any
 	count := 0
 

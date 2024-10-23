@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 const (
@@ -40,7 +40,7 @@ func (p PathSet) FromJson(json any) ([]byte, error) {
 
 // ToJson decodes a path set from a binary representation using a provided binary parser, then translates it to a JSON representation.
 // It returns a slice representing the JSON format of the path set, or an error if the path set could not be decoded or if an invalid step is encountered.
-func (p PathSet) ToJson(parser *serdes.BinaryParser, opts ...int) (any, error) {
+func (p PathSet) ToJson(parser interfaces.BinaryParser, opts ...int) (any, error) {
 	var pathSet []any
 
 	for parser.HasMore() {
@@ -155,7 +155,7 @@ func newPathSet(v []any) []byte {
 
 // parsePathStep decodes a path step from a binary representation using a provided binary parser.
 // It returns a map representing the path step, or an error if the path step could not be decoded.
-func parsePathStep(parser *serdes.BinaryParser) (map[string]any, error) {
+func parsePathStep(parser interfaces.BinaryParser) (map[string]any, error) {
 	dataType, err := parser.ReadByte()
 	if err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func parsePathStep(parser *serdes.BinaryParser) (map[string]any, error) {
 
 // parsePath decodes a path from a binary representation using a provided binary parser.
 // It returns a slice representing the path, or an error if the path could not be decoded.
-func parsePath(parser *serdes.BinaryParser) ([]any, error) {
+func parsePath(parser interfaces.BinaryParser) ([]any, error) {
 	var path []any
 
 	for parser.HasMore() {

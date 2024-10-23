@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 // UInt64 represents a 64-bit unsigned integer.
@@ -57,7 +57,7 @@ func (u *UInt64) FromJson(value any) ([]byte, error) {
 // ToJson takes a BinaryParser and optional parameters, and converts the serialized byte data
 // back into a JSON string value. This method assumes the parser contains data representing
 // a 64-bit unsigned integer. If the parsing fails, an error is returned.
-func (u *UInt64) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (u *UInt64) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 	b, err := p.ReadBytes(8)
 	if err != nil {
 		return nil, err

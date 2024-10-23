@@ -8,23 +8,28 @@ import (
 type LedgerEntryType string
 
 const (
-	AccountRootEntry       LedgerEntryType = "AccountRoot"
-	AmendmentsEntry        LedgerEntryType = "Amendments"
-	AMMEntry               LedgerEntryType = "AMM"
-	CheckEntry             LedgerEntryType = "Check"
-	DepositPreauthObjEntry LedgerEntryType = "DepositPreauth"
-	DirectoryNodeEntry     LedgerEntryType = "DirectoryNode"
-	EscrowEntry            LedgerEntryType = "Escrow"
-	FeeSettingsEntry       LedgerEntryType = "FeeSettings"
-	LedgerHashesEntry      LedgerEntryType = "LedgerHashes"
-	NegativeUNLEntry       LedgerEntryType = "NegativeUNL"
-	NFTokenOfferEntry      LedgerEntryType = "NFTokenOffer"
-	NFTokenPageEntry       LedgerEntryType = "NFTokenPage"
-	OfferEntry             LedgerEntryType = "Offer"
-	PayChannelEntry        LedgerEntryType = "PayChannel"
-	RippleStateEntry       LedgerEntryType = "RippleState"
-	SignerListEntry        LedgerEntryType = "SignerList"
-	TicketEntry            LedgerEntryType = "Ticket"
+	AccountRootEntry                     LedgerEntryType = "AccountRoot"
+	AmendmentsEntry                      LedgerEntryType = "Amendments"
+	AMMEntry                             LedgerEntryType = "AMM"
+	BridgeEntry                          LedgerEntryType = "Bridge"
+	CheckEntry                           LedgerEntryType = "Check"
+	DepositPreauthObjEntry               LedgerEntryType = "DepositPreauth"
+	DIDEntry                             LedgerEntryType = "DID"
+	DirectoryNodeEntry                   LedgerEntryType = "DirectoryNode"
+	EscrowEntry                          LedgerEntryType = "Escrow"
+	FeeSettingsEntry                     LedgerEntryType = "FeeSettings"
+	LedgerHashesEntry                    LedgerEntryType = "LedgerHashes"
+	NegativeUNLEntry                     LedgerEntryType = "NegativeUNL"
+	NFTokenOfferEntry                    LedgerEntryType = "NFTokenOffer"
+	NFTokenPageEntry                     LedgerEntryType = "NFTokenPage"
+	OfferEntry                           LedgerEntryType = "Offer"
+	OracleEntry                          LedgerEntryType = "Oracle"
+	PayChannelEntry                      LedgerEntryType = "PayChannel"
+	RippleStateEntry                     LedgerEntryType = "RippleState"
+	SignerListEntry                      LedgerEntryType = "SignerList"
+	TicketEntry                          LedgerEntryType = "Ticket"
+	XChainOwnedClaimIDEntry              LedgerEntryType = "XChainOwnedClaimID"
+	XChainOwnedCreateAccountClaimIDEntry LedgerEntryType = "XChainOwnedCreateAccountClaimID"
 )
 
 type FlatLedgerObject map[string]interface{}
@@ -45,10 +50,14 @@ func EmptyLedgerObject(t string) (LedgerObject, error) {
 		return &Amendments{}, nil
 	case AMMEntry:
 		return &AMM{}, nil
+	case BridgeEntry:
+		return &Bridge{}, nil
 	case CheckEntry:
 		return &Check{}, nil
 	case DepositPreauthObjEntry:
 		return &DepositPreauthObj{}, nil
+	case DIDEntry:
+		return &DID{}, nil
 	case DirectoryNodeEntry:
 		return &DirectoryNode{}, nil
 	case EscrowEntry:
@@ -65,6 +74,8 @@ func EmptyLedgerObject(t string) (LedgerObject, error) {
 		return &NFTokenPage{}, nil
 	case OfferEntry:
 		return &Offer{}, nil
+	case OracleEntry:
+		return &Oracle{}, nil
 	case PayChannelEntry:
 		return &PayChannel{}, nil
 	case RippleStateEntry:
@@ -73,6 +84,10 @@ func EmptyLedgerObject(t string) (LedgerObject, error) {
 		return &SignerList{}, nil
 	case TicketEntry:
 		return &Ticket{}, nil
+	case XChainOwnedClaimIDEntry:
+		return &XChainOwnedClaimID{}, nil
+	case XChainOwnedCreateAccountClaimIDEntry:
+		return &XChainOwnedCreateAccountClaimID{}, nil
 	}
 	return nil, fmt.Errorf("unrecognized LedgerObject type \"%s\"", t)
 }
@@ -94,10 +109,14 @@ func UnmarshalLedgerObject(data []byte) (LedgerObject, error) {
 		o = &AccountRoot{}
 	case AmendmentsEntry:
 		o = &Amendments{}
+	case BridgeEntry:
+		o = &Bridge{}
 	case CheckEntry:
 		o = &Check{}
 	case DepositPreauthObjEntry:
 		o = &DepositPreauthObj{}
+	case DIDEntry:
+		o = &DID{}
 	case DirectoryNodeEntry:
 		o = &DirectoryNode{}
 	case EscrowEntry:
@@ -114,6 +133,8 @@ func UnmarshalLedgerObject(data []byte) (LedgerObject, error) {
 		o = &NFTokenPage{}
 	case OfferEntry:
 		o = &Offer{}
+	case OracleEntry:
+		o = &Oracle{}
 	case PayChannelEntry:
 		o = &PayChannel{}
 	case RippleStateEntry:
@@ -122,6 +143,9 @@ func UnmarshalLedgerObject(data []byte) (LedgerObject, error) {
 		o = &SignerList{}
 	case TicketEntry:
 		o = &Ticket{}
+	case XChainOwnedClaimIDEntry:
+		o = &XChainOwnedClaimID{}
+	case XChainOwnedCreateAccountClaimIDEntry:
 	default:
 		return nil, fmt.Errorf("unsupported ledger object of type %s", h.LedgerEntryType)
 	}

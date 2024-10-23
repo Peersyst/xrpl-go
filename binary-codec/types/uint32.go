@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
 )
 
 // UInt32 represents a 32-bit unsigned integer.
@@ -25,7 +25,7 @@ func (u *UInt32) FromJson(value any) ([]byte, error) {
 // ToJson takes a BinaryParser and optional parameters, and converts the serialized byte data
 // back into a JSON integer value. This method assumes the parser contains data representing
 // a 32-bit unsigned integer. If the parsing fails, an error is returned.
-func (u *UInt32) ToJson(p *serdes.BinaryParser, opts ...int) (any, error) {
+func (u *UInt32) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) {
 	b, err := p.ReadBytes(4)
 	if err != nil {
 		return nil, err
