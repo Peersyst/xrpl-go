@@ -391,7 +391,7 @@
 				
 				<option value="file167">github.com/Peersyst/xrpl-go/xrpl/transaction/signer_list_set.go (0.0%)</option>
 				
-				<option value="file168">github.com/Peersyst/xrpl-go/xrpl/transaction/ticket_create.go (83.3%)</option>
+				<option value="file168">github.com/Peersyst/xrpl-go/xrpl/transaction/ticket_create.go (100.0%)</option>
 				
 				<option value="file169">github.com/Peersyst/xrpl-go/xrpl/transaction/transaction_metadata.go (0.0%)</option>
 				
@@ -8140,6 +8140,31 @@ import (
 // The maximum value is 1000, indicating a 1% fee. The minimum value is 0. https://xrpl.org/docs/references/protocol/transactions/types/ammcreate#ammcreate-fields
 const AMM_MAX_TRADING_FEE = 1000
 
+// Create a new Automated Market Maker (AMM) instance for trading a pair of assets (fungible tokens or XRP).
+//
+// Creates both an AMM entry and a special AccountRoot entry to represent the AMM.
+// Also transfers ownership of the starting balance of both assets from the sender to the created AccountRoot and issues an initial balance of liquidity provider tokens (LP Tokens) from the AMM account to the sender.
+//
+// Example:
+//
+// ```json
+//
+//        {
+//            "Account" : "rJVUeRqDFNs2xqA7ncVE6ZoAhPUoaJJSQm",
+//            "Amount" : {
+//                "currency" : "TST",
+//                "issuer" : "rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd",
+//                "value" : "25"
+//            },
+//            "Amount2" : "250000000",
+//            "Fee" : "2000000",
+//            "Flags" : 2147483648,
+//            "Sequence" : 6,
+//            "TradingFee" : 500,
+//            "TransactionType" : "AMMCreate"
+//        }
+//
+// ```
 type AMMCreate struct {
         BaseTx
         // The first of the two assets to fund this AMM with. This must be a positive amount.
@@ -8150,10 +8175,12 @@ type AMMCreate struct {
         TradingFee uint16
 }
 
+// TxType returns the type of the transaction (AMMCreate).
 func (*AMMCreate) TxType() TxType <span class="cov8" title="1">{
         return AMMCreateTx
 }</span>
 
+// Flatten returns a map of the AMMCreate struct
 func (s *AMMCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
         // Add BaseTx fields
         flattened := s.BaseTx.Flatten()
@@ -8174,6 +8201,7 @@ func (s *AMMCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
         return flattened</span>
 }
 
+// Validates the AMMCreate struct and makes sure all fields are correct.
 func (a *AMMCreate) Validate() (bool, error) <span class="cov8" title="1">{
         _, err := a.BaseTx.Validate()
         if err != nil </span><span class="cov8" title="1">{
@@ -8236,10 +8264,12 @@ type AMMDelete struct {
         Asset2 ledger.Asset
 }
 
+// TxType returns the type of the transaction (AMMDelete).
 func (*AMMDelete) TxType() TxType <span class="cov8" title="1">{
         return AMMDeleteTx
 }</span>
 
+// Flatten returns a map of the AMMDelete struct
 func (a *AMMDelete) Flatten() FlatTransaction <span class="cov8" title="1">{
         // Add BaseTx fields
         flattened := a.BaseTx.Flatten()
@@ -8253,6 +8283,7 @@ func (a *AMMDelete) Flatten() FlatTransaction <span class="cov8" title="1">{
         return flattened
 }</span>
 
+// Validates the AMMDelete struct and makes sure all fields are correct.
 func (a *AMMDelete) Validate() (bool, error) <span class="cov8" title="1">{
         _, err := a.BaseTx.Validate()
         if err != nil </span><span class="cov8" title="1">{
@@ -9992,20 +10023,37 @@ func (s *SignerListSet) Flatten() FlatTransaction <span class="cov0" title="0">{
 		
 		<pre class="file" id="file168" style="display: none">package transaction
 
+import "errors"
+
 // A TicketCreate transaction sets aside one or more sequence numbers as Tickets.
+//
+// Example:
+//
+// ```json
+//
+//        {
+//            "TransactionType": "TicketCreate",
+//            "Account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+//            "Fee": "10",
+//            "Sequence": 381,
+//            "TicketCount": 10
+//        }
+//
+// ```
 type TicketCreate struct {
         // Base transaction fields
         BaseTx
-
         //How many Tickets to create. This must be a positive number and cannot cause
         // the account to own more than 250 Tickets after executing this transaction.
         TicketCount uint32
 }
 
-func (*TicketCreate) TxType() TxType <span class="cov0" title="0">{
+// TxType returns the type of the transaction (TicketCreate).
+func (*TicketCreate) TxType() TxType <span class="cov8" title="1">{
         return TicketCreateTx
 }</span>
 
+// Flatten returns the flattened map of the AMMVote transaction.
 func (t *TicketCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
         flattened := t.BaseTx.Flatten()
 
@@ -10016,6 +10064,20 @@ func (t *TicketCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
         }</span>
 
         <span class="cov8" title="1">return flattened</span>
+}
+
+// Validates the TicketCreate transaction and makes sure all the fields are correct.
+func (t *TicketCreate) Validate() (bool, error) <span class="cov8" title="1">{
+        _, err := t.BaseTx.Validate()
+        if err != nil </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        <span class="cov8" title="1">if t.TicketCount == 0 || t.TicketCount &gt; 250 </span><span class="cov8" title="1">{
+                return false, errors.New("ticketCount must be greater than 0 and less than or equal to 250")
+        }</span>
+
+        <span class="cov8" title="1">return true, nil</span>
 }
 </pre>
 		
