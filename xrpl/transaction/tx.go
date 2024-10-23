@@ -1,11 +1,9 @@
 package transaction
 
 import (
-	"errors"
 	"fmt"
 
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/pkg/typecheck"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -167,8 +165,6 @@ func (tx *BaseTx) Flatten() FlatTransaction {
 }
 
 func (tx *BaseTx) Validate() (bool, error) {
-	flattenTx := tx.Flatten()
-
 	if !addresscodec.IsValidClassicAddress(tx.Account.String()) {
 		return false, fmt.Errorf("invalid xrpl address for the Account field")
 	}
@@ -177,52 +173,8 @@ func (tx *BaseTx) Validate() (bool, error) {
 		return false, fmt.Errorf("transaction type is required")
 	}
 
-	if !typecheck.IsStringNumericUint(tx.Fee.String(), 10, 64) {
-		return false, errors.New("invalid fee amount, not a uint")
-	}
-
-	err := ValidateOptionalField(flattenTx, "Sequence", typecheck.IsUint)
-	if err != nil {
-		return false, err
-	}
-
-	err = ValidateOptionalField(flattenTx, "AccountTxnID", typecheck.IsString)
-	if err != nil {
-		return false, err
-	}
-
-	err = ValidateOptionalField(flattenTx, "LastLedgerSequence", typecheck.IsUint)
-	if err != nil {
-		return false, err
-	}
-
-	err = ValidateOptionalField(flattenTx, "SourceTag", typecheck.IsUint)
-	if err != nil {
-		return false, err
-	}
-
-	err = ValidateOptionalField(flattenTx, "SigningPubKey", typecheck.IsString)
-	if err != nil {
-		return false, err
-	}
-
-	err = ValidateOptionalField(flattenTx, "TicketSequence", typecheck.IsUint)
-	if err != nil {
-		return false, err
-	}
-
-	err = ValidateOptionalField(flattenTx, "TxnSignature", typecheck.IsString)
-	if err != nil {
-		return false, err
-	}
-
-	err = ValidateOptionalField(flattenTx, "NetworkID", typecheck.IsUint)
-	if err != nil {
-		return false, err
-	}
-
 	// memos
-	err = validateMemos(tx.Memos)
+	err := validateMemos(tx.Memos)
 	if err != nil {
 		return false, err
 	}
