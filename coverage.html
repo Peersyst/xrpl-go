@@ -335,7 +335,11 @@
 				
 				<option value="file127">github.com/Peersyst/xrpl-go/xrpl/queries/subscription/subscribe_request.go (0.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file128">github.com/Peersyst/xrpl-go/xrpl/queries/subscription/unsubscribe_request.go (0.0%)</option>
+=======
+				<option value="file136">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_bid.go (78.4%)</option>
+>>>>>>> 60393b5 (coverage.html)
 				
 				<option value="file129">github.com/Peersyst/xrpl-go/xrpl/queries/transactions/submit_multisigned_request.go (0.0%)</option>
 				
@@ -368,7 +372,11 @@
 				
 				<option value="file143">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_create.go (100.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file144">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_delete.go (100.0%)</option>
+=======
+				<option value="file152">github.com/Peersyst/xrpl-go/xrpl/transaction/memo.go (61.5%)</option>
+>>>>>>> 60393b5 (coverage.html)
 				
 				<option value="file145">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_deposit.go (100.0%)</option>
 				
@@ -396,7 +404,11 @@
 				
 				<option value="file157">github.com/Peersyst/xrpl-go/xrpl/transaction/flat_tx.go (0.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file158">github.com/Peersyst/xrpl-go/xrpl/transaction/memo.go (92.3%)</option>
+=======
+				<option value="file166">github.com/Peersyst/xrpl-go/xrpl/transaction/signer.go (66.7%)</option>
+>>>>>>> 60393b5 (coverage.html)
 				
 				<option value="file159">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_accept_offer.go (0.0%)</option>
 				
@@ -406,7 +418,11 @@
 				
 				<option value="file162">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_create_offer.go (0.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file163">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_mint.go (0.0%)</option>
+=======
+				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/tx.go (66.0%)</option>
+>>>>>>> 60393b5 (coverage.html)
 				
 				<option value="file164">github.com/Peersyst/xrpl-go/xrpl/transaction/offer_cancel.go (100.0%)</option>
 				
@@ -8967,27 +8983,27 @@ func (a *AMMBid) Validate() (bool, error) <span class="cov8" title="1">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset); !ok </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset); !ok </span><span class="cov0" title="0">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset2); !ok </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset2); !ok </span><span class="cov0" title="0">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if a.Asset.Currency == "XRP" &amp;&amp; a.Asset2.Currency == "XRP" </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if a.Asset.Currency == "XRP" &amp;&amp; a.Asset2.Currency == "XRP" </span><span class="cov0" title="0">{
                 return false, errors.New("at least one of the assets must be non-XRP")
         }</span>
 
-        <span class="cov8" title="1">if ok, err := IsAmount(a.BidMin, "BidMin", false); !ok </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if ok, err := IsAmount(a.BidMin, "BidMin", false); !ok </span><span class="cov0" title="0">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if ok, err := IsAmount(a.BidMax, "BidMax", false); !ok </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if ok, err := IsAmount(a.BidMax, "BidMax", false); !ok </span><span class="cov0" title="0">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if ok, err := validateAuthAccounts(a.AuthAccounts); !ok </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if ok, err := validateAuthAccounts(a.AuthAccounts); !ok </span><span class="cov0" title="0">{
                 return false, err
         }</span>
 
@@ -8996,12 +9012,12 @@ func (a *AMMBid) Validate() (bool, error) <span class="cov8" title="1">{
 
 // Validate the AuthAccounts field.
 func validateAuthAccounts(authAccounts []ledger.AuthAccounts) (bool, error) <span class="cov8" title="1">{
-        if len(authAccounts) &gt; 4 </span><span class="cov8" title="1">{
+        if len(authAccounts) &gt; 4 </span><span class="cov0" title="0">{
                 return false, errors.New("authAccounts: AuthAccounts should have at most 4 AuthAccount objects")
         }</span>
 
         <span class="cov8" title="1">for _, authAccounts := range authAccounts </span><span class="cov8" title="1">{
-                if ok := addresscodec.IsValidClassicAddress(authAccounts.AuthAccount.Account.String()); !ok </span><span class="cov8" title="1">{
+                if ok := addresscodec.IsValidClassicAddress(authAccounts.AuthAccount.Account.String()); !ok </span><span class="cov0" title="0">{
                         return false, errors.New("authAccounts: Account is not a valid classic address")
                 }</span>
         }
@@ -9066,7 +9082,11 @@ func (*AMMCreate) TxType() TxType <span class="cov8" title="1">{
 }</span>
 
 // Flatten returns a map of the AMMCreate struct
+<<<<<<< HEAD
 func (a *AMMCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
+=======
+func (s *AMMCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
+>>>>>>> 60393b5 (coverage.html)
         // Add BaseTx fields
         flattened := a.BaseTx.Flatten()
 
@@ -10187,8 +10207,8 @@ type Memo struct {
         MemoType   string `json:",omitempty"`
 }
 
-func (mw *MemoWrapper) Flatten() map[string]interface{} <span class="cov8" title="1">{
-        if mw.Memo != (Memo{}) </span><span class="cov8" title="1">{
+func (mw *MemoWrapper) Flatten() map[string]interface{} <span class="cov0" title="0">{
+        if mw.Memo != (Memo{}) </span><span class="cov0" title="0">{
                 flattened := make(map[string]interface{})
                 flattened["Memo"] = mw.Memo.Flatten()
                 return flattened
@@ -11061,12 +11081,12 @@ type Signer struct {
 
 type FlatSigner map[string]interface{}
 
-func (s *Signer) Flatten() FlatSigner <span class="cov8" title="1">{
+func (s *Signer) Flatten() FlatSigner <span class="cov0" title="0">{
         flattened := make(FlatSigner)
-        if s.SignerData != (SignerData{}) </span><span class="cov8" title="1">{
+        if s.SignerData != (SignerData{}) </span><span class="cov0" title="0">{
                 flattened["SignerData"] = s.SignerData.Flatten()
         }</span>
-        <span class="cov8" title="1">return flattened</span>
+        <span class="cov0" title="0">return flattened</span>
 }
 
 type SignerData struct {
@@ -11530,7 +11550,10 @@ import (
         "fmt"
 
         addresscodec "github.com/Peersyst/xrpl-go/address-codec"
+<<<<<<< HEAD
         "github.com/Peersyst/xrpl-go/pkg/typecheck"
+=======
+>>>>>>> 60393b5 (coverage.html)
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -11643,7 +11666,7 @@ func (tx *BaseTx) Flatten() FlatTransaction <span class="cov8" title="1">{
         <span class="cov8" title="1">if tx.Sequence != 0 </span><span class="cov8" title="1">{
                 flattened["Sequence"] = tx.Sequence
         }</span>
-        <span class="cov8" title="1">if tx.AccountTxnID != "" </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if tx.AccountTxnID != "" </span><span class="cov0" title="0">{
                 flattened["AccountTxnID"] = tx.AccountTxnID.String()
         }</span>
         <span class="cov8" title="1">if tx.Flags != 0 </span><span class="cov8" title="1">{
@@ -11652,36 +11675,41 @@ func (tx *BaseTx) Flatten() FlatTransaction <span class="cov8" title="1">{
         <span class="cov8" title="1">if tx.LastLedgerSequence != 0 </span><span class="cov8" title="1">{
                 flattened["LastLedgerSequence"] = tx.LastLedgerSequence
         }</span>
-        <span class="cov8" title="1">if len(tx.Memos) &gt; 0 </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if len(tx.Memos) &gt; 0 </span><span class="cov0" title="0">{
                 flattenedMemos := make([]any, 0)
-                for _, memo := range tx.Memos </span><span class="cov8" title="1">{
+                for _, memo := range tx.Memos </span><span class="cov0" title="0">{
                         flattenedMemo := memo.Flatten()
-                        if flattenedMemo != nil </span><span class="cov8" title="1">{
+                        if flattenedMemo != nil </span><span class="cov0" title="0">{
                                 flattenedMemos = append(flattenedMemos, flattenedMemo)
                         }</span>
                 }
-                <span class="cov8" title="1">flattened["Memos"] = flattenedMemos</span>
+                <span class="cov0" title="0">flattened["Memos"] = flattenedMemos</span>
         }
+<<<<<<< HEAD
         <span class="cov8" title="1">if tx.NetworkID != 0 </span><span class="cov8" title="1">{
                 flattened["NetworkId"] = tx.NetworkID
+=======
+        <span class="cov8" title="1">if tx.NetworkId != 0 </span><span class="cov0" title="0">{
+                flattened["NetworkId"] = tx.NetworkId
+>>>>>>> 60393b5 (coverage.html)
         }</span>
-        <span class="cov8" title="1">if len(tx.Signers) &gt; 0 </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if len(tx.Signers) &gt; 0 </span><span class="cov0" title="0">{
                 flattenedSigners := make([]FlatSigner, 0)
-                for _, signer := range tx.Signers </span><span class="cov8" title="1">{
+                for _, signer := range tx.Signers </span><span class="cov0" title="0">{
                         flattenedSigner := signer.Flatten()
-                        if flattenedSigner != nil </span><span class="cov8" title="1">{
+                        if flattenedSigner != nil </span><span class="cov0" title="0">{
                                 flattenedSigners = append(flattenedSigners, flattenedSigner)
                         }</span>
                 }
-                <span class="cov8" title="1">flattened["Signers"] = flattenedSigners</span>
+                <span class="cov0" title="0">flattened["Signers"] = flattenedSigners</span>
         }
-        <span class="cov8" title="1">if tx.SourceTag != 0 </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if tx.SourceTag != 0 </span><span class="cov0" title="0">{
                 flattened["SourceTag"] = tx.SourceTag
         }</span>
         <span class="cov8" title="1">if tx.SigningPubKey != "" </span><span class="cov8" title="1">{
                 flattened["SigningPubKey"] = tx.SigningPubKey
         }</span>
-        <span class="cov8" title="1">if tx.TicketSequence != 0 </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if tx.TicketSequence != 0 </span><span class="cov0" title="0">{
                 flattened["TicketSequence"] = tx.TicketSequence
         }</span>
         <span class="cov8" title="1">if tx.TxnSignature != "" </span><span class="cov8" title="1">{
@@ -11692,14 +11720,18 @@ func (tx *BaseTx) Flatten() FlatTransaction <span class="cov8" title="1">{
 }
 
 func (tx *BaseTx) Validate() (bool, error) <span class="cov8" title="1">{
+<<<<<<< HEAD
         flattenTx := tx.Flatten()
 
+=======
+>>>>>>> 60393b5 (coverage.html)
         if !addresscodec.IsValidClassicAddress(tx.Account.String()) </span><span class="cov8" title="1">{
                 return false, fmt.Errorf("invalid xrpl address for the Account field")
         }</span>
 
         <span class="cov8" title="1">if tx.TransactionType == "" </span><span class="cov8" title="1">{
                 return false, fmt.Errorf("transaction type is required")
+<<<<<<< HEAD
         }</span>
 
         <span class="cov8" title="1">if !typecheck.IsStringNumericUint(tx.Fee.String(), 10, 64) </span><span class="cov0" title="0">{
@@ -11744,10 +11776,12 @@ func (tx *BaseTx) Validate() (bool, error) <span class="cov8" title="1">{
         <span class="cov8" title="1">err = ValidateOptionalField(flattenTx, "NetworkID", typecheck.IsUint)
         if err != nil </span><span class="cov0" title="0">{
                 return false, err
+=======
+>>>>>>> 60393b5 (coverage.html)
         }</span>
 
         // memos
-        <span class="cov8" title="1">err = validateMemos(tx.Memos)
+        <span class="cov8" title="1">err := validateMemos(tx.Memos)
         if err != nil </span><span class="cov8" title="1">{
                 return false, err
         }</span>
