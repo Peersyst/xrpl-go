@@ -336,10 +336,14 @@
 				<option value="file127">github.com/Peersyst/xrpl-go/xrpl/queries/subscription/subscribe_request.go (0.0%)</option>
 				
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<option value="file128">github.com/Peersyst/xrpl-go/xrpl/queries/subscription/unsubscribe_request.go (0.0%)</option>
 =======
 				<option value="file136">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_bid.go (78.4%)</option>
 >>>>>>> 60393b5 (coverage.html)
+=======
+				<option value="file136">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_bid.go (100.0%)</option>
+>>>>>>> 917d1e7 (amm bid tests 100%)
 				
 				<option value="file129">github.com/Peersyst/xrpl-go/xrpl/queries/transactions/submit_multisigned_request.go (0.0%)</option>
 				
@@ -9015,27 +9019,27 @@ func (a *AMMBid) Validate() (bool, error) <span class="cov8" title="1">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset); !ok </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset); !ok </span><span class="cov8" title="1">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset2); !ok </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if ok, err := IsAsset(a.Asset2); !ok </span><span class="cov8" title="1">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if a.Asset.Currency == "XRP" &amp;&amp; a.Asset2.Currency == "XRP" </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if a.Asset.Currency == "XRP" &amp;&amp; a.Asset2.Currency == "XRP" </span><span class="cov8" title="1">{
                 return false, errors.New("at least one of the assets must be non-XRP")
         }</span>
 
-        <span class="cov8" title="1">if ok, err := IsAmount(a.BidMin, "BidMin", false); !ok </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if ok, err := IsAmount(a.BidMin, "BidMin", false); !ok </span><span class="cov8" title="1">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if ok, err := IsAmount(a.BidMax, "BidMax", false); !ok </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if ok, err := IsAmount(a.BidMax, "BidMax", false); !ok </span><span class="cov8" title="1">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if ok, err := validateAuthAccounts(a.AuthAccounts); !ok </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if ok, err := validateAuthAccounts(a.AuthAccounts); !ok </span><span class="cov8" title="1">{
                 return false, err
         }</span>
 
@@ -9044,12 +9048,12 @@ func (a *AMMBid) Validate() (bool, error) <span class="cov8" title="1">{
 
 // Validate the AuthAccounts field.
 func validateAuthAccounts(authAccounts []ledger.AuthAccounts) (bool, error) <span class="cov8" title="1">{
-        if len(authAccounts) &gt; 4 </span><span class="cov0" title="0">{
+        if len(authAccounts) &gt; 4 </span><span class="cov8" title="1">{
                 return false, errors.New("authAccounts: AuthAccounts should have at most 4 AuthAccount objects")
         }</span>
 
         <span class="cov8" title="1">for _, authAccounts := range authAccounts </span><span class="cov8" title="1">{
-                if ok := addresscodec.IsValidClassicAddress(authAccounts.AuthAccount.Account.String()); !ok </span><span class="cov0" title="0">{
+                if ok := addresscodec.IsValidClassicAddress(authAccounts.AuthAccount.Account.String()); !ok </span><span class="cov8" title="1">{
                         return false, errors.New("authAccounts: Account is not a valid classic address")
                 }</span>
         }
