@@ -353,11 +353,19 @@
 				
 				<option value="file134">github.com/Peersyst/xrpl-go/xrpl/queries/utility/random_request.go (0.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file135">github.com/Peersyst/xrpl-go/xrpl/rpc/client.go (83.1%)</option>
 				
 				<option value="file136">github.com/Peersyst/xrpl-go/xrpl/rpc/config.go (100.0%)</option>
 				
 				<option value="file137">github.com/Peersyst/xrpl-go/xrpl/rpc/queries.go (0.0%)</option>
+=======
+				<option value="file143">github.com/Peersyst/xrpl-go/xrpl/transaction/check_cash.go (0.0%)</option>
+				
+				<option value="file144">github.com/Peersyst/xrpl-go/xrpl/transaction/check_create.go (0.0%)</option>
+				
+				<option value="file145">github.com/Peersyst/xrpl-go/xrpl/transaction/clawback.go (50.0%)</option>
+>>>>>>> 9ec1f9a (100% tx tests)
 				
 				<option value="file138">github.com/Peersyst/xrpl-go/xrpl/rpc/response.go (85.7%)</option>
 				
@@ -373,18 +381,28 @@
 				<option value="file143">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_create.go (100.0%)</option>
 				
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<option value="file144">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_delete.go (100.0%)</option>
 =======
 				<option value="file152">github.com/Peersyst/xrpl-go/xrpl/transaction/memo.go (61.5%)</option>
 >>>>>>> 60393b5 (coverage.html)
 				
 				<option value="file145">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_deposit.go (100.0%)</option>
+=======
+				<option value="file152">github.com/Peersyst/xrpl-go/xrpl/transaction/memo.go (92.3%)</option>
+				
+				<option value="file153">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_accept_offer.go (0.0%)</option>
+>>>>>>> 9ec1f9a (100% tx tests)
 				
 				<option value="file146">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_vote.go (100.0%)</option>
 				
 				<option value="file147">github.com/Peersyst/xrpl-go/xrpl/transaction/amm_withdraw.go (100.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file148">github.com/Peersyst/xrpl-go/xrpl/transaction/check_cancel.go (0.0%)</option>
+=======
+				<option value="file156">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_create_offer.go (0.0%)</option>
+>>>>>>> 9ec1f9a (100% tx tests)
 				
 				<option value="file149">github.com/Peersyst/xrpl-go/xrpl/transaction/check_cash.go (0.0%)</option>
 				
@@ -394,7 +412,11 @@
 				
 				<option value="file152">github.com/Peersyst/xrpl-go/xrpl/transaction/deposit_preauth.go (0.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file153">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_cancel.go (100.0%)</option>
+=======
+				<option value="file161">github.com/Peersyst/xrpl-go/xrpl/transaction/payment.go (61.8%)</option>
+>>>>>>> 9ec1f9a (100% tx tests)
 				
 				<option value="file154">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_create.go (100.0%)</option>
 				
@@ -405,10 +427,14 @@
 				<option value="file157">github.com/Peersyst/xrpl-go/xrpl/transaction/flat_tx.go (0.0%)</option>
 				
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<option value="file158">github.com/Peersyst/xrpl-go/xrpl/transaction/memo.go (92.3%)</option>
 =======
 				<option value="file166">github.com/Peersyst/xrpl-go/xrpl/transaction/signer.go (66.7%)</option>
 >>>>>>> 60393b5 (coverage.html)
+=======
+				<option value="file166">github.com/Peersyst/xrpl-go/xrpl/transaction/signer.go (100.0%)</option>
+>>>>>>> 9ec1f9a (100% tx tests)
 				
 				<option value="file159">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_accept_offer.go (0.0%)</option>
 				
@@ -416,6 +442,7 @@
 				
 				<option value="file161">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_cancel_offer.go (0.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file162">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_create_offer.go (0.0%)</option>
 				
 <<<<<<< HEAD
@@ -423,6 +450,11 @@
 =======
 				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/tx.go (66.0%)</option>
 >>>>>>> 60393b5 (coverage.html)
+=======
+				<option value="file170">github.com/Peersyst/xrpl-go/xrpl/transaction/trust_set.go (51.4%)</option>
+				
+				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/tx.go (100.0%)</option>
+>>>>>>> 9ec1f9a (100% tx tests)
 				
 				<option value="file164">github.com/Peersyst/xrpl-go/xrpl/transaction/offer_cancel.go (100.0%)</option>
 				
@@ -9709,7 +9741,11 @@ func (c *CheckCash) Flatten() FlatTransaction <span class="cov0" title="0">{
 		<pre class="file" id="file150" style="display: none">package transaction
 =======
 
+<<<<<<< HEAD
 func (c *CheckCash) UnmarshalJSON(data []byte) error <span class="cov8" title="1">{
+=======
+func (tx *CheckCash) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
+>>>>>>> 9ec1f9a (100% tx tests)
         type ccHelper struct {
                 BaseTx
                 CheckID    types.Hash256
@@ -9720,7 +9756,11 @@ func (c *CheckCash) UnmarshalJSON(data []byte) error <span class="cov8" title="1
         if err := json.Unmarshal(data, &amp;h); err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
+<<<<<<< HEAD
         <span class="cov8" title="1">*c = CheckCash{
+=======
+        <span class="cov0" title="0">*tx = CheckCash{
+>>>>>>> 9ec1f9a (100% tx tests)
                 BaseTx:  h.BaseTx,
                 CheckID: h.CheckID,
         }
@@ -9731,12 +9771,17 @@ func (c *CheckCash) UnmarshalJSON(data []byte) error <span class="cov8" title="1
         if err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
-        <span class="cov8" title="1">min, err = types.UnmarshalCurrencyAmount(h.DeliverMin)
+        <span class="cov0" title="0">min, err = types.UnmarshalCurrencyAmount(h.DeliverMin)
         if err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
+<<<<<<< HEAD
         <span class="cov8" title="1">c.Amount = amount
         c.DeliverMin = min
+=======
+        <span class="cov0" title="0">tx.Amount = amount
+        tx.DeliverMin = min
+>>>>>>> 9ec1f9a (100% tx tests)
         return nil</span>
 
 }
@@ -9766,6 +9811,39 @@ func (*CheckCreate) TxType() TxType <span class="cov0" title="0">{
 func (c *CheckCreate) Flatten() FlatTransaction <span class="cov0" title="0">{
         return nil
 }</span>
+<<<<<<< HEAD
+=======
+
+func (c *CheckCreate) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
+        type ccHelper struct {
+                BaseTx
+                Destination    types.Address
+                SendMax        json.RawMessage
+                DestinationTag uint          `json:",omitempty"`
+                Expiration     uint          `json:",omitempty"`
+                InvoiceID      types.Hash256 `json:",omitempty"`
+        }
+        var h ccHelper
+        if err := json.Unmarshal(data, &amp;h); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">*c = CheckCreate{
+                BaseTx:         h.BaseTx,
+                Destination:    h.Destination,
+                DestinationTag: h.DestinationTag,
+                Expiration:     h.Expiration,
+                InvoiceID:      h.InvoiceID,
+        }
+
+        max, err := types.UnmarshalCurrencyAmount(h.SendMax)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">c.SendMax = max
+
+        return nil</span>
+}
+>>>>>>> 9ec1f9a (100% tx tests)
 </pre>
 		
 <<<<<<< HEAD
@@ -9813,6 +9891,43 @@ func (c *Clawback) Flatten() FlatTransaction <span class="cov8" title="1">{
         <span class="cov8" title="1">return flattened</span>
 }
 
+<<<<<<< HEAD
+=======
+// UnmarshalJSON unmarshals the JSON data into a Clawback struct.
+func (c *Clawback) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
+        // Define a helper struct to hold the unmarshaled data
+        type cHelper struct {
+                BaseTx
+                Amount json.RawMessage
+        }
+
+        var h cHelper
+
+        // Unmarshal the JSON data into the helper struct
+        err := json.Unmarshal(data, &amp;h)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Assign the values from the helper struct to the Clawback struct
+        <span class="cov0" title="0">*c = Clawback{
+                BaseTx: h.BaseTx,
+        }
+
+        // Unmarshal the Amount field into a CurrencyAmount struct
+        var amount types.CurrencyAmount
+        amount, err = types.UnmarshalCurrencyAmount(h.Amount)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Assign the unmarshaled CurrencyAmount to the Clawback struct
+        <span class="cov0" title="0">c.Amount = amount
+
+        return nil</span>
+}
+
+>>>>>>> 9ec1f9a (100% tx tests)
 // Validates the Clawback struct.
 func (c *Clawback) Validate() (bool, error) <span class="cov8" title="1">{
         // validate the base transaction
@@ -10207,8 +10322,8 @@ type Memo struct {
         MemoType   string `json:",omitempty"`
 }
 
-func (mw *MemoWrapper) Flatten() map[string]interface{} <span class="cov0" title="0">{
-        if mw.Memo != (Memo{}) </span><span class="cov0" title="0">{
+func (mw *MemoWrapper) Flatten() map[string]interface{} <span class="cov8" title="1">{
+        if mw.Memo != (Memo{}) </span><span class="cov8" title="1">{
                 flattened := make(map[string]interface{})
                 flattened["Memo"] = mw.Memo.Flatten()
                 return flattened
@@ -10256,6 +10371,34 @@ func (*NFTokenAcceptOffer) TxType() TxType <span class="cov0" title="0">{
         return NFTokenAcceptOfferTx
 }</span>
 
+<<<<<<< HEAD
+=======
+func (n *NFTokenAcceptOffer) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
+        type naoHelper struct {
+                BaseTx
+                NFTokenSellOffer types.Hash256   `json:",omitempty"`
+                NFTokenBuyOffer  types.Hash256   `json:",omitempty"`
+                NFTokenBrokerFee json.RawMessage `json:",omitempty"`
+        }
+        var h naoHelper
+        if err := json.Unmarshal(data, &amp;h); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">*n = NFTokenAcceptOffer{
+                BaseTx:           h.BaseTx,
+                NFTokenSellOffer: h.NFTokenSellOffer,
+                NFTokenBuyOffer:  h.NFTokenBuyOffer,
+        }
+
+        fee, err := types.UnmarshalCurrencyAmount(h.NFTokenBrokerFee)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">n.NFTokenBrokerFee = fee
+        return nil</span>
+}
+
+>>>>>>> 9ec1f9a (100% tx tests)
 // TODO: Implement flatten
 func (n *NFTokenAcceptOffer) Flatten() FlatTransaction <span class="cov0" title="0">{
         return nil
@@ -10340,6 +10483,38 @@ func (*NFTokenCreateOffer) TxType() TxType <span class="cov0" title="0">{
 func (n *NFTokenCreateOffer) Flatten() FlatTransaction <span class="cov0" title="0">{
         return nil
 }</span>
+<<<<<<< HEAD
+=======
+
+func (n *NFTokenCreateOffer) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
+        type ncoHelper struct {
+                BaseTx
+                Owner       types.Address `json:",omitempty"`
+                NFTokenID   types.NFTokenID
+                Amount      json.RawMessage
+                Expiration  uint          `json:",omitempty"`
+                Destination types.Address `json:",omitempty"`
+        }
+        var h ncoHelper
+        if err := json.Unmarshal(data, &amp;h); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">*n = NFTokenCreateOffer{
+                BaseTx:      h.BaseTx,
+                Owner:       h.Owner,
+                NFTokenID:   h.NFTokenID,
+                Expiration:  h.Expiration,
+                Destination: h.Destination,
+        }
+
+        amount, err := types.UnmarshalCurrencyAmount(h.Amount)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">n.Amount = amount
+        return nil</span>
+}
+>>>>>>> 9ec1f9a (100% tx tests)
 </pre>
 		
 <<<<<<< HEAD
@@ -10739,6 +10914,53 @@ func (p *Payment) SetLimitQualityFlag() <span class="cov8" title="1">{
         p.Flags |= tfLimitQuality
 }</span>
 
+<<<<<<< HEAD
+=======
+// UnmarshalJSON unmarshals the Payment transaction from JSON.
+func (p *Payment) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
+        type pHelper struct {
+                BaseTx
+                Amount         json.RawMessage
+                Destination    types.Address
+                DestinationTag uint32          `json:",omitempty"`
+                InvoiceID      types.Hash256   `json:",omitempty"`
+                Paths          [][]PathStep    `json:",omitempty"`
+                SendMax        json.RawMessage `json:",omitempty"`
+                DeliverMin     json.RawMessage `json:",omitempty"`
+        }
+        var h pHelper
+        if err := json.Unmarshal(data, &amp;h); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">*p = Payment{
+                BaseTx:         h.BaseTx,
+                Destination:    h.Destination,
+                DestinationTag: h.DestinationTag,
+                InvoiceID:      h.InvoiceID,
+                Paths:          h.Paths,
+        }
+        var amount, max, min types.CurrencyAmount
+        var err error
+        amount, err = types.UnmarshalCurrencyAmount(h.Amount)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">max, err = types.UnmarshalCurrencyAmount(h.SendMax)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">min, err = types.UnmarshalCurrencyAmount(h.DeliverMin)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">p.Amount = amount
+        p.DeliverMin = min
+        p.SendMax = max
+
+        return nil</span>
+}
+
+>>>>>>> 9ec1f9a (100% tx tests)
 // ValidatePayment validates the Payment struct and make sure all the fields are correct.
 func (p *Payment) Validate() (bool, error) <span class="cov8" title="1">{
         flattenTx := p.Flatten()
@@ -11081,12 +11303,12 @@ type Signer struct {
 
 type FlatSigner map[string]interface{}
 
-func (s *Signer) Flatten() FlatSigner <span class="cov0" title="0">{
+func (s *Signer) Flatten() FlatSigner <span class="cov8" title="1">{
         flattened := make(FlatSigner)
-        if s.SignerData != (SignerData{}) </span><span class="cov0" title="0">{
+        if s.SignerData != (SignerData{}) </span><span class="cov8" title="1">{
                 flattened["SignerData"] = s.SignerData.Flatten()
         }</span>
-        <span class="cov0" title="0">return flattened</span>
+        <span class="cov8" title="1">return flattened</span>
 }
 
 type SignerData struct {
@@ -11508,6 +11730,34 @@ func (t *TrustSet) SetClearFreezeFlag() <span class="cov0" title="0">{
         t.Flags |= tfClearFreeze
 }</span>
 
+<<<<<<< HEAD
+=======
+func (t *TrustSet) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
+        type tsHelper struct {
+                BaseTx
+                LimitAmount json.RawMessage
+                QualityIn   uint32 `json:",omitempty"`
+                QualityOut  uint32 `json:",omitempty"`
+        }
+        var h tsHelper
+        if err := json.Unmarshal(data, &amp;h); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">*t = TrustSet{
+                BaseTx:     h.BaseTx,
+                QualityIn:  h.QualityIn,
+                QualityOut: h.QualityOut,
+        }
+        limit, err := types.UnmarshalCurrencyAmount(h.LimitAmount)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">t.LimitAmount = limit
+
+        return nil</span>
+}
+
+>>>>>>> 9ec1f9a (100% tx tests)
 // Validates the TrustSet transaction.
 func (t *TrustSet) Validate() (bool, error) <span class="cov8" title="1">{
         // Validate the base transaction
@@ -11546,7 +11796,10 @@ func (t *TrustSet) Validate() (bool, error) <span class="cov8" title="1">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
 
 import (
+<<<<<<< HEAD
         "errors"
+=======
+>>>>>>> 9ec1f9a (100% tx tests)
         "fmt"
 
         addresscodec "github.com/Peersyst/xrpl-go/address-codec"
@@ -11666,7 +11919,7 @@ func (tx *BaseTx) Flatten() FlatTransaction <span class="cov8" title="1">{
         <span class="cov8" title="1">if tx.Sequence != 0 </span><span class="cov8" title="1">{
                 flattened["Sequence"] = tx.Sequence
         }</span>
-        <span class="cov8" title="1">if tx.AccountTxnID != "" </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if tx.AccountTxnID != "" </span><span class="cov8" title="1">{
                 flattened["AccountTxnID"] = tx.AccountTxnID.String()
         }</span>
         <span class="cov8" title="1">if tx.Flags != 0 </span><span class="cov8" title="1">{
@@ -11675,41 +11928,45 @@ func (tx *BaseTx) Flatten() FlatTransaction <span class="cov8" title="1">{
         <span class="cov8" title="1">if tx.LastLedgerSequence != 0 </span><span class="cov8" title="1">{
                 flattened["LastLedgerSequence"] = tx.LastLedgerSequence
         }</span>
-        <span class="cov8" title="1">if len(tx.Memos) &gt; 0 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if len(tx.Memos) &gt; 0 </span><span class="cov8" title="1">{
                 flattenedMemos := make([]any, 0)
-                for _, memo := range tx.Memos </span><span class="cov0" title="0">{
+                for _, memo := range tx.Memos </span><span class="cov8" title="1">{
                         flattenedMemo := memo.Flatten()
-                        if flattenedMemo != nil </span><span class="cov0" title="0">{
+                        if flattenedMemo != nil </span><span class="cov8" title="1">{
                                 flattenedMemos = append(flattenedMemos, flattenedMemo)
                         }</span>
                 }
-                <span class="cov0" title="0">flattened["Memos"] = flattenedMemos</span>
+                <span class="cov8" title="1">flattened["Memos"] = flattenedMemos</span>
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
         <span class="cov8" title="1">if tx.NetworkID != 0 </span><span class="cov8" title="1">{
                 flattened["NetworkId"] = tx.NetworkID
 =======
         <span class="cov8" title="1">if tx.NetworkId != 0 </span><span class="cov0" title="0">{
+=======
+        <span class="cov8" title="1">if tx.NetworkId != 0 </span><span class="cov8" title="1">{
+>>>>>>> 9ec1f9a (100% tx tests)
                 flattened["NetworkId"] = tx.NetworkId
 >>>>>>> 60393b5 (coverage.html)
         }</span>
-        <span class="cov8" title="1">if len(tx.Signers) &gt; 0 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if len(tx.Signers) &gt; 0 </span><span class="cov8" title="1">{
                 flattenedSigners := make([]FlatSigner, 0)
-                for _, signer := range tx.Signers </span><span class="cov0" title="0">{
+                for _, signer := range tx.Signers </span><span class="cov8" title="1">{
                         flattenedSigner := signer.Flatten()
-                        if flattenedSigner != nil </span><span class="cov0" title="0">{
+                        if flattenedSigner != nil </span><span class="cov8" title="1">{
                                 flattenedSigners = append(flattenedSigners, flattenedSigner)
                         }</span>
                 }
-                <span class="cov0" title="0">flattened["Signers"] = flattenedSigners</span>
+                <span class="cov8" title="1">flattened["Signers"] = flattenedSigners</span>
         }
-        <span class="cov8" title="1">if tx.SourceTag != 0 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if tx.SourceTag != 0 </span><span class="cov8" title="1">{
                 flattened["SourceTag"] = tx.SourceTag
         }</span>
         <span class="cov8" title="1">if tx.SigningPubKey != "" </span><span class="cov8" title="1">{
                 flattened["SigningPubKey"] = tx.SigningPubKey
         }</span>
-        <span class="cov8" title="1">if tx.TicketSequence != 0 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if tx.TicketSequence != 0 </span><span class="cov8" title="1">{
                 flattened["TicketSequence"] = tx.TicketSequence
         }</span>
         <span class="cov8" title="1">if tx.TxnSignature != "" </span><span class="cov8" title="1">{
