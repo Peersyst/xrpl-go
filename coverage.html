@@ -368,8 +368,12 @@
 				
 				<option value="file144">github.com/Peersyst/xrpl-go/xrpl/transaction/check_create.go (0.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file145">github.com/Peersyst/xrpl-go/xrpl/transaction/clawback.go (50.0%)</option>
 >>>>>>> 9ec1f9a (100% tx tests)
+=======
+				<option value="file145">github.com/Peersyst/xrpl-go/xrpl/transaction/clawback.go (87.5%)</option>
+>>>>>>> ada3998 (coverage.html)
 				
 				<option value="file138">github.com/Peersyst/xrpl-go/xrpl/rpc/response.go (85.7%)</option>
 				
@@ -417,10 +421,14 @@
 				<option value="file152">github.com/Peersyst/xrpl-go/xrpl/transaction/deposit_preauth.go (0.0%)</option>
 				
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<option value="file153">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_cancel.go (100.0%)</option>
 =======
 				<option value="file161">github.com/Peersyst/xrpl-go/xrpl/transaction/payment.go (61.8%)</option>
 >>>>>>> 9ec1f9a (100% tx tests)
+=======
+				<option value="file161">github.com/Peersyst/xrpl-go/xrpl/transaction/payment.go (79.7%)</option>
+>>>>>>> ada3998 (coverage.html)
 				
 				<option value="file154">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_create.go (100.0%)</option>
 				
@@ -447,6 +455,7 @@
 				<option value="file161">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_cancel_offer.go (0.0%)</option>
 				
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<option value="file162">github.com/Peersyst/xrpl-go/xrpl/transaction/nftoken_create_offer.go (0.0%)</option>
 				
 <<<<<<< HEAD
@@ -456,6 +465,9 @@
 >>>>>>> 60393b5 (coverage.html)
 =======
 				<option value="file170">github.com/Peersyst/xrpl-go/xrpl/transaction/trust_set.go (51.4%)</option>
+=======
+				<option value="file170">github.com/Peersyst/xrpl-go/xrpl/transaction/trust_set.go (70.4%)</option>
+>>>>>>> ada3998 (coverage.html)
 				
 				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/tx.go (100.0%)</option>
 >>>>>>> 9ec1f9a (100% tx tests)
@@ -9740,6 +9752,7 @@ func (c *CheckCash) Flatten() FlatTransaction <span class="cov0" title="0">{
         return nil
 }</span>
 <<<<<<< HEAD
+<<<<<<< HEAD
 </pre>
 		
 		<pre class="file" id="file150" style="display: none">package transaction
@@ -9789,6 +9802,8 @@ func (tx *CheckCash) UnmarshalJSON(data []byte) error <span class="cov0" title="
         return nil</span>
 
 }
+=======
+>>>>>>> ada3998 (coverage.html)
 </pre>
 		
 		<pre class="file" id="file149" style="display: none">package transaction
@@ -9815,6 +9830,7 @@ func (*CheckCreate) TxType() TxType <span class="cov0" title="0">{
 func (c *CheckCreate) Flatten() FlatTransaction <span class="cov0" title="0">{
         return nil
 }</span>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
@@ -9848,6 +9864,8 @@ func (c *CheckCreate) UnmarshalJSON(data []byte) error <span class="cov0" title=
         return nil</span>
 }
 >>>>>>> 9ec1f9a (100% tx tests)
+=======
+>>>>>>> ada3998 (coverage.html)
 </pre>
 		
 <<<<<<< HEAD
@@ -9896,6 +9914,7 @@ func (c *Clawback) Flatten() FlatTransaction <span class="cov8" title="1">{
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // UnmarshalJSON unmarshals the JSON data into a Clawback struct.
 func (c *Clawback) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
@@ -9932,6 +9951,8 @@ func (c *Clawback) UnmarshalJSON(data []byte) error <span class="cov0" title="0"
 }
 
 >>>>>>> 9ec1f9a (100% tx tests)
+=======
+>>>>>>> ada3998 (coverage.html)
 // Validates the Clawback struct.
 func (c *Clawback) Validate() (bool, error) <span class="cov8" title="1">{
         // validate the base transaction
@@ -10376,6 +10397,7 @@ func (*NFTokenAcceptOffer) TxType() TxType <span class="cov0" title="0">{
 }</span>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 func (n *NFTokenAcceptOffer) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
         type naoHelper struct {
@@ -10403,6 +10425,8 @@ func (n *NFTokenAcceptOffer) UnmarshalJSON(data []byte) error <span class="cov0"
 }
 
 >>>>>>> 9ec1f9a (100% tx tests)
+=======
+>>>>>>> ada3998 (coverage.html)
 // TODO: Implement flatten
 func (n *NFTokenAcceptOffer) Flatten() FlatTransaction <span class="cov0" title="0">{
         return nil
@@ -10488,6 +10512,7 @@ func (n *NFTokenCreateOffer) Flatten() FlatTransaction <span class="cov0" title=
         return nil
 }</span>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 func (n *NFTokenCreateOffer) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
@@ -10519,6 +10544,8 @@ func (n *NFTokenCreateOffer) UnmarshalJSON(data []byte) error <span class="cov0"
         return nil</span>
 }
 >>>>>>> 9ec1f9a (100% tx tests)
+=======
+>>>>>>> ada3998 (coverage.html)
 </pre>
 		
 <<<<<<< HEAD
@@ -10919,6 +10946,7 @@ func (p *Payment) SetLimitQualityFlag() <span class="cov8" title="1">{
 }</span>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // UnmarshalJSON unmarshals the Payment transaction from JSON.
 func (p *Payment) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
@@ -10965,6 +10993,8 @@ func (p *Payment) UnmarshalJSON(data []byte) error <span class="cov0" title="0">
 }
 
 >>>>>>> 9ec1f9a (100% tx tests)
+=======
+>>>>>>> ada3998 (coverage.html)
 // ValidatePayment validates the Payment struct and make sure all the fields are correct.
 func (p *Payment) Validate() (bool, error) <span class="cov8" title="1">{
         flattenTx := p.Flatten()
@@ -11735,6 +11765,7 @@ func (t *TrustSet) SetClearFreezeFlag() <span class="cov0" title="0">{
 }</span>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 func (t *TrustSet) UnmarshalJSON(data []byte) error <span class="cov0" title="0">{
         type tsHelper struct {
@@ -11762,6 +11793,8 @@ func (t *TrustSet) UnmarshalJSON(data []byte) error <span class="cov0" title="0"
 }
 
 >>>>>>> 9ec1f9a (100% tx tests)
+=======
+>>>>>>> ada3998 (coverage.html)
 // Validates the TrustSet transaction.
 func (t *TrustSet) Validate() (bool, error) <span class="cov8" title="1">{
         // Validate the base transaction
