@@ -13354,12 +13354,17 @@ func (s *SetRegularKey) Flatten() FlatTransaction <span class="cov8" title="1">{
 // Validate checks if the SetRegularKey struct is valid.
 func (s *SetRegularKey) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
+<<<<<<< HEAD
         ok, err := s.BaseTx.Validate()
         if err != nil || !ok </span><span class="cov8" title="1">{
 =======
         _, err := s.BaseTx.Validate()
         if err != nil </span><span class="cov8" title="1">{
 >>>>>>> 796844d (SetRegularKey Validate tests 100% coverage)
+=======
+        ok, err := s.BaseTx.Validate()
+        if err != nil || !ok </span><span class="cov8" title="1">{
+>>>>>>> a4e90aa (check validity for BaseTx, not only error)
                 return false, err
         }</span>
 
@@ -13562,8 +13567,8 @@ const MAX_SIGNERS = 32
 
 // Validate checks if the SignerListSet struct is valid.
 func (s *SignerListSet) Validate() (bool, error) <span class="cov8" title="1">{
-        _, err := s.BaseTx.Validate()
-        if err != nil </span><span class="cov8" title="1">{
+        ok, err := s.BaseTx.Validate()
+        if err != nil || !ok </span><span class="cov8" title="1">{
                 return false, err
         }</span>
 
