@@ -10223,24 +10223,30 @@ func (e *EscrowCancel) Flatten() FlatTransaction <span class="cov8" title="1">{
                 flattened["OfferSequence"] = e.OfferSequence
 =======
 // Flatten returns the flattened map of the EscrowCancel transaction.
-func (s *EscrowCancel) Flatten() FlatTransaction <span class="cov8" title="1">{
-        flattened := s.BaseTx.Flatten()
+func (e *EscrowCancel) Flatten() FlatTransaction <span class="cov8" title="1">{
+        flattened := e.BaseTx.Flatten()
 
         flattened["TransactionType"] = "EscrowCancel"
 
-        if s.Owner != "" </span><span class="cov8" title="1">{
-                flattened["Owner"] = s.Owner
+        if e.Owner != "" </span><span class="cov8" title="1">{
+                flattened["Owner"] = e.Owner
         }</span>
 
+<<<<<<< HEAD
         <span class="cov8" title="1">if s.OfferSequence != 0 </span><span class="cov8" title="1">{
                 flattened["OfferSequence"] = s.OfferSequence
 >>>>>>> 73e5d4c (coverage.html 100% escrowCancel)
+=======
+        <span class="cov8" title="1">if e.OfferSequence != 0 </span><span class="cov8" title="1">{
+                flattened["OfferSequence"] = e.OfferSequence
+>>>>>>> dff643b (renamed variable)
         }</span>
 
         <span class="cov8" title="1">return flattened</span>
 }
 
 // Validate checks if the EscrowCancel struct is valid.
+<<<<<<< HEAD
 <<<<<<< HEAD
 func (e *EscrowCancel) Validate() (bool, error) <span class="cov8" title="1">{
         ok, err := e.BaseTx.Validate()
@@ -10256,16 +10262,24 @@ func (e *EscrowCancel) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 func (s *EscrowCancel) Validate() (bool, error) <span class="cov8" title="1">{
         _, err := s.BaseTx.Validate()
+=======
+func (e *EscrowCancel) Validate() (bool, error) <span class="cov8" title="1">{
+        _, err := e.BaseTx.Validate()
+>>>>>>> dff643b (renamed variable)
         if err != nil </span><span class="cov8" title="1">{
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if !addresscodec.IsValidClassicAddress(s.Owner.String()) </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if !addresscodec.IsValidClassicAddress(e.Owner.String()) </span><span class="cov8" title="1">{
                 return false, errors.New("invalid xrpl address for the Owner field")
         }</span>
 
+<<<<<<< HEAD
         <span class="cov8" title="1">if s.OfferSequence == 0 </span><span class="cov8" title="1">{
 >>>>>>> 73e5d4c (coverage.html 100% escrowCancel)
+=======
+        <span class="cov8" title="1">if e.OfferSequence == 0 </span><span class="cov8" title="1">{
+>>>>>>> dff643b (renamed variable)
                 return false, errors.New("missing OfferSequence")
         }</span>
 
@@ -10379,34 +10393,40 @@ func (e *EscrowCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
                 flattened["DestinationTag"] = e.DestinationTag
 =======
 // Flatten returns the flattened map of the EscrowCreate transaction.
-func (s *EscrowCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
-        flattened := s.BaseTx.Flatten()
+func (e *EscrowCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
+        flattened := e.BaseTx.Flatten()
 
         flattened["TransactionType"] = "EscrowCreate"
 
-        flattened["Amount"] = s.Amount.Flatten()
+        flattened["Amount"] = e.Amount.Flatten()
 
-        if s.Destination != "" </span><span class="cov8" title="1">{
-                flattened["Destination"] = s.Destination
+        if e.Destination != "" </span><span class="cov8" title="1">{
+                flattened["Destination"] = e.Destination
         }</span>
-        <span class="cov8" title="1">if s.CancelAfter != 0 </span><span class="cov8" title="1">{
-                flattened["CancelAfter"] = s.CancelAfter
+        <span class="cov8" title="1">if e.CancelAfter != 0 </span><span class="cov8" title="1">{
+                flattened["CancelAfter"] = e.CancelAfter
         }</span>
-        <span class="cov8" title="1">if s.FinishAfter != 0 </span><span class="cov8" title="1">{
-                flattened["FinishAfter"] = s.FinishAfter
+        <span class="cov8" title="1">if e.FinishAfter != 0 </span><span class="cov8" title="1">{
+                flattened["FinishAfter"] = e.FinishAfter
         }</span>
-        <span class="cov8" title="1">if s.Condition != "" </span><span class="cov8" title="1">{
-                flattened["Condition"] = s.Condition
+        <span class="cov8" title="1">if e.Condition != "" </span><span class="cov8" title="1">{
+                flattened["Condition"] = e.Condition
         }</span>
+<<<<<<< HEAD
         <span class="cov8" title="1">if s.DestinationTag != 0 </span><span class="cov8" title="1">{
                 flattened["DestinationTag"] = s.DestinationTag
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+        <span class="cov8" title="1">if e.DestinationTag != 0 </span><span class="cov8" title="1">{
+                flattened["DestinationTag"] = e.DestinationTag
+>>>>>>> dff643b (renamed variable)
         }</span>
 
         <span class="cov8" title="1">return flattened</span>
 }
 
 // Validates the EscrowCreate transaction and makes sure all the fields are correct.
+<<<<<<< HEAD
 <<<<<<< HEAD
 func (e *EscrowCreate) Validate() (bool, error) <span class="cov8" title="1">{
         ok, err := e.BaseTx.Validate()
@@ -10426,19 +10446,27 @@ func (e *EscrowCreate) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 func (s *EscrowCreate) Validate() (bool, error) <span class="cov8" title="1">{
         if ok, err := s.BaseTx.Validate(); !ok </span><span class="cov8" title="1">{
+=======
+func (e *EscrowCreate) Validate() (bool, error) <span class="cov8" title="1">{
+        if ok, err := e.BaseTx.Validate(); !ok </span><span class="cov8" title="1">{
+>>>>>>> dff643b (renamed variable)
                 return false, err
         }</span>
 
-        <span class="cov8" title="1">if !addresscodec.IsValidClassicAddress(s.Destination.String()) </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if !addresscodec.IsValidClassicAddress(e.Destination.String()) </span><span class="cov8" title="1">{
                 return false, errors.New("invalid xrpl destination address")
         }</span>
 
-        <span class="cov8" title="1">if s.CancelAfter == 0 &amp;&amp; s.FinishAfter == 0 </span><span class="cov8" title="1">{
+        <span class="cov8" title="1">if e.CancelAfter == 0 &amp;&amp; e.FinishAfter == 0 </span><span class="cov8" title="1">{
                 return false, errors.New("either CancelAfter or FinishAfter must be set")
         }</span>
 
+<<<<<<< HEAD
         <span class="cov8" title="1">if s.FinishAfter == 0 &amp;&amp; s.Condition == "" </span><span class="cov8" title="1">{
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+        <span class="cov8" title="1">if e.FinishAfter == 0 &amp;&amp; e.Condition == "" </span><span class="cov8" title="1">{
+>>>>>>> dff643b (renamed variable)
                 return false, errors.New("either Condition or FinishAfter must be specified")
         }</span>
 
@@ -10529,26 +10557,31 @@ func (e *EscrowFinish) Flatten() FlatTransaction <span class="cov8" title="1">{
                 flattened["Fulfillment"] = e.Fulfillment
 =======
 // Flatten returns the flattened map of the EscrowFinish transaction.
-func (s *EscrowFinish) Flatten() FlatTransaction <span class="cov8" title="1">{
-        flattened := s.BaseTx.Flatten()
+func (e *EscrowFinish) Flatten() FlatTransaction <span class="cov8" title="1">{
+        flattened := e.BaseTx.Flatten()
 
         flattened["TransactionType"] = "EscrowFinish"
 
-        if s.Owner != "" </span><span class="cov8" title="1">{
-                flattened["Owner"] = s.Owner
+        if e.Owner != "" </span><span class="cov8" title="1">{
+                flattened["Owner"] = e.Owner
         }</span>
 
-        <span class="cov8" title="1">if s.OfferSequence != 0 </span><span class="cov8" title="1">{
-                flattened["OfferSequence"] = s.OfferSequence
+        <span class="cov8" title="1">if e.OfferSequence != 0 </span><span class="cov8" title="1">{
+                flattened["OfferSequence"] = e.OfferSequence
         }</span>
 
-        <span class="cov8" title="1">if s.Condition != "" </span><span class="cov8" title="1">{
-                flattened["Condition"] = s.Condition
+        <span class="cov8" title="1">if e.Condition != "" </span><span class="cov8" title="1">{
+                flattened["Condition"] = e.Condition
         }</span>
 
+<<<<<<< HEAD
         <span class="cov8" title="1">if s.Fulfillment != "" </span><span class="cov8" title="1">{
                 flattened["Fulfillment"] = s.Fulfillment
 >>>>>>> 652e27c (EscrowFinish 100% coverage)
+=======
+        <span class="cov8" title="1">if e.Fulfillment != "" </span><span class="cov8" title="1">{
+                flattened["Fulfillment"] = e.Fulfillment
+>>>>>>> dff643b (renamed variable)
         }</span>
 
         <span class="cov8" title="1">return flattened</span>
