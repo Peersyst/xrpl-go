@@ -10590,12 +10590,17 @@ func (e *EscrowFinish) Flatten() FlatTransaction <span class="cov8" title="1">{
 // Validate checks if the EscrowFinish struct is valid.
 func (e *EscrowFinish) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
+<<<<<<< HEAD
         ok, err := e.BaseTx.Validate()
         if err != nil || !ok </span><span class="cov8" title="1">{
 =======
         _, err := e.BaseTx.Validate()
         if err != nil </span><span class="cov8" title="1">{
 >>>>>>> 652e27c (EscrowFinish 100% coverage)
+=======
+        ok, err := e.BaseTx.Validate()
+        if err != nil || !ok </span><span class="cov8" title="1">{
+>>>>>>> 5344d46 (added more tests to EscrowCreate to validate all the combinations)
                 return false, err
         }</span>
 
