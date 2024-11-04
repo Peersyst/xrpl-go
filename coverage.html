@@ -1287,7 +1287,7 @@
 				
 				<option value="file169">github.com/Peersyst/xrpl-go/xrpl/transaction/payment_channel_fund.go (0.0%)</option>
 				
-				<option value="file170">github.com/Peersyst/xrpl-go/xrpl/transaction/set_regular_key.go (0.0%)</option>
+				<option value="file170">github.com/Peersyst/xrpl-go/xrpl/transaction/set_regular_key.go (100.0%)</option>
 				
 				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/signer.go (100.0%)</option>
 				
@@ -13335,6 +13335,9 @@ func (*SetRegularKey) TxType() TxType <span class="cov8" title="1">{
 }</span>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 796844d (SetRegularKey Validate tests 100% coverage)
 // Flatten returns the flattened map of the SetRegularKey transaction.
 func (s *SetRegularKey) Flatten() FlatTransaction <span class="cov8" title="1">{
         flattened := s.BaseTx.Flatten()
@@ -13350,8 +13353,13 @@ func (s *SetRegularKey) Flatten() FlatTransaction <span class="cov8" title="1">{
 
 // Validate checks if the SetRegularKey struct is valid.
 func (s *SetRegularKey) Validate() (bool, error) <span class="cov8" title="1">{
+<<<<<<< HEAD
         ok, err := s.BaseTx.Validate()
         if err != nil || !ok </span><span class="cov8" title="1">{
+=======
+        _, err := s.BaseTx.Validate()
+        if err != nil </span><span class="cov8" title="1">{
+>>>>>>> 796844d (SetRegularKey Validate tests 100% coverage)
                 return false, err
         }</span>
 
@@ -13367,6 +13375,7 @@ func (s *SetRegularKey) Validate() (bool, error) <span class="cov8" title="1">{
 
         <span class="cov8" title="1">return true, nil</span>
 }
+<<<<<<< HEAD
 </pre>
 		
 		<pre class="file" id="file172" style="display: none">package transaction
@@ -13375,6 +13384,8 @@ func (s *SetRegularKey) Validate() (bool, error) <span class="cov8" title="1">{
 func (s *SetRegularKey) Flatten() FlatTransaction <span class="cov0" title="0">{
         return nil
 }</span>
+=======
+>>>>>>> 796844d (SetRegularKey Validate tests 100% coverage)
 </pre>
 		
 <<<<<<< HEAD
