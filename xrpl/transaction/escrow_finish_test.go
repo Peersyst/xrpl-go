@@ -122,7 +122,8 @@ func TestEscrowFinish_Validate(t *testing.T) {
 				Owner:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 				OfferSequence: 7,
 			},
-			expected: false,
+			wantValid: false,
+			wantErr:   true,
 		},
 		{
 			name: "Invalid Owner Address",
