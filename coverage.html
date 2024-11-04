@@ -1291,7 +1291,7 @@
 				
 				<option value="file171">github.com/Peersyst/xrpl-go/xrpl/transaction/signer.go (100.0%)</option>
 				
-				<option value="file172">github.com/Peersyst/xrpl-go/xrpl/transaction/signer_list_set.go (0.0%)</option>
+				<option value="file172">github.com/Peersyst/xrpl-go/xrpl/transaction/signer_list_set.go (100.0%)</option>
 				
 				<option value="file173">github.com/Peersyst/xrpl-go/xrpl/transaction/ticket_create.go (100.0%)</option>
 				
@@ -6385,6 +6385,13 @@ import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 
 type SignerListFlags uint32
 
+<<<<<<< HEAD
+=======
+const (
+        LsfOneOwnerCount SignerListFlags = 0x00010000
+)
+
+>>>>>>> ac3115a (coverage.html after SignerListSet)
 // A SignerList entry represents a list of parties that, as a group, are authorized to sign a transaction in place of an individual account.
 // You can create, replace, or remove a signer list using a SignerListSet transaction.
 //
@@ -6426,6 +6433,7 @@ type SignerListFlags uint32
 // ```
 type SignerList struct {
 <<<<<<< HEAD
+<<<<<<< HEAD
         // The value 0x0053, mapped to the string SignerList, indicates that this is a SignerList ledger entry.
         LedgerEntryType EntryType
         // The identifying hash of the transaction that most recently modified this object.
@@ -6450,6 +6458,22 @@ type SignerList struct {
         SignerListID      uint64
         SignerQuorum      uint64
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+        // The value 0x0053, mapped to the string SignerList, indicates that this is a SignerList ledger entry.
+        LedgerEntryType LedgerEntryType
+        // The identifying hash of the transaction that most recently modified this object.
+        PreviousTxnID string
+        // The index of the ledger that contains the transaction that most recently modified this object.
+        PreviousTxnLgrSeq uint64
+        // A hint indicating which page of the owner directory links to this object, in case the directory consists of multiple pages.
+        OwnerNode string
+        // An array of Signer Entry objects representing the parties who are part of this signer list.
+        SignerEntries []SignerEntryWrapper
+        // An ID for this signer list. Currently always set to 0. If a future amendment allows multiple signer lists for an account, this may change.
+        SignerListID uint64
+        // A target number for signer weights. To produce a valid signature for the owner of this SignerList, the signers must provide valid signatures whose weights sum to this value or more.
+        SignerQuorum uint64
+>>>>>>> ac3115a (coverage.html after SignerListSet)
 }
 
 // Wrapper for SignerEntry
@@ -6459,10 +6483,20 @@ type SignerEntryWrapper struct {
 
 // Flatten returns a map of the SignerEntryWrapper object
 func (s *SignerEntryWrapper) Flatten() FlatLedgerObject <span class="cov0" title="0">{
+<<<<<<< HEAD
         flattened := make(map[string]interface{})
         flattened["SignerEntry"] = s.SignerEntry.Flatten()
         return flattened
 }</span>
+=======
+        if s.SignerEntry != (SignerEntry{}) </span><span class="cov0" title="0">{
+                flattened := make(map[string]interface{})
+                flattened["SignerEntry"] = s.SignerEntry.Flatten()
+                return flattened
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+>>>>>>> ac3115a (coverage.html after SignerListSet)
 
 // Each member of the SignerEntries field is an object that describes that signer in the list.
 // https://xrpl.org/docs/references/protocol/ledger-data/ledger-entry-types/signerlist#signer-entry-object
@@ -6476,6 +6510,9 @@ type SignerEntry struct {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ac3115a (coverage.html after SignerListSet)
 // Flatten returns a map of the SignerEntry object
 func (s *SignerEntry) Flatten() FlatLedgerObject <span class="cov0" title="0">{
         flattened := make(map[string]interface{})
@@ -6496,9 +6533,13 @@ func (s *SignerEntry) Flatten() FlatLedgerObject <span class="cov0" title="0">{
 }
 
 // EntryType returns the type of the ledger entry (SignerList)
+<<<<<<< HEAD
 =======
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
 func (*SignerList) EntryType() EntryType <span class="cov0" title="0">{
+=======
+func (*SignerList) EntryType() LedgerEntryType <span class="cov0" title="0">{
+>>>>>>> ac3115a (coverage.html after SignerListSet)
         return SignerListEntry
 }</span>
 </pre>
@@ -13423,23 +13464,131 @@ func (sd *SignerData) Flatten() FlatSignerData <span class="cov8" title="1">{
 >>>>>>> 14b5686 (fix: coverage)
 
 import (
+        "fmt"
+
+        addresscodec "github.com/Peersyst/xrpl-go/address-codec"
+        "github.com/Peersyst/xrpl-go/pkg/typecheck"
         "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 )
 
+// The SignerListSet transaction creates, replaces, or removes a list of signers that can be used to multi-sign a transaction. This transaction type was introduced by the MultiSign amendment.
+//
+// Example:
+//
+// ```json
+//
+//        {
+//            "Flags": 0,
+//            "TransactionType": "SignerListSet",
+//            "Account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+//            "Fee": "12",
+//            "SignerQuorum": 3,
+//            "SignerEntries": [
+//                {
+//                    "SignerEntry": {
+//                        "Account": "rsA2LpzuawewSBQXkiju3YQTMzW13pAAdW",
+//                        "SignerWeight": 2
+//                    }
+//                },
+//                {
+//                    "SignerEntry": {
+//                        "Account": "rUpy3eEg8rqjqfUoLeBnZkscbKbFsKXC3v",
+//                        "SignerWeight": 1
+//                    }
+//                },
+//                {
+//                    "SignerEntry": {
+//                        "Account": "raKEEVSGnKSD9Zyvxu4z6Pqpm4ABH8FS6n",
+//                        "SignerWeight": 1
+//                    }
+//                }
+//            ]
+//        }
+//
+// `
 type SignerListSet struct {
         BaseTx
-        SignerQuorum  uint
+        // A target number for the signer weights. A multi-signature from this list is valid only if the sum weights of the signatures provided is greater than or equal to this value.
+        // To delete a signer list, use the value 0.
+        SignerQuorum uint
+        // (Omitted when deleting) Array of SignerEntry objects, indicating the addresses and weights of signers in this list.
+        // This signer list must have at least 1 member and no more than 32 members.
+        // No address may appear more than once in the list, nor may the Account submitting the transaction appear in the list.
         SignerEntries []ledger.SignerEntryWrapper
 }
 
-func (*SignerListSet) TxType() TxType <span class="cov0" title="0">{
+// TxType returns the transaction type for this transaction (SignerListSet).
+func (*SignerListSet) TxType() TxType <span class="cov8" title="1">{
         return SignerListSetTx
 }</span>
 
-// TODO: Implement flatten
-func (s *SignerListSet) Flatten() FlatTransaction <span class="cov0" title="0">{
-        return nil
-}</span>
+// Flatten returns the flattened map of the SignerListSet transaction.
+func (s *SignerListSet) Flatten() FlatTransaction <span class="cov8" title="1">{
+        flattened := s.BaseTx.Flatten()
+
+        flattened["TransactionType"] = "SignerListSet"
+        flattened["SignerQuorum"] = s.SignerQuorum
+
+        if len(s.SignerEntries) &gt; 0 </span><span class="cov8" title="1">{
+                flattedSignerListEntries := make([]map[string]interface{}, 0)
+                for _, signerEntry := range s.SignerEntries </span><span class="cov8" title="1">{
+                        flattenedEntry := signerEntry.Flatten()
+                        if flattenedEntry != nil </span><span class="cov8" title="1">{
+                                flattedSignerListEntries = append(flattedSignerListEntries, flattenedEntry)
+                        }</span>
+                }
+                <span class="cov8" title="1">flattened["SignerEntries"] = flattedSignerListEntries</span>
+        }
+
+        <span class="cov8" title="1">return flattened</span>
+}
+
+// At least one account must be part of the SignerList
+const MIN_SIGNERS = 1
+
+// A SignerList can have at most 32 signers
+const MAX_SIGNERS = 32
+
+// Validate checks if the SignerListSet struct is valid.
+func (s *SignerListSet) Validate() (bool, error) <span class="cov8" title="1">{
+        _, err := s.BaseTx.Validate()
+        if err != nil </span><span class="cov8" title="1">{
+                return false, err
+        }</span>
+
+        // All other checks are for if SignerQuorum is greater than 0
+        <span class="cov8" title="1">if s.SignerQuorum == 0 </span><span class="cov8" title="1">{
+                return true, nil
+        }</span>
+
+        // Check if SignerEntries has at least 1 entry and no more than 32 entries
+        <span class="cov8" title="1">if len(s.SignerEntries) &lt; MIN_SIGNERS || len(s.SignerEntries) &gt; MAX_SIGNERS </span><span class="cov8" title="1">{
+                return false, fmt.Errorf("signerEntries must have at least %d entry and no more than %d entries", MIN_SIGNERS, MAX_SIGNERS)
+        }</span>
+
+        <span class="cov8" title="1">for _, signerEntry := range s.SignerEntries </span><span class="cov8" title="1">{
+                // Check if WalletLocator is an hexadecimal string for each SignerEntry
+                if signerEntry.SignerEntry.WalletLocator != "" &amp;&amp; !typecheck.IsHex(signerEntry.SignerEntry.WalletLocator.String()) </span><span class="cov8" title="1">{
+                        return false, fmt.Errorf("invalid WalletLocator in SignerEntry, must be an hexadecimal string")
+                }</span>
+
+                // Check if Account is a valid xrpl address for each SignerEntry
+                <span class="cov8" title="1">if !addresscodec.IsValidClassicAddress(signerEntry.SignerEntry.Account.String()) </span><span class="cov8" title="1">{
+                        return false, fmt.Errorf("invalid xrpl address for the Account field in SignerEntry")
+                }</span>
+        }
+
+        // Check SignerQuorum is less than or equal to the sum of all SignerWeights
+        <span class="cov8" title="1">sumSignerWeights := uint16(0)
+        for _, signerEntry := range s.SignerEntries </span><span class="cov8" title="1">{
+                sumSignerWeights += signerEntry.SignerEntry.SignerWeight
+        }</span>
+        <span class="cov8" title="1">if s.SignerQuorum &gt; uint(sumSignerWeights) </span><span class="cov8" title="1">{
+                return false, fmt.Errorf("signerQuorum must be less than or equal to the sum of all SignerWeights")
+        }</span>
+
+        <span class="cov8" title="1">return true, nil</span>
+}
 </pre>
 		
 <<<<<<< HEAD
