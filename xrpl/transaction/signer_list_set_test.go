@@ -296,6 +296,32 @@ func TestSignerListSet_Validate(t *testing.T) {
 			wantErr:   true,
 		},
 		{
+			name: "Invalid SignerEntry Account, not an xrpl address",
+			entry: &SignerListSet{
+				BaseTx: BaseTx{
+					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+					TransactionType: SignerListSetTx,
+					Fee:             types.XRPCurrencyAmount(12),
+				},
+				SignerQuorum: 2,
+				SignerEntries: []ledger.SignerEntryWrapper{
+					{
+						SignerEntry: ledger.SignerEntry{
+							Account:      "invalid",
+							SignerWeight: 2,
+						},
+					},
+					{
+						SignerEntry: ledger.SignerEntry{
+							Account:      "rUpy3eEg8rqjqfUoLeBnZkscbKbFsKXC3v",
+							SignerWeight: 1,
+						},
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "Valid SignerListSet with SignerQuorum 0",
 			entry: &SignerListSet{
 				BaseTx: BaseTx{
