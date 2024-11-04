@@ -12,7 +12,6 @@ func TestEscrowCreate_TxType(t *testing.T) {
 	entry := &EscrowCreate{}
 	assert.Equal(t, EscrowCreateTx, entry.TxType())
 }
-
 func TestEscrowCreate_Flatten(t *testing.T) {
 	tests := []struct {
 		name     string
