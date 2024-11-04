@@ -319,7 +319,8 @@ func TestSignerListSet_Validate(t *testing.T) {
 					},
 				},
 			},
-			wantErr: true,
+			wantValid: false,
+			wantErr:   true,
 		},
 		{
 			name: "Valid SignerListSet with SignerQuorum 0",
