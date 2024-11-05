@@ -82,6 +82,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<option value="file12">github.com/Peersyst/xrpl-go/binary-codec/types/amount.go (83.4%)</option>
 =======
 				<option value="file12">github.com/Peersyst/xrpl-go/binary-codec/types/amount.go (55.2%)</option>
@@ -92,6 +93,9 @@
 =======
 				<option value="file12">github.com/Peersyst/xrpl-go/binary-codec/types/amount.go (54.6%)</option>
 >>>>>>> 737732f (Reinstated the optional validations)
+=======
+				<option value="file12">github.com/Peersyst/xrpl-go/binary-codec/types/amount.go (83.1%)</option>
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
 				
 				<option value="file13">github.com/Peersyst/xrpl-go/binary-codec/types/blob.go (100.0%)</option>
 				
@@ -103,6 +107,7 @@
 				
 				<option value="file17">github.com/Peersyst/xrpl-go/binary-codec/types/hash160.go (100.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file18">github.com/Peersyst/xrpl-go/binary-codec/types/hash256.go (100.0%)</option>
 				
 				<option value="file19">github.com/Peersyst/xrpl-go/binary-codec/types/issue.go (100.0%)</option>
@@ -123,6 +128,21 @@
 				<option value="file23">github.com/Peersyst/xrpl-go/binary-codec/types/st_object.go (88.3%)</option>
 				
 				<option value="file24">github.com/Peersyst/xrpl-go/binary-codec/types/uint16.go (94.7%)</option>
+=======
+				<option value="file18">github.com/Peersyst/xrpl-go/binary-codec/types/pathset.go (93.8%)</option>
+				
+				<option value="file19">github.com/Peersyst/xrpl-go/binary-codec/types/serialized_type.go (100.0%)</option>
+				
+				<option value="file20">github.com/Peersyst/xrpl-go/binary-codec/types/st_array.go (90.3%)</option>
+				
+				<option value="file21">github.com/Peersyst/xrpl-go/binary-codec/types/st_object.go (88.3%)</option>
+				
+				<option value="file22">github.com/Peersyst/xrpl-go/binary-codec/types/uint16.go (94.7%)</option>
+				
+				<option value="file23">github.com/Peersyst/xrpl-go/binary-codec/types/uint32.go (88.9%)</option>
+				
+				<option value="file24">github.com/Peersyst/xrpl-go/binary-codec/types/uint64.go (95.2%)</option>
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
 				
 <<<<<<< HEAD
 				<option value="file25">github.com/Peersyst/xrpl-go/binary-codec/types/uint32.go (88.9%)</option>
@@ -130,7 +150,11 @@
 				<option value="file25">github.com/Peersyst/xrpl-go/binary-codec/types/uint8.go (94.4%)</option>
 >>>>>>> 6f8d0fa (feat(binary-codec): improve test coverage for uint8 and uint16 types)
 				
+<<<<<<< HEAD
 				<option value="file26">github.com/Peersyst/xrpl-go/binary-codec/types/uint64.go (95.2%)</option>
+=======
+				<option value="file26">github.com/Peersyst/xrpl-go/binary-codec/types/vector256.go (85.7%)</option>
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
 				
 				<option value="file27">github.com/Peersyst/xrpl-go/binary-codec/types/uint8.go (94.4%)</option>
 				
@@ -2106,12 +2130,17 @@ func (e *InvalidCodeError) Error() string <span class="cov8" title="1">{
 // Amount is a struct that represents an XRPL Amount.
 type Amount struct{}
 
+<<<<<<< HEAD
 // FromJSON serializes an issued currency amount to its bytes representation from JSON.
 <<<<<<< HEAD
 func (a *Amount) FromJSON(value any) ([]byte, error) <span class="cov8" title="1">{
 =======
 func (a *Amount) FromJSON(value any) ([]byte, error) <span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+// FromJson serializes an issued currency amount to its bytes representation from JSON.
+func (a *Amount) FromJson(value any) ([]byte, error) <span class="cov8" title="1">{
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
 
         switch value := value.(type) </span>{
         case string:<span class="cov8" title="1">
@@ -2123,6 +2152,7 @@ func (a *Amount) FromJSON(value any) ([]byte, error) <span class="cov0" title="0
         }
 }
 
+<<<<<<< HEAD
 // ToJSON deserializes a binary-encoded Amount object from a BinaryParser into a JSON representation.
 <<<<<<< HEAD
 func (a *Amount) ToJSON(p interfaces.BinaryParser, _ ...int) (any, error) <span class="cov8" title="1">{
@@ -2155,16 +2185,38 @@ func (a *Amount) ToJSON(p interfaces.BinaryParser, _ ...int) (any, error) <span 
 =======
         <span class="cov0" title="0">var sign string
         if !isPositive(b) </span><span class="cov0" title="0">{
+=======
+// ToJson deserializes a binary-encoded Amount object from a BinaryParser into a JSON representation.
+func (a *Amount) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) <span class="cov8" title="1">{
+        b, err := p.Peek()
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">var sign string
+        if !isPositive(b) </span><span class="cov8" title="1">{
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
                 sign = "-"
         }</span>
-        <span class="cov0" title="0">if isNative(b) </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if isNative(b) </span><span class="cov8" title="1">{
                 xrp, err := p.ReadBytes(8)
-                if err != nil </span><span class="cov0" title="0">{
+                if err != nil </span><span class="cov8" title="1">{
                         return nil, err
                 }</span>
+<<<<<<< HEAD
                 <span class="cov0" title="0">xrpVal := binary.BigEndian.Uint64(xrp)
                 xrpVal &amp;= 0x3FFFFFFFFFFFFFFF
                 return sign + strconv.FormatUint(xrpVal, 10), nil</span>
+=======
+                <span class="cov8" title="1">xrpVal := binary.BigEndian.Uint64(xrp)
+                xrpVal = xrpVal &amp; 0x3FFFFFFFFFFFFFFF
+                return sign + strconv.FormatUint(xrpVal, 10), nil</span>
+        } else<span class="cov8" title="1"> {
+                token, err := p.ReadBytes(48)
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+                <span class="cov8" title="1">return deserializeToken(token)</span>
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
         }
         <span class="cov0" title="0">token, err := p.ReadBytes(48)
         if err != nil </span><span class="cov0" title="0">{
@@ -2187,6 +2239,7 @@ func deserializeToken(data []byte) (map[string]any, error) <span class="cov8" ti
                 }</span>
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         <span class="cov8" title="1">issuer := deserializeIssuer(data[28:])
 =======
         <span class="cov0" title="0">issuer := deserializeIssuer(data[28:])
@@ -2200,6 +2253,17 @@ func deserializeToken(data []byte) (map[string]any, error) <span class="cov8" ti
 =======
         <span class="cov0" title="0">return map[string]any{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+        <span class="cov8" title="1">issuer, err := deserializeIssuer(data[28:])
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">curr, err := deserializeCurrencyCode(data[8:28])
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">return map[string]any{
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
                 "value":    value,
                 "currency": curr,
                 "issuer":   issuer,
@@ -2212,12 +2276,18 @@ func deserializeValue(data []byte) (string, error) <span class="cov8" title="1">
                 sign = "-"
         }</span>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <span class="cov8" title="1">valueBytes := data[:8]
 =======
         <span class="cov0" title="0">valueBytes := data[:8]
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
         b1 := valueBytes[0]
         b2 := valueBytes[1]
+=======
+        <span class="cov8" title="1">value_bytes := data[:8]
+        b1 := value_bytes[0]
+        b2 := value_bytes[1]
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
         e1 := int((b1 &amp; 0x3F) &lt;&lt; 2)
         e2 := int(b2 &gt;&gt; 6)
         exponent := e1 + e2 - 97
@@ -2254,11 +2324,16 @@ func deserializeCurrencyCode(data []byte) (string, error) <span class="cov8" tit
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 func deserializeIssuer(data []byte) string <span class="cov8" title="1">{
 =======
 func deserializeIssuer(data []byte) string <span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
         return addresscodec.Encode(data, []byte{addresscodec.AccountAddressPrefix}, addresscodec.AccountAddressLength)
+=======
+func deserializeIssuer(data []byte) (string, error) <span class="cov8" title="1">{
+        return addresscodec.Encode(data, []byte{addresscodec.AccountAddressPrefix}, addresscodec.AccountAddressLength), nil
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
 }</span>
 
 // verifyXrpValue validates the format of an XRP amount value.
@@ -2789,10 +2864,14 @@ var ErrInvalidPathSet = errors.New("invalid type to construct PathSet from. Expe
 // FromJSON attempts to serialize a path set from a JSON representation of a slice of paths to a byte array.
 // It returns the byte array representation of the path set, or an error if the provided json does not represent a valid path set.
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (p PathSet) FromJSON(json any) ([]byte, error) <span class="cov8" title="1">{
 =======
 func (p PathSet) FromJSON(json any) ([]byte, error) <span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+func (p PathSet) FromJson(json any) ([]byte, error) <span class="cov8" title="1">{
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
 
         if _, ok := json.([]any)[0].([]any); !ok </span><span class="cov8" title="1">{
                 return nil, ErrInvalidPathSet
@@ -2808,10 +2887,14 @@ func (p PathSet) FromJSON(json any) ([]byte, error) <span class="cov0" title="0"
 // ToJSON decodes a path set from a binary representation using a provided binary parser, then translates it to a JSON representation.
 // It returns a slice representing the JSON format of the path set, or an error if the path set could not be decoded or if an invalid step is encountered.
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (p PathSet) ToJSON(parser interfaces.BinaryParser, _ ...int) (any, error) <span class="cov8" title="1">{
 =======
 func (p PathSet) ToJSON(parser interfaces.BinaryParser, _ ...int) (any, error) <span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+func (p PathSet) ToJson(parser interfaces.BinaryParser, opts ...int) (any, error) <span class="cov8" title="1">{
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
         var pathSet []any
 
         for parser.HasMore() </span><span class="cov8" title="1">{
@@ -3083,12 +3166,17 @@ var ErrNotSTObjectInSTArray = errors.New("not STObject in STArray. Array fields 
 // It loops through the JSON slice, and for each element, calls the FromJSON method
 // of an STObject, appending the resulting byte slice to a "sink" slice.
 // The method returns an error if the JSON value is not a slice.
+<<<<<<< HEAD
 func (t *STArray) FromJSON(json any) ([]byte, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
         if _, ok := json.([]any); !ok </span><span class="cov8" title="1">{
 =======
         if _, ok := json.([]any); !ok </span><span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+func (t *STArray) FromJson(json any) ([]byte, error) <span class="cov8" title="1">{
+        if _, ok := json.([]any); !ok </span><span class="cov8" title="1">{
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
                 return nil, ErrNotSTObjectInSTArray
         }</span>
 
@@ -3336,6 +3424,7 @@ func (u *UInt16) FromJSON(value any) ([]byte, error) <span class="cov8" title="1
         <span class="cov8" title="1">buf := new(bytes.Buffer)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         if !IsUint16(value.(int)) </span><span class="cov8" title="1">{
                 return nil, errors.New("uint16: value out of range")
         }</span>
@@ -3347,6 +3436,12 @@ func (u *UInt16) FromJSON(value any) ([]byte, error) <span class="cov8" title="1
 
 
 >>>>>>> 6f8d0fa (feat(binary-codec): improve test coverage for uint8 and uint16 types)
+=======
+        if !IsUint16(value.(int)) </span><span class="cov8" title="1">{
+                return nil, errors.New("uint16: value out of range")
+        }</span>
+
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
         <span class="cov8" title="1">err := binary.Write(buf, binary.BigEndian, uint16(value.(int)))
 
         if err != nil </span><span class="cov0" title="0">{
@@ -3431,6 +3526,7 @@ func (u *UInt64) FromJSON(value any) ([]byte, error) <span class="cov8" title="1
         }</span>
 
         <span class="cov8" title="1">if !isNumeric(value.(string)) </span><span class="cov8" title="1">{
+<<<<<<< HEAD
                 hex, err := hex.DecodeString(value.(string))
                 if err != nil </span><span class="cov8" title="1">{
                         return nil, err
@@ -3446,6 +3542,21 @@ func (u *UInt64) FromJSON(value any) ([]byte, error) <span class="cov8" title="1
                 }</span>
                 <span class="cov0" title="0">return buf.Bytes(), nil</span>
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+                hex, err := hex.DecodeString(value.(string));
+                if  err != nil </span><span class="cov8" title="1">{
+                        return nil, err
+                }</span>
+                <span class="cov8" title="1">buf.Write(hex)
+                return buf.Bytes(), nil</span>
+        } else<span class="cov8" title="1"> {
+                value = strings.Repeat("0", 16-len(value.(string))) + value.(string) // right justify the string
+                decoded, err := hex.DecodeString(value.(string))
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+                <span class="cov8" title="1">buf.Write(decoded)</span>
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
         }
         <span class="cov8" title="1">value = strings.Repeat("0", 16-len(value.(string))) + value.(string) // right justify the string
         decoded, err := hex.DecodeString(value.(string))
@@ -3567,10 +3678,14 @@ type Vector256 struct{}
 // The input value is assumed to be an array of strings representing Hash256 values.
 // If the serialization fails, an error is returned.
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (v *Vector256) FromJSON(json any) ([]byte, error) <span class="cov8" title="1">{
 =======
 func (v *Vector256) FromJSON(json any) ([]byte, error) <span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+func (v *Vector256) FromJson(json any) ([]byte, error) <span class="cov8" title="1">{
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
 
         if _, ok := json.([]string); !ok </span><span class="cov8" title="1">{
                 return nil, &amp;ErrInvalidVector256Type{fmt.Sprintf("%T", json)}
@@ -3606,10 +3721,14 @@ func vector256FromValue(value []string) ([]byte, error) <span class="cov8" title
 // back into an array of JSON string values representing Hash256 values.
 // If the parsing fails, an error is returned.
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (v *Vector256) ToJSON(p interfaces.BinaryParser, opts ...int) (any, error) <span class="cov8" title="1">{
 =======
 func (v *Vector256) ToJSON(p interfaces.BinaryParser, opts ...int) (any, error) <span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+func (v *Vector256) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) <span class="cov8" title="1">{
+>>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
 
         b, err := p.ReadBytes(opts[0])
         if err != nil </span><span class="cov8" title="1">{
