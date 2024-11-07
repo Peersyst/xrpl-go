@@ -62,7 +62,7 @@ func TestTimeConversion_UnixTimeToRippleTime(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run("Unix Time", func(t *testing.T) {
 			actual := UnixTimeToRippleTime(tc.unixTime)
-			assert.Equal(t, actual, tc.rippleTime)
+			assert.Equal(t, tc.rippleTime, actual)
 		})
 	}
 }
