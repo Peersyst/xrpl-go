@@ -115,7 +115,6 @@ func EncodeForSigningClaim(json map[string]any) (string, error) {
 
 // removeNonSigningFields removes the fields from a JSON transaction object that should not be signed.
 func removeNonSigningFields(json map[string]any) map[string]any {
-
 	for k := range json {
 		fi, _ := definitions.Get().GetFieldInstanceByFieldName(k)
 
