@@ -11,8 +11,6 @@ import (
 )
 
 const (
-	// PosSignBitMask is the mask for the positive sign bit.
-	PosSignBitMask = 0x4000000000000000
 	// ZeroQualityHex is the hex representation of the zero quality.
 	ZeroQualityHex = 0x5500000000000000
 	// MaxIOUPrecision is the maximum precision for an IOU.
@@ -63,13 +61,6 @@ func EncodeQuality(quality string) (string, error) {
 
 	// get the scale
 	exp := bigDecimal.Scale
-
-	// set first bit to 1 because it is not XRP
-	serial := uint64(ZeroQualityHex)
-	if bigDecimal.Sign == 0 {
-		// if the sign is positive, set the sign (second) bit to 1
-		serial |= PosSignBitMask
-	}
 
 	serialized := make([]byte, 8)
 	binary.BigEndian.PutUint64(serialized, mantissa)
