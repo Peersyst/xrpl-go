@@ -177,7 +177,7 @@ func (tx *BaseTx) Validate() (bool, error) {
 		return false, fmt.Errorf("transaction type is required")
 	}
 
-	if !typecheck.IsStringNumericUint(tx.Fee.String()) {
+	if !typecheck.IsStringNumericUint(tx.Fee.String(), 10, 64) {
 		return false, errors.New("invalid fee amount, not a uint")
 	}
 
