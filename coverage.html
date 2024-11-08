@@ -1233,11 +1233,19 @@
 				
 				<option value="file152">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_cancel.go (0.0%)</option>
 				
+<<<<<<< HEAD
 				<option value="file153">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_create.go (0.0%)</option>
 				
 				<option value="file154">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_finish.go (0.0%)</option>
 				
 				<option value="file155">github.com/Peersyst/xrpl-go/xrpl/transaction/flags.go (100.0%)</option>
+=======
+				<option value="file153">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_cancel.go (100.0%)</option>
+				
+				<option value="file154">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_create.go (100.0%)</option>
+				
+				<option value="file155">github.com/Peersyst/xrpl-go/xrpl/transaction/escrow_finish.go (100.0%)</option>
+>>>>>>> 31dd37a (fix: coverage)
 				
 				<option value="file156">github.com/Peersyst/xrpl-go/xrpl/transaction/flat_tx.go (0.0%)</option>
 				
@@ -11448,10 +11456,14 @@ type EscrowCancel struct {
         Owner types.Address
         // Transaction sequence (or Ticket number) of EscrowCreate transaction that created the escrow to cancel.
 <<<<<<< HEAD
+<<<<<<< HEAD
         OfferSequence uint32
 =======
         OfferSequence uint
 >>>>>>> 73e5d4c (coverage.html 100% escrowCancel)
+=======
+        OfferSequence uint32
+>>>>>>> 31dd37a (fix: coverage)
 }
 
 // TxType returns the transaction type for this transaction (EscrowCancel).
@@ -11609,6 +11621,7 @@ type EscrowCreate struct {
         Destination types.Address
         // (Optional) The time, in seconds since the Ripple Epoch, when this escrow expires. This value is immutable; the funds can only be returned to the sender after this time.
 <<<<<<< HEAD
+<<<<<<< HEAD
         CancelAfter uint32 `json:",omitempty"`
         // (Optional) The time, in seconds since the Ripple Epoch, when the escrowed XRP can be released to the recipient. This value is immutable, and the funds can't be accessed until this time.
         FinishAfter uint32 `json:",omitempty"`
@@ -11621,12 +11634,15 @@ type EscrowCreate struct {
 // TxType returns the transaction type for this transaction (EscrowCreate).
 =======
         CancelAfter uint `json:",omitempty"`
+=======
+        CancelAfter uint32 `json:",omitempty"`
+>>>>>>> 31dd37a (fix: coverage)
         // (Optional) The time, in seconds since the Ripple Epoch, when the escrowed XRP can be released to the recipient. This value is immutable, and the funds can't be accessed until this time.
-        FinishAfter uint `json:",omitempty"`
+        FinishAfter uint32 `json:",omitempty"`
         // (Optional) Hex value representing a PREIMAGE-SHA-256 crypto-condition. The funds can only be delivered to the recipient if this condition is fulfilled. If the condition is not fulfilled before the expiration time specified in the CancelAfter field, the XRP can only revert to the sender.
         Condition string `json:",omitempty"`
         // (Optional) Arbitrary tag to further specify the destination for this escrowed payment, such as a hosted recipient at the destination address.
-        DestinationTag uint `json:",omitempty"`
+        DestinationTag uint32 `json:",omitempty"`
 }
 
 <<<<<<< HEAD
@@ -11805,10 +11821,14 @@ type EscrowFinish struct {
         Owner types.Address
         // Transaction sequence of EscrowCreate transaction that created the held payment to finish.
 <<<<<<< HEAD
+<<<<<<< HEAD
         OfferSequence uint32
 =======
         OfferSequence uint
 >>>>>>> 652e27c (EscrowFinish 100% coverage)
+=======
+        OfferSequence uint32
+>>>>>>> 31dd37a (fix: coverage)
         // (Optional) Hex value matching the previously-supplied PREIMAGE-SHA-256 crypto-condition of the held payment.
         Condition string `json:",omitempty"`
         // Optional) Hex value of the PREIMAGE-SHA-256 crypto-condition fulfillment matching the held payment's Condition.
