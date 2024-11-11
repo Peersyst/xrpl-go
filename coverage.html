@@ -86,6 +86,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<option value="file12">github.com/Peersyst/xrpl-go/binary-codec/types/amount.go (83.4%)</option>
 =======
 				<option value="file12">github.com/Peersyst/xrpl-go/binary-codec/types/amount.go (55.2%)</option>
@@ -108,6 +109,9 @@
 =======
 				<option value="file12">github.com/Peersyst/xrpl-go/binary-codec/types/amount.go (83.1%)</option>
 >>>>>>> 56be52a (coverage.html)
+=======
+				<option value="file12">github.com/Peersyst/xrpl-go/binary-codec/types/amount.go (83.4%)</option>
+>>>>>>> e748ee4 (fix: coverage report)
 				
 				<option value="file13">github.com/Peersyst/xrpl-go/binary-codec/types/blob.go (100.0%)</option>
 				
@@ -134,6 +138,7 @@
 				
 				<option value="file19">github.com/Peersyst/xrpl-go/binary-codec/types/issue.go (100.0%)</option>
 				
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -252,6 +257,9 @@
 >>>>>>> 3fb9083 (refactor(xrpl): time conversions)
 =======
 >>>>>>> 56be52a (coverage.html)
+=======
+				<option value="file20">github.com/Peersyst/xrpl-go/binary-codec/types/pathset.go (93.8%)</option>
+>>>>>>> e748ee4 (fix: coverage report)
 				
 				<option value="file29">github.com/Peersyst/xrpl-go/binary-codec/types/xchain_bridge.go (100.0%)</option>
 				
@@ -267,6 +275,7 @@
 				
 				<option value="file35">github.com/Peersyst/xrpl-go/pkg/crypto/secp256k1.go (90.3%)</option>
 				
+<<<<<<< HEAD
 				<option value="file36">github.com/Peersyst/xrpl-go/pkg/crypto/sha512.go (100.0%)</option>
 				
 				<option value="file37">github.com/Peersyst/xrpl-go/pkg/crypto/types.go (0.0%)</option>
@@ -1030,6 +1039,9 @@
 				<option value="file183">github.com/Peersyst/xrpl-go/xrpl/transaction/validations_xrpl_objects.go (100.0%)</option>
 				
 =======
+=======
+				<option value="file28">github.com/Peersyst/xrpl-go/binary-codec/types/vector256.go (85.7%)</option>
+>>>>>>> e748ee4 (fix: coverage report)
 				
 				<option value="file29">github.com/Peersyst/xrpl-go/binary-codec/types/xchain_bridge.go (100.0%)</option>
 				
@@ -1252,6 +1264,7 @@
 				<option value="file138">github.com/Peersyst/xrpl-go/xrpl/rpc/response.go (85.7%)</option>
 				
 <<<<<<< HEAD
+<<<<<<< HEAD
 				<option value="file139">github.com/Peersyst/xrpl-go/xrpl/transaction/account_delete.go (0.0%)</option>
 				
 				<option value="file140">github.com/Peersyst/xrpl-go/xrpl/transaction/account_set.go (53.0%)</option>
@@ -1280,6 +1293,8 @@
 				<option value="file151">github.com/Peersyst/xrpl-go/xrpl/transaction/deposit_preauth.go (0.0%)</option>
 =======
 =======
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 				<option value="file139">github.com/Peersyst/xrpl-go/xrpl/time.go (100.0%)</option>
 				
 				<option value="file140">github.com/Peersyst/xrpl-go/xrpl/transaction/account_delete.go (0.0%)</option>
@@ -1514,7 +1529,10 @@
 				<option value="file188">github.com/Peersyst/xrpl-go/xrpl/websocket/queries.go (87.2%)</option>
 				
 				<option value="file189">github.com/Peersyst/xrpl-go/xrpl/websocket/response.go (75.0%)</option>
+<<<<<<< HEAD
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 				
 				</select>
 			</div>
@@ -2875,8 +2893,8 @@ func (e *InvalidCodeError) Error() string <span class="cov8" title="1">{
 // Amount is a struct that represents an XRPL Amount.
 type Amount struct{}
 
-<<<<<<< HEAD
 // FromJSON serializes an issued currency amount to its bytes representation from JSON.
+<<<<<<< HEAD
 <<<<<<< HEAD
 func (a *Amount) FromJSON(value any) ([]byte, error) <span class="cov8" title="1">{
 =======
@@ -2886,6 +2904,9 @@ func (a *Amount) FromJSON(value any) ([]byte, error) <span class="cov0" title="0
 // FromJson serializes an issued currency amount to its bytes representation from JSON.
 func (a *Amount) FromJson(value any) ([]byte, error) <span class="cov8" title="1">{
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+func (a *Amount) FromJSON(value any) ([]byte, error) <span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
 
         switch value := value.(type) </span>{
         case string:<span class="cov8" title="1">
@@ -2897,13 +2918,16 @@ func (a *Amount) FromJson(value any) ([]byte, error) <span class="cov8" title="1
         }
 }
 
-<<<<<<< HEAD
 // ToJSON deserializes a binary-encoded Amount object from a BinaryParser into a JSON representation.
+<<<<<<< HEAD
 <<<<<<< HEAD
 func (a *Amount) ToJSON(p interfaces.BinaryParser, _ ...int) (any, error) <span class="cov8" title="1">{
 =======
 func (a *Amount) ToJSON(p interfaces.BinaryParser, _ ...int) (any, error) <span class="cov0" title="0">{
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+func (a *Amount) ToJSON(p interfaces.BinaryParser, _ ...int) (any, error) <span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
         b, err := p.Peek()
         if err != nil </span><span class="cov8" title="1">{
                 return nil, err
@@ -2918,6 +2942,7 @@ func (a *Amount) ToJSON(p interfaces.BinaryParser, _ ...int) (any, error) <span 
                         return nil, err
                 }</span>
                 <span class="cov8" title="1">xrpVal := binary.BigEndian.Uint64(xrp)
+<<<<<<< HEAD
                 xrpVal &amp;= 0x3FFFFFFFFFFFFFFF
                 return sign + strconv.FormatUint(xrpVal, 10), nil</span>
         }
@@ -2962,13 +2987,21 @@ func (a *Amount) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) <sp
                 }</span>
                 <span class="cov8" title="1">return deserializeToken(token)</span>
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+                xrpVal &amp;= 0x3FFFFFFFFFFFFFFF
+                return sign + strconv.FormatUint(xrpVal, 10), nil</span>
+>>>>>>> e748ee4 (fix: coverage report)
         }
-        <span class="cov0" title="0">token, err := p.ReadBytes(48)
+        <span class="cov8" title="1">token, err := p.ReadBytes(48)
         if err != nil </span><span class="cov0" title="0">{
                 return nil, err
         }</span>
+<<<<<<< HEAD
         <span class="cov0" title="0">return deserializeToken(token)</span>
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
+=======
+        <span class="cov8" title="1">return deserializeToken(token)</span>
+>>>>>>> e748ee4 (fix: coverage report)
 }
 
 func deserializeToken(data []byte) (map[string]any, error) <span class="cov8" title="1">{
@@ -2983,6 +3016,7 @@ func deserializeToken(data []byte) (map[string]any, error) <span class="cov8" ti
                         return nil, err
                 }</span>
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         <span class="cov8" title="1">issuer := deserializeIssuer(data[28:])
@@ -3004,6 +3038,10 @@ func deserializeToken(data []byte) (map[string]any, error) <span class="cov8" ti
                 return nil, err
         }</span>
         <span class="cov8" title="1">curr, err := deserializeCurrencyCode(data[8:28])
+=======
+        <span class="cov8" title="1">issuer := deserializeIssuer(data[28:])
+        curr, err := deserializeCurrencyCode(data[8:28])
+>>>>>>> e748ee4 (fix: coverage report)
         if err != nil </span><span class="cov0" title="0">{
                 return nil, err
         }</span>
@@ -3022,6 +3060,7 @@ func deserializeValue(data []byte) (string, error) <span class="cov8" title="1">
         }</span>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <span class="cov8" title="1">valueBytes := data[:8]
 =======
         <span class="cov0" title="0">valueBytes := data[:8]
@@ -3033,6 +3072,11 @@ func deserializeValue(data []byte) (string, error) <span class="cov8" title="1">
         b1 := value_bytes[0]
         b2 := value_bytes[1]
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+        <span class="cov8" title="1">valueBytes := data[:8]
+        b1 := valueBytes[0]
+        b2 := valueBytes[1]
+>>>>>>> e748ee4 (fix: coverage report)
         e1 := int((b1 &amp; 0x3F) &lt;&lt; 2)
         e2 := int(b2 &gt;&gt; 6)
         exponent := e1 + e2 - 97
@@ -3070,6 +3114,7 @@ func deserializeCurrencyCode(data []byte) (string, error) <span class="cov8" tit
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 func deserializeIssuer(data []byte) string <span class="cov8" title="1">{
 =======
 func deserializeIssuer(data []byte) string <span class="cov0" title="0">{
@@ -3079,6 +3124,10 @@ func deserializeIssuer(data []byte) string <span class="cov0" title="0">{
 func deserializeIssuer(data []byte) (string, error) <span class="cov8" title="1">{
         return addresscodec.Encode(data, []byte{addresscodec.AccountAddressPrefix}, addresscodec.AccountAddressLength), nil
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+func deserializeIssuer(data []byte) string <span class="cov8" title="1">{
+        return addresscodec.Encode(data, []byte{addresscodec.AccountAddressPrefix}, addresscodec.AccountAddressLength)
+>>>>>>> e748ee4 (fix: coverage report)
 }</span>
 
 // verifyXrpValue validates the format of an XRP amount value.
@@ -3399,6 +3448,7 @@ func (b *Blob) ToJSON(p interfaces.BinaryParser, opts ...int) (any, error) <span
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // ErrNotValidJSON is an error that occurs when the json is not valid.
 type ErrNotValidJSON struct{}
 =======
@@ -3417,6 +3467,10 @@ type ErrNotValidJSON struct{}
 // ErrNotValidJson is an error that occurs when the json is not valid.
 type ErrNotValidJson struct{}
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+// ErrNotValidJSON is an error that occurs when the json is not valid.
+type ErrNotValidJSON struct{}
+>>>>>>> e748ee4 (fix: coverage report)
 
 // Error returns the error message for the ErrNotValidJson error.
 func (e *ErrNotValidJSON) Error() string <span class="cov8" title="1">{
@@ -3625,6 +3679,7 @@ var ErrInvalidPathSet = errors.New("invalid type to construct PathSet from. Expe
 // It returns the byte array representation of the path set, or an error if the provided json does not represent a valid path set.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (p PathSet) FromJSON(json any) ([]byte, error) <span class="cov8" title="1">{
 =======
 func (p PathSet) FromJSON(json any) ([]byte, error) <span class="cov0" title="0">{
@@ -3632,6 +3687,9 @@ func (p PathSet) FromJSON(json any) ([]byte, error) <span class="cov0" title="0"
 =======
 func (p PathSet) FromJson(json any) ([]byte, error) <span class="cov8" title="1">{
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+func (p PathSet) FromJSON(json any) ([]byte, error) <span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
 
         if _, ok := json.([]any)[0].([]any); !ok </span><span class="cov8" title="1">{
                 return nil, ErrInvalidPathSet
@@ -3648,6 +3706,7 @@ func (p PathSet) FromJson(json any) ([]byte, error) <span class="cov8" title="1"
 // It returns a slice representing the JSON format of the path set, or an error if the path set could not be decoded or if an invalid step is encountered.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (p PathSet) ToJSON(parser interfaces.BinaryParser, _ ...int) (any, error) <span class="cov8" title="1">{
 =======
 func (p PathSet) ToJSON(parser interfaces.BinaryParser, _ ...int) (any, error) <span class="cov0" title="0">{
@@ -3655,6 +3714,9 @@ func (p PathSet) ToJSON(parser interfaces.BinaryParser, _ ...int) (any, error) <
 =======
 func (p PathSet) ToJson(parser interfaces.BinaryParser, opts ...int) (any, error) <span class="cov8" title="1">{
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+func (p PathSet) ToJSON(parser interfaces.BinaryParser, _ ...int) (any, error) <span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
         var pathSet []any
 
         for parser.HasMore() </span><span class="cov8" title="1">{
@@ -3926,8 +3988,8 @@ var ErrNotSTObjectInSTArray = errors.New("not STObject in STArray. Array fields 
 // It loops through the JSON slice, and for each element, calls the FromJSON method
 // of an STObject, appending the resulting byte slice to a "sink" slice.
 // The method returns an error if the JSON value is not a slice.
-<<<<<<< HEAD
 func (t *STArray) FromJSON(json any) ([]byte, error) <span class="cov8" title="1">{
+<<<<<<< HEAD
 <<<<<<< HEAD
         if _, ok := json.([]any); !ok </span><span class="cov8" title="1">{
 =======
@@ -3937,6 +3999,9 @@ func (t *STArray) FromJSON(json any) ([]byte, error) <span class="cov8" title="1
 func (t *STArray) FromJson(json any) ([]byte, error) <span class="cov8" title="1">{
         if _, ok := json.([]any); !ok </span><span class="cov8" title="1">{
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+        if _, ok := json.([]any); !ok </span><span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
                 return nil, ErrNotSTObjectInSTArray
         }</span>
 
@@ -4293,6 +4358,7 @@ func (u *UInt64) FromJSON(value any) ([]byte, error) <span class="cov8" title="1
                         return nil, err
                 }</span>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <span class="cov8" title="1">buf.Write(hex)
                 return buf.Bytes(), nil</span>
 =======
@@ -4322,6 +4388,10 @@ func (u *UInt64) FromJSON(value any) ([]byte, error) <span class="cov8" title="1
                 }</span>
                 <span class="cov8" title="1">buf.Write(decoded)</span>
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+                <span class="cov8" title="1">buf.Write(hex)
+                return buf.Bytes(), nil</span>
+>>>>>>> e748ee4 (fix: coverage report)
         }
         <span class="cov8" title="1">value = strings.Repeat("0", 16-len(value.(string))) + value.(string) // right justify the string
         decoded, err := hex.DecodeString(value.(string))
@@ -4367,8 +4437,8 @@ type UInt8 struct{}
 // FromJSON converts a JSON value into a serialized byte slice representing an 8-bit unsigned integer.
 // If the input value is a string, it's assumed to be a transaction result name, and the method will
 // attempt to convert it into a transaction result type code. If the conversion fails, an error is returned.
-<<<<<<< HEAD
 func (u *UInt8) FromJSON(value any) ([]byte, error) <span class="cov8" title="1">{
+<<<<<<< HEAD
 <<<<<<< HEAD
         if s, ok := value.(string); ok </span><span class="cov8" title="1">{
 =======
@@ -4378,6 +4448,9 @@ func (u *UInt8) FromJSON(value any) ([]byte, error) <span class="cov8" title="1"
 func (u *UInt8) FromJson(value any) ([]byte, error) <span class="cov8" title="1">{
         if s, ok := value.(string); ok </span><span class="cov8" title="1">{
 >>>>>>> 6f8d0fa (feat(binary-codec): improve test coverage for uint8 and uint16 types)
+=======
+        if s, ok := value.(string); ok </span><span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
                 tc, err := definitions.Get().GetTransactionResultTypeCodeByTransactionResultName(s)
                 if err != nil </span><span class="cov8" title="1">{
                         return nil, err
@@ -4444,6 +4517,7 @@ type Vector256 struct{}
 // If the serialization fails, an error is returned.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (v *Vector256) FromJSON(json any) ([]byte, error) <span class="cov8" title="1">{
 =======
 func (v *Vector256) FromJSON(json any) ([]byte, error) <span class="cov0" title="0">{
@@ -4451,6 +4525,9 @@ func (v *Vector256) FromJSON(json any) ([]byte, error) <span class="cov0" title=
 =======
 func (v *Vector256) FromJson(json any) ([]byte, error) <span class="cov8" title="1">{
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+func (v *Vector256) FromJSON(json any) ([]byte, error) <span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
 
         if _, ok := json.([]string); !ok </span><span class="cov8" title="1">{
                 return nil, &amp;ErrInvalidVector256Type{fmt.Sprintf("%T", json)}
@@ -4487,6 +4564,7 @@ func vector256FromValue(value []string) ([]byte, error) <span class="cov8" title
 // If the parsing fails, an error is returned.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (v *Vector256) ToJSON(p interfaces.BinaryParser, opts ...int) (any, error) <span class="cov8" title="1">{
 =======
 func (v *Vector256) ToJSON(p interfaces.BinaryParser, opts ...int) (any, error) <span class="cov0" title="0">{
@@ -4494,6 +4572,9 @@ func (v *Vector256) ToJSON(p interfaces.BinaryParser, opts ...int) (any, error) 
 =======
 func (v *Vector256) ToJson(p interfaces.BinaryParser, opts ...int) (any, error) <span class="cov8" title="1">{
 >>>>>>> eb782e8 (feat(binary-codec): upgrade test coverage for `types` package)
+=======
+func (v *Vector256) ToJSON(p interfaces.BinaryParser, opts ...int) (any, error) <span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
 
         b, err := p.ReadBytes(opts[0])
         if err != nil </span><span class="cov8" title="1">{
@@ -5267,6 +5348,7 @@ func Sha512Half(msg []byte) []byte <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 type Algorithm struct {
 =======
 =======
@@ -5283,6 +5365,9 @@ type Algorithm struct {
 >>>>>>> 56be52a (coverage.html)
 type CryptoAlgorithm struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type Algorithm struct {
+>>>>>>> e748ee4 (fix: coverage report)
         prefix           uint8
         familySeedPrefix uint8
 }
@@ -5405,6 +5490,7 @@ func IsFloat64(s string) bool <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 // Checks if the given string is a valid number (Uint).
 func IsStringNumericUint(s string, base, bitSize int) bool <span class="cov8" title="1">{
@@ -5417,12 +5503,15 @@ func IsStringNumericUint(s string, base, bitSize int) bool <span class="cov8" ti
 =======
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
 =======
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 
 // Checks if the given string is a valid number (Uint).
 func IsStringNumericUint(s string, base, bitSize int) bool <span class="cov8" title="1">{
         _, err := strconv.ParseUint(s, base, bitSize)
         return err == nil
 }</span>
+<<<<<<< HEAD
 >>>>>>> 737732f (Reinstated the optional validations)
 =======
 >>>>>>> 490806c (fix: coverage)
@@ -5432,6 +5521,8 @@ func IsStringNumericUint(s string, base, bitSize int) bool <span class="cov8" ti
 >>>>>>> 3fb9083 (refactor(xrpl): time conversions)
 =======
 >>>>>>> 56be52a (coverage.html)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 </pre>
 		
 		<pre class="file" id="file41" style="display: none">package currency
@@ -6616,6 +6707,7 @@ const (
 type SignerList struct {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         // The value 0x0053, mapped to the string SignerList, indicates that this is a SignerList ledger entry.
         LedgerEntryType EntryType
         // The identifying hash of the transaction that most recently modified this object.
@@ -6641,8 +6733,10 @@ type SignerList struct {
         SignerQuorum      uint64
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
 =======
+=======
+>>>>>>> e748ee4 (fix: coverage report)
         // The value 0x0053, mapped to the string SignerList, indicates that this is a SignerList ledger entry.
-        LedgerEntryType LedgerEntryType
+        LedgerEntryType EntryType
         // The identifying hash of the transaction that most recently modified this object.
         PreviousTxnID string
         // The index of the ledger that contains the transaction that most recently modified this object.
@@ -6659,7 +6753,10 @@ type SignerList struct {
 >>>>>>> ac3115a (coverage.html after SignerListSet)
 =======
         SignerQuorum uint32
+<<<<<<< HEAD
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 }
 
 // Wrapper for SignerEntry
@@ -6703,8 +6800,11 @@ type SignerEntry struct {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> ac3115a (coverage.html after SignerListSet)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 // Flatten returns a map of the SignerEntry object
 func (s *SignerEntry) Flatten() FlatLedgerObject <span class="cov0" title="0">{
         flattened := make(map[string]interface{})
@@ -6726,12 +6826,16 @@ func (s *SignerEntry) Flatten() FlatLedgerObject <span class="cov0" title="0">{
 
 // EntryType returns the type of the ledger entry (SignerList)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 3c75522 (fix: disable `gosec` linter rule temporaly)
 func (*SignerList) EntryType() EntryType <span class="cov0" title="0">{
 =======
 func (*SignerList) EntryType() LedgerEntryType <span class="cov0" title="0">{
 >>>>>>> ac3115a (coverage.html after SignerListSet)
+=======
+func (*SignerList) EntryType() EntryType <span class="cov0" title="0">{
+>>>>>>> e748ee4 (fix: coverage report)
         return SignerListEntry
 }</span>
 </pre>
@@ -7704,6 +7808,7 @@ func (*ConnectRequest) Method() string <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 type ReservationAddRequest struct {
 =======
 =======
@@ -7720,6 +7825,9 @@ type ReservationAddRequest struct {
 >>>>>>> 56be52a (coverage.html)
 type PeerReservationAddRequest struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type ReservationAddRequest struct {
+>>>>>>> e748ee4 (fix: coverage report)
         PublicKey   string `json:"public_key"`
         Description string `json:"description,omitempty"`
 }
@@ -7731,6 +7839,7 @@ func (*ReservationAddRequest) Method() string <span class="cov0" title="0">{
 		
 		<pre class="file" id="file89" style="display: none">package peer
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -7754,6 +7863,9 @@ type ReservationDelRequest struct {
 >>>>>>> 56be52a (coverage.html)
 type PeerReservationDelRequest struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type ReservationDelRequest struct {
+>>>>>>> e748ee4 (fix: coverage report)
         PublicKey string `json:"public_key"`
 }
 
@@ -7764,6 +7876,7 @@ func (*ReservationDelRequest) Method() string <span class="cov0" title="0">{
 		
 		<pre class="file" id="file90" style="display: none">package peer
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -7787,6 +7900,9 @@ type ReservationsListRequest struct {
 >>>>>>> 56be52a (coverage.html)
 type PeerReservationsListRequest struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type ReservationsListRequest struct {
+>>>>>>> e748ee4 (fix: coverage report)
 }
 
 func (*ReservationsListRequest) Method() string <span class="cov0" title="0">{
@@ -8186,6 +8302,7 @@ type LedgerHash string
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 type ClosedRequest struct {
 =======
 =======
@@ -8202,6 +8319,9 @@ type ClosedRequest struct {
 >>>>>>> 56be52a (coverage.html)
 type LedgerClosedRequest struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type ClosedRequest struct {
+>>>>>>> e748ee4 (fix: coverage report)
 }
 
 func (*ClosedRequest) Method() string <span class="cov0" title="0">{
@@ -8211,6 +8331,7 @@ func (*ClosedRequest) Method() string <span class="cov0" title="0">{
 		
 		<pre class="file" id="file110" style="display: none">package ledger
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -8234,6 +8355,9 @@ type CurrentRequest struct {
 >>>>>>> 56be52a (coverage.html)
 type LedgerCurrentRequest struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type CurrentRequest struct {
+>>>>>>> e748ee4 (fix: coverage report)
 }
 
 func (*CurrentRequest) Method() string <span class="cov0" title="0">{
@@ -9064,6 +9188,7 @@ func (*ManifestRequest) Method() string <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 type InfoRequest struct {
 =======
 =======
@@ -9080,6 +9205,9 @@ type InfoRequest struct {
 >>>>>>> 56be52a (coverage.html)
 type ServerInfoRequest struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type InfoRequest struct {
+>>>>>>> e748ee4 (fix: coverage report)
 }
 
 func (*InfoRequest) Method() string <span class="cov0" title="0">{
@@ -9094,6 +9222,7 @@ func (*InfoRequest) Validate() error <span class="cov0" title="0">{
 		
 		<pre class="file" id="file126" style="display: none">package server
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -9117,6 +9246,9 @@ type StateRequest struct {
 >>>>>>> 56be52a (coverage.html)
 type ServerStateRequest struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type StateRequest struct {
+>>>>>>> e748ee4 (fix: coverage report)
 }
 
 func (*StateRequest) Method() string <span class="cov0" title="0">{
@@ -9712,10 +9844,13 @@ type XRPLResponse interface {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 3fb9083 (refactor(xrpl): time conversions)
 =======
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 		<pre class="file" id="file139" style="display: none">package xrpl
 
 import (
@@ -9771,6 +9906,7 @@ func RippleTimeToISOTime(rippleTime int64) string <span class="cov8" title="1">{
 }</span>
 
 // IsoTimeToRippleTime converts an ISO8601 timestamp to a ripple timestamp.
+<<<<<<< HEAD
 =======
         return formatTimeToISO8601WithMillis(time.Unix(int64(unixTime/1000), 0).UTC()) //.Format(time.RFC3339)
 =======
@@ -9780,6 +9916,8 @@ func RippleTimeToISOTime(rippleTime int64) string <span class="cov8" title="1">{
 
 // IsoTimeToRippleTime converts an ISO8601 timestmap to a ripple timestamp.
 >>>>>>> 3fb9083 (refactor(xrpl): time conversions)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 //
 // iso8601 is the ISO 8601 formatted string.
 //
@@ -9815,6 +9953,7 @@ func parseISO8601(iso8601 string) (time.Time, error) <span class="cov8" title="1
 </pre>
 		
 		<pre class="file" id="file140" style="display: none">package transaction
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 		<pre class="file" id="file139" style="display: none">package transaction
@@ -9855,6 +9994,8 @@ func formatTimeToISO8601WithMillis(t time.Time) string <span class="cov8" title=
 >>>>>>> 56be52a (coverage.html)
 =======
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -9876,6 +10017,7 @@ func (s *AccountDelete) Flatten() FlatTransaction <span class="cov0" title="0">{
 }</span>
 </pre>
 		
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -9912,6 +10054,9 @@ func (s *AccountDelete) Flatten() FlatTransaction <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file141" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file141" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -10323,6 +10468,7 @@ func (s *AccountSet) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file142" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -10351,6 +10497,9 @@ func (s *AccountSet) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file142" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file142" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -10506,6 +10655,7 @@ func validateAuthAccounts(authAccounts []ledger.AuthAccounts) (bool, error) <spa
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file143" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -10534,6 +10684,9 @@ func validateAuthAccounts(authAccounts []ledger.AuthAccounts) (bool, error) <spa
 =======
 		<pre class="file" id="file143" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file143" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "fmt"
@@ -10590,6 +10743,7 @@ func (*AMMCreate) TxType() TxType <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 func (a *AMMCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
 =======
 =======
@@ -10602,6 +10756,9 @@ func (a *AMMCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
 >>>>>>> e943f9c (time conversion functions)
 func (s *AMMCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
 >>>>>>> 60393b5 (coverage.html)
+=======
+func (a *AMMCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
+>>>>>>> e748ee4 (fix: coverage report)
         // Add BaseTx fields
         flattened := a.BaseTx.Flatten()
 
@@ -10652,6 +10809,7 @@ func (a *AMMCreate) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file144" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -10680,6 +10838,9 @@ func (a *AMMCreate) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file144" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file144" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
@@ -10765,6 +10926,7 @@ func (a *AMMDelete) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file145" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -10793,6 +10955,9 @@ func (a *AMMDelete) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file145" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file145" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -10974,6 +11139,7 @@ func (a *AMMDeposit) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file146" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -11002,6 +11168,9 @@ func (a *AMMDeposit) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file146" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file146" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -11093,6 +11262,7 @@ func (a *AMMVote) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file147" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -11121,6 +11291,9 @@ func (a *AMMVote) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file147" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file147" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -11300,6 +11473,7 @@ func (a *AMMWithdraw) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file148" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -11328,6 +11502,9 @@ func (a *AMMWithdraw) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file148" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file148" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -11356,6 +11533,7 @@ func (s *CheckCancel) Flatten() FlatTransaction <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file149" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -11384,6 +11562,9 @@ func (s *CheckCancel) Flatten() FlatTransaction <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file149" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file149" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -11404,6 +11585,7 @@ func (*CheckCash) TxType() TxType <span class="cov0" title="0">{
 func (c *CheckCash) Flatten() FlatTransaction <span class="cov0" title="0">{
         return nil
 }</span>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -11464,6 +11646,8 @@ func (tx *CheckCash) UnmarshalJSON(data []byte) error <span class="cov0" title="
 }
 =======
 >>>>>>> ada3998 (coverage.html)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 </pre>
 		
 <<<<<<< HEAD
@@ -11484,6 +11668,7 @@ func (tx *CheckCash) UnmarshalJSON(data []byte) error <span class="cov0" title="
 >>>>>>> e943f9c (time conversion functions)
 =======
 		<pre class="file" id="file150" style="display: none">package transaction
+<<<<<<< HEAD
 >>>>>>> 3fb9083 (refactor(xrpl): time conversions)
 =======
 >>>>>>> 14b5686 (fix: coverage)
@@ -11493,6 +11678,8 @@ func (tx *CheckCash) UnmarshalJSON(data []byte) error <span class="cov0" title="
 =======
 		<pre class="file" id="file150" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -11564,6 +11751,7 @@ func (c *CheckCreate) UnmarshalJSON(data []byte) error <span class="cov0" title=
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file151" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -11598,6 +11786,9 @@ func (c *CheckCreate) UnmarshalJSON(data []byte) error <span class="cov0" title=
 =======
 		<pre class="file" id="file151" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file151" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -11713,6 +11904,7 @@ func (c *Clawback) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file152" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -11741,6 +11933,9 @@ func (c *Clawback) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file152" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file152" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -11770,6 +11965,7 @@ func (s *DepositPreauth) Flatten() FlatTransaction <span class="cov0" title="0">
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file153" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -11798,6 +11994,9 @@ func (s *DepositPreauth) Flatten() FlatTransaction <span class="cov0" title="0">
 =======
 		<pre class="file" id="file153" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file153" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -11843,6 +12042,9 @@ func (*EscrowCancel) TxType() TxType <span class="cov8" title="1">{
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 // Flatten returns the flattened map of the EscrowCancel transaction.
 func (e *EscrowCancel) Flatten() FlatTransaction <span class="cov8" title="1">{
         flattened := e.BaseTx.Flatten()
@@ -11924,6 +12126,7 @@ func (e *EscrowCancel) Validate() (bool, error) <span class="cov8" title="1">{
 		
 <<<<<<< HEAD
 		<pre class="file" id="file154" style="display: none">package transaction
+<<<<<<< HEAD
 =======
 // TODO: Implement flatten
 func (s *EscrowCancel) Flatten() FlatTransaction <span class="cov0" title="0">{
@@ -11964,6 +12167,8 @@ func (s *EscrowCancel) Flatten() FlatTransaction <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file154" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -12034,6 +12239,9 @@ func (*EscrowCreate) TxType() TxType <span class="cov8" title="1">{
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 // Flatten returns the flattened map of the EscrowCreate transaction.
 func (e *EscrowCreate) Flatten() FlatTransaction <span class="cov8" title="1">{
         flattened := e.BaseTx.Flatten()
@@ -12143,6 +12351,7 @@ func (e *EscrowCreate) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 		<pre class="file" id="file155" style="display: none">package transaction
+<<<<<<< HEAD
 =======
 // TODO: Implement flatten
 func (s *EscrowCreate) Flatten() FlatTransaction <span class="cov0" title="0">{
@@ -12177,6 +12386,8 @@ func (s *EscrowCreate) Flatten() FlatTransaction <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file155" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -12228,6 +12439,9 @@ func (*EscrowFinish) TxType() TxType <span class="cov8" title="1">{
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 // Flatten returns the flattened map of the EscrowFinish transaction.
 func (e *EscrowFinish) Flatten() FlatTransaction <span class="cov8" title="1">{
         flattened := e.BaseTx.Flatten()
@@ -12312,6 +12526,7 @@ func (e *EscrowFinish) Validate() (bool, error) <span class="cov8" title="1">{
 		
 <<<<<<< HEAD
 		<pre class="file" id="file156" style="display: none">package transaction
+<<<<<<< HEAD
 =======
 // TODO: Implement flatten
 func (s *EscrowFinish) Flatten() FlatTransaction <span class="cov0" title="0">{
@@ -12352,6 +12567,8 @@ func (s *EscrowFinish) Flatten() FlatTransaction <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file156" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 
 import "math/big"
 
@@ -12374,6 +12591,7 @@ func IsFlagEnabled(flags uint, checkFlag uint) bool <span class="cov8" title="1"
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file157" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12402,6 +12620,9 @@ func IsFlagEnabled(flags uint, checkFlag uint) bool <span class="cov8" title="1"
 =======
 		<pre class="file" id="file157" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file157" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 var _ Tx = (*FlatTransaction)(nil)
 
@@ -12424,6 +12645,7 @@ func (f FlatTransaction) TxType() TxType <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file158" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12452,6 +12674,9 @@ func (f FlatTransaction) TxType() TxType <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file158" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file158" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 type MemoWrapper struct {
         Memo Memo
@@ -12499,6 +12724,7 @@ func (m *Memo) Flatten() map[string]interface{} <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file159" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12527,6 +12753,9 @@ func (m *Memo) Flatten() map[string]interface{} <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file159" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file159" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -12588,6 +12817,7 @@ func (n *NFTokenAcceptOffer) Flatten() FlatTransaction <span class="cov0" title=
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file160" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12616,6 +12846,9 @@ func (n *NFTokenAcceptOffer) Flatten() FlatTransaction <span class="cov0" title=
 =======
 		<pre class="file" id="file160" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file160" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -12645,6 +12878,7 @@ func (s *NFTokenBurn) Flatten() FlatTransaction <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file161" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12673,6 +12907,9 @@ func (s *NFTokenBurn) Flatten() FlatTransaction <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file161" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file161" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -12701,6 +12938,7 @@ func (s *NFTokenCancelOffer) Flatten() FlatTransaction <span class="cov0" title=
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file162" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12729,6 +12967,9 @@ func (s *NFTokenCancelOffer) Flatten() FlatTransaction <span class="cov0" title=
 =======
 		<pre class="file" id="file162" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file162" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -12799,6 +13040,7 @@ func (n *NFTokenCreateOffer) UnmarshalJSON(data []byte) error <span class="cov0"
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file163" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12833,6 +13075,9 @@ func (n *NFTokenCreateOffer) UnmarshalJSON(data []byte) error <span class="cov0"
 =======
 		<pre class="file" id="file163" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file163" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -12864,6 +13109,7 @@ func (s *NFTokenMint) Flatten() FlatTransaction <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file164" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12892,6 +13138,9 @@ func (s *NFTokenMint) Flatten() FlatTransaction <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file164" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file164" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import "errors"
 
@@ -12953,6 +13202,7 @@ func (o *OfferCancel) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file165" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -12981,6 +13231,9 @@ func (o *OfferCancel) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file165" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file165" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -13103,6 +13356,7 @@ func (o *OfferCreate) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file166" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -13131,6 +13385,9 @@ func (o *OfferCreate) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file166" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file166" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -13170,6 +13427,7 @@ func (p *PathStep) Flatten() map[string]interface{} <span class="cov8" title="1"
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file167" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -13198,6 +13456,9 @@ func (p *PathStep) Flatten() map[string]interface{} <span class="cov8" title="1"
 =======
 		<pre class="file" id="file167" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file167" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -13497,6 +13758,7 @@ func checkPartialPayment(tx *Payment) (bool, error) <span class="cov8" title="1"
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file168" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -13525,6 +13787,9 @@ func checkPartialPayment(tx *Payment) (bool, error) <span class="cov8" title="1"
 =======
 		<pre class="file" id="file168" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file168" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -13624,6 +13889,7 @@ func (s *PaymentChannelClaim) SetCloseFlag() <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file169" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -13652,6 +13918,9 @@ func (s *PaymentChannelClaim) SetCloseFlag() <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file169" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file169" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -13685,6 +13954,7 @@ func (s *PaymentChannelCreate) Flatten() FlatTransaction <span class="cov0" titl
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file170" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -13713,6 +13983,9 @@ func (s *PaymentChannelCreate) Flatten() FlatTransaction <span class="cov0" titl
 =======
 		<pre class="file" id="file170" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file170" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -13743,6 +14016,7 @@ func (s *PaymentChannelFund) Flatten() FlatTransaction <span class="cov0" title=
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file171" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -13771,6 +14045,9 @@ func (s *PaymentChannelFund) Flatten() FlatTransaction <span class="cov0" title=
 =======
 		<pre class="file" id="file171" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file171" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -13874,6 +14151,7 @@ func (s *SetRegularKey) Flatten() FlatTransaction <span class="cov0" title="0">{
 </pre>
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file171" style="display: none">package transaction
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -13900,6 +14178,9 @@ func (s *SetRegularKey) Flatten() FlatTransaction <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file172" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file172" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -13950,6 +14231,7 @@ func (sd *SignerData) Flatten() FlatSignerData <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
@@ -13972,6 +14254,9 @@ func (sd *SignerData) Flatten() FlatSignerData <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file173" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file173" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "fmt"
@@ -14103,6 +14388,7 @@ func (s *SignerListSet) Validate() (bool, error) <span class="cov8" title="1">{
 }
 </pre>
 		
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -14132,6 +14418,9 @@ func (s *SignerListSet) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file174" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file174" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "fmt"
@@ -14280,6 +14569,7 @@ const (
         // https://xrpl.org/docs/references/protocol/transactions/types/ticketcreate#ticketcreate-fields
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         MinTicketCount = 1
         // Maximum TicketCount value.
         // https://xrpl.org/docs/references/protocol/transactions/types/ticketcreate#ticketcreate-fields
@@ -14289,10 +14579,13 @@ const (
 const (
         // Minimum TicketCount value.
         // https://xrpl.org/docs/references/protocol/transactions/types/ticketcreate#ticketcreate-fields
+=======
+>>>>>>> e748ee4 (fix: coverage report)
         MinTicketCount = 1
         // Maximum TicketCount value.
         // https://xrpl.org/docs/references/protocol/transactions/types/ticketcreate#ticketcreate-fields
         MaxTicketCount = 250
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 737732f (Reinstated the optional validations)
@@ -14322,6 +14615,8 @@ const (
         // Maximum TicketCount value.
         // https://xrpl.org/docs/references/protocol/transactions/types/ticketcreate#ticketcreate-fields
         MAX_TICKET_COUNT = 250
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 )
 
 // A TicketCreate transaction sets aside one or more sequence numbers as Tickets.
@@ -14388,6 +14683,7 @@ func (t *TicketCreate) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file175" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -14416,6 +14712,9 @@ func (t *TicketCreate) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file175" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file175" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
@@ -14472,6 +14771,7 @@ type DeletedNode struct {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file176" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -14500,6 +14800,9 @@ type DeletedNode struct {
 =======
 		<pre class="file" id="file176" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file176" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -14671,6 +14974,7 @@ func (t *TrustSet) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file177" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -14711,6 +15015,9 @@ import (
 =======
 		<pre class="file" id="file177" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file177" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -15022,6 +15329,7 @@ func (tx *BaseTx) Validate() (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file178" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -15050,6 +15358,9 @@ func (tx *BaseTx) Validate() (bool, error) <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file178" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file178" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 type TxType string
 
@@ -15102,6 +15413,7 @@ func (t TxType) String() string <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file179" style="display: none">package types
 <<<<<<< HEAD
 =======
@@ -15130,6 +15442,9 @@ func (t TxType) String() string <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file179" style="display: none">package types
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file179" style="display: none">package types
+>>>>>>> e748ee4 (fix: coverage report)
 
 type Address string
 
@@ -15146,6 +15461,7 @@ func (a Address) String() string <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file180" style="display: none">package types
 <<<<<<< HEAD
 =======
@@ -15174,6 +15490,9 @@ func (a Address) String() string <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file180" style="display: none">package types
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file180" style="display: none">package types
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "encoding/json"
@@ -15299,6 +15618,7 @@ func (a *XRPCurrencyAmount) UnmarshalText(data []byte) error <span class="cov0" 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file181" style="display: none">package types
 <<<<<<< HEAD
 =======
@@ -15327,6 +15647,9 @@ func (a *XRPCurrencyAmount) UnmarshalText(data []byte) error <span class="cov0" 
 =======
 		<pre class="file" id="file181" style="display: none">package types
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file181" style="display: none">package types
+>>>>>>> e748ee4 (fix: coverage report)
 
 type Hash128 string
 
@@ -15343,6 +15666,7 @@ func (h *Hash128) String() string <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file182" style="display: none">package types
 <<<<<<< HEAD
 =======
@@ -15371,6 +15695,9 @@ func (h *Hash128) String() string <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file182" style="display: none">package types
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file182" style="display: none">package types
+>>>>>>> e748ee4 (fix: coverage report)
 
 type Hash256 string
 
@@ -15387,6 +15714,7 @@ func (h *Hash256) String() string <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file183" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -15415,6 +15743,9 @@ func (h *Hash256) String() string <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file183" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file183" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "fmt"
@@ -15484,6 +15815,7 @@ func validateSigners(signers []Signer) error <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file184" style="display: none">package transaction
 <<<<<<< HEAD
 =======
@@ -15512,6 +15844,9 @@ func validateSigners(signers []Signer) error <span class="cov8" title="1">{
 =======
 		<pre class="file" id="file184" style="display: none">package transaction
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file184" style="display: none">package transaction
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "errors"
@@ -15745,6 +16080,7 @@ func IsAsset(asset ledger.Asset) (bool, error) <span class="cov8" title="1">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file185" style="display: none">package xrpl
 =======
 		<pre class="file" id="file184" style="display: none">package xrpl
@@ -15849,6 +16185,9 @@ func formatTimeToISO8601WithMillis(t time.Time) string <span class="cov8" title=
 =======
 		<pre class="file" id="file185" style="display: none">package xrpl
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file185" style="display: none">package xrpl
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "encoding/hex"
@@ -16036,6 +16375,7 @@ func (w *Wallet) GetAddress() string <span class="cov0" title="0">{
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file186" style="display: none">package websocket
 <<<<<<< HEAD
 =======
@@ -16064,6 +16404,9 @@ func (w *Wallet) GetAddress() string <span class="cov0" title="0">{
 =======
 		<pre class="file" id="file186" style="display: none">package websocket
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file186" style="display: none">package websocket
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "bytes"
@@ -16459,6 +16802,7 @@ func (c *Client) setTransactionFlags(tx *transaction.FlatTransaction) error <spa
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file187" style="display: none">package websocket
 <<<<<<< HEAD
 =======
@@ -16473,6 +16817,8 @@ type ClientConfig struct {
 >>>>>>> 490806c (fix: coverage)
 		<pre class="file" id="file186" style="display: none">package websocket
 =======
+=======
+>>>>>>> e748ee4 (fix: coverage report)
 		<pre class="file" id="file187" style="display: none">package websocket
 >>>>>>> e943f9c (time conversion functions)
 =======
@@ -16487,8 +16833,12 @@ type ClientConfig struct {
 		<pre class="file" id="file187" style="display: none">package websocket
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
 
+<<<<<<< HEAD
 type WebsocketClientConfig struct {
 >>>>>>> 96bd8ff (EscrowCreate Validate and test, 100% coverage)
+=======
+type ClientConfig struct {
+>>>>>>> e748ee4 (fix: coverage report)
         // Connection config
         host string
 
@@ -16545,6 +16895,7 @@ func (wc ClientConfig) WithFaucetProvider(fp FaucetProvider) ClientConfig <span 
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file188" style="display: none">package websocket
 <<<<<<< HEAD
 =======
@@ -16573,6 +16924,9 @@ func (wc ClientConfig) WithFaucetProvider(fp FaucetProvider) ClientConfig <span 
 =======
 		<pre class="file" id="file188" style="display: none">package websocket
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file188" style="display: none">package websocket
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "github.com/Peersyst/xrpl-go/xrpl/currency"
@@ -16691,6 +17045,7 @@ func (c *Client) GetServerInfo(req *server.InfoRequest) (*server.InfoResponse, e
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		<pre class="file" id="file189" style="display: none">package websocket
 <<<<<<< HEAD
 =======
@@ -16719,6 +17074,9 @@ func (c *Client) GetServerInfo(req *server.InfoRequest) (*server.InfoResponse, e
 =======
 		<pre class="file" id="file189" style="display: none">package websocket
 >>>>>>> 4fd2689 (fix(xrpl): `SignerList` and `SignerListSet` field types)
+=======
+		<pre class="file" id="file189" style="display: none">package websocket
+>>>>>>> e748ee4 (fix: coverage report)
 
 import (
         "fmt"
