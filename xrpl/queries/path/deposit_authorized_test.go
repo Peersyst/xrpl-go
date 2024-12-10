@@ -11,7 +11,7 @@ func TestDepositAuthorizedRequest(t *testing.T) {
 	s := DepositAuthorizedRequest{
 		SourceAccount:      "rEhxGqkqPPSxQ3P25J66ft5TwpzV14k2de",
 		DestinationAccount: "rsUiUMpnrgxQp24dJYZDhmV4bE3aBtQyt8",
-		LedgerIndex:        common.VALIDATED,
+		LedgerIndex:        common.Validated,
 	}
 
 	j := `{
@@ -20,7 +20,7 @@ func TestDepositAuthorizedRequest(t *testing.T) {
 	"ledger_index": "validated"
 }`
 
-	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
+	if err := testutil.Serialize(t, s, j); err != nil {
 		t.Error(err)
 	}
 }

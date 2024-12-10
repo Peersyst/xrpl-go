@@ -117,7 +117,7 @@ func TestCreateRequest(t *testing.T) {
 		req := &account.ChannelsRequest{
 			Account:            "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",
 			DestinationAccount: "rnZvsWuLem5Ha46AZs61jLWR9R5esinkG3",
-			LedgerIndex:        common.VALIDATED,
+			LedgerIndex:        common.Validated,
 		}
 
 		expetedBody := Request{
@@ -205,7 +205,7 @@ func TestSendRequest(t *testing.T) {
 		req := &account.ChannelsRequest{
 			Account:            "rLHmBn4fT92w4F6ViyYbjoizLTo83tHTHu",
 			DestinationAccount: "rnZvsWuLem5Ha46AZs61jLWR9R5esinkG3",
-			LedgerIndex:        common.VALIDATED,
+			LedgerIndex:        common.Validated,
 		}
 
 		response := `{

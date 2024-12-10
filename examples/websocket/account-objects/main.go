@@ -35,4 +35,14 @@ func main() {
 	for _, obj := range accountObjRes.AccountObjects {
 		fmt.Println("Object: ", obj)
 	}
+
+	accountLinesRes, err := client.GetAccountLines(&account.LinesRequest{
+		Account: types.Address(wallet.GetAddress()),
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Account lines: ", accountLinesRes)
 }

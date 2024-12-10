@@ -3,17 +3,18 @@ package server
 import (
 	"testing"
 
+	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
 )
 
 func TestServerStateResponse(t *testing.T) {
 	s := StateResponse{
-		State: State{
+		State: servertypes.State{
 			BuildVersion:    "1.7.2",
 			CompleteLedgers: "64572720-65887201",
 			IOLatencyMS:     1,
 			JQTransOverflow: "0",
-			LastClose: &StateClose{
+			LastClose: servertypes.CloseState{
 				ConvergeTime: 3005,
 				Proposers:    41,
 			},
@@ -27,31 +28,31 @@ func TestServerStateResponse(t *testing.T) {
 			PubkeyNode:              "n9MozjnGB3tpULewtTsVtuudg5JqYFyV3QFdAtVLzJaxHcBaxuXD",
 			ServerState:             "full",
 			ServerStateDurationUS:   "3588969453592",
-			StateAccounting: map[string]StateAccounting{
-				"connected": {
+			StateAccounting: servertypes.StateAccountingFinal{
+				Connected: servertypes.InfoAccounting{
 					DurationUS:  "301410595",
 					Transitions: "2",
 				},
-				"disconnected": {
+				Disconnected: servertypes.InfoAccounting{
 					DurationUS:  "1207534",
 					Transitions: "2",
 				},
-				"full": {
+				Full: servertypes.InfoAccounting{
 					DurationUS:  "3589171798767",
 					Transitions: "2",
 				},
-				"syncing": {
+				Syncing: servertypes.InfoAccounting{
 					DurationUS:  "6182323",
 					Transitions: "2",
 				},
-				"tracking": {
+				Tracking: servertypes.InfoAccounting{
 					DurationUS:  "43",
 					Transitions: "2",
 				},
 			},
 			Time:   "2021-Aug-24 20:44:43.466048 UTC",
 			Uptime: 3589480,
-			ValidatedLedger: &LedgerState{
+			ValidatedLedger: servertypes.LedgerState{
 				BaseFee:     10,
 				CloseTime:   683153081,
 				Hash:        "B52AC3876412A152FE9C0442801E685D148D05448D0238587DBA256330A98FD3",
@@ -67,11 +68,23 @@ func TestServerStateResponse(t *testing.T) {
 	"state": {
 		"build_version": "1.7.2",
 		"complete_ledgers": "64572720-65887201",
+		"closed_ledger": {
+			"age": 0,
+			"base_fee": 0,
+			"hash": "",
+			"reserve_base": 0,
+			"reserve_inc": 0,
+			"seq": 0
+		},
 		"io_latency_ms": 1,
 		"jq_trans_overflow": "0",
 		"last_close": {
 			"converge_time": 3005,
 			"proposers": 41
+		},
+		"load": {
+			"job_types": null,
+			"threads": 0
 		},
 		"load_base": 256,
 		"load_factor": 256,
@@ -84,12 +97,12 @@ func TestServerStateResponse(t *testing.T) {
 		"server_state": "full",
 		"server_state_duration_us": "3588969453592",
 		"state_accounting": {
-			"connected": {
-				"duration_us": "301410595",
-				"transitions": "2"
-			},
 			"disconnected": {
 				"duration_us": "1207534",
+				"transitions": "2"
+			},
+			"connected": {
+				"duration_us": "301410595",
 				"transitions": "2"
 			},
 			"full": {

@@ -7,8 +7,10 @@ import (
 
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
+	accounttypes "github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
+	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket/testutil"
 	"github.com/gorilla/websocket"
 )
@@ -40,7 +42,7 @@ func TestWebsocketClient_GetServerInfo(t *testing.T) {
 				},
 			},
 			expected: &server.InfoResponse{
-				Info: server.Info{
+				Info: servertypes.Info{
 					BuildVersion:     "1.9.4",
 					CompleteLedgers:  "32570-62964740",
 					HostID:           "MIST",
@@ -380,7 +382,7 @@ func TestGetAccountLines(t *testing.T) {
 			}},
 			expected: &account.LinesResponse{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
-				Lines: []account.TrustLine{
+				Lines: []accounttypes.TrustLine{
 					{
 						Account:  "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",
 						Balance:  "10",

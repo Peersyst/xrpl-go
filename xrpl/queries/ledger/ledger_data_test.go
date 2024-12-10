@@ -9,7 +9,7 @@ import (
 
 func TestLedgerDataRequest(t *testing.T) {
 	s := DataRequest{
-		LedgerIndex: common.CLOSED,
+		LedgerIndex: common.Closed,
 		Binary:      true,
 		Limit:       5,
 	}
@@ -18,7 +18,7 @@ func TestLedgerDataRequest(t *testing.T) {
 	"binary": true,
 	"limit": 5
 }`
-	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
+	if err := testutil.Serialize(t, s, j); err != nil {
 		t.Error(err)
 	}
 }

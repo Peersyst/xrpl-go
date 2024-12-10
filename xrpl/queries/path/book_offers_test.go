@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+	pathtypes "github.com/Peersyst/xrpl-go/xrpl/queries/path/types"
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
@@ -11,10 +12,10 @@ import (
 func TestBookOffersRequest(t *testing.T) {
 	s := BookOffersRequest{
 		Taker: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
-		TakerGets: types.IssuedCurrencyAmount{
+		TakerGets: pathtypes.BookOfferCurrency{
 			Currency: "XRP",
 		},
-		TakerPays: types.IssuedCurrencyAmount{
+		TakerPays: pathtypes.BookOfferCurrency{
 			Currency: "USD",
 			Issuer:   "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
 		},
@@ -25,14 +26,14 @@ func TestBookOffersRequest(t *testing.T) {
 		"currency": "XRP"
 	},
 	"taker_pays": {
-		"issuer": "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B",
-		"currency": "USD"
+		"currency": "USD",
+		"issuer": "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B"
 	},
-	"limit": 10,
-	"taker": "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59"
+	"taker": "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
+	"limit": 10
 }`
 
-	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
+	if err := testutil.Serialize(t, s, j); err != nil {
 		t.Error(err)
 	}
 }
@@ -40,7 +41,7 @@ func TestBookOffersRequest(t *testing.T) {
 func TestBookOffersResponse(t *testing.T) {
 	s := BookOffersResponse{
 		LedgerCurrentIndex: 7035305,
-		Offers: []BookOffer{
+		Offers: []pathtypes.BookOffer{
 			{
 				Offer: ledger.Offer{
 					Account:           "rM3X3QSr8icjTGpaF52dozhbT2BZSXJQYM",
@@ -141,7 +142,7 @@ func TestBookOffersResponse(t *testing.T) {
 		}
 	]
 }`
-	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
+	if err := testutil.Serialize(t, s, j); err != nil {
 		t.Error(err)
 	}
 }
