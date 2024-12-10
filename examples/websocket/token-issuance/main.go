@@ -21,11 +21,21 @@ func main() {
 	//
 	fmt.Println("⏳ Setting up client...")
 	client := websocket.NewClient(
-		websocket.NewWebsocketClientConfig().
+		websocket.NewClientConfig().
 			WithHost("wss://s.altnet.rippletest.net").
 			WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
 	)
+	defer client.Disconnect()
 	fmt.Println("✅ Client configured!")
+	fmt.Println()
+
+	fmt.Println("Connecting to server...")
+	if err := client.Connect(); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Connection: ", client.IsConnected())
 	fmt.Println()
 
 	//

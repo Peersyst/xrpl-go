@@ -27,10 +27,19 @@ func main() {
 	}
 
 	client := websocket.NewClient(
-		websocket.NewWebsocketClientConfig().
+		websocket.NewClientConfig().
 			WithHost("wss://s.altnet.rippletest.net:51233").
 			WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
 	)
+	defer client.Disconnect()
+
+	fmt.Println("Connecting to server...")
+	if err := client.Connect(); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Connection: ", client.IsConnected())
 
 	balance, err := client.GetXrpBalance(wallet.GetAddress())
 

@@ -13,9 +13,18 @@ import (
 func main() {
 
 	wsClient := websocket.NewClient(
-		websocket.NewWebsocketClientConfig().
+		websocket.NewClientConfig().
 			WithHost("wss://s.altnet.rippletest.net:51233"),
 	)
+	defer wsClient.Disconnect()
+
+	fmt.Println("Connecting to server...")
+	if err := wsClient.Connect(); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Connection: ", wsClient.IsConnected())
 
 	wallet, err := xrpl.NewWalletFromSeed("sEdSMVV4dJ1JbdBxmakRR4Puu3XVZz2", "")
 	if err != nil {
