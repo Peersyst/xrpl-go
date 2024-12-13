@@ -1,8 +1,6 @@
 package websocket
 
 import (
-	"fmt"
-
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -44,7 +42,6 @@ func (r *ClientXrplResponse) GetResult(v any) error {
 	}
 	err = dec.Decode(r.Result)
 	if err != nil {
-		fmt.Println("aqui", err)
 		return err
 	}
 	return nil

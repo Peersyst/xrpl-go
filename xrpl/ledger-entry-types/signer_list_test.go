@@ -103,7 +103,7 @@ func TestSignerEntry_Flatten(t *testing.T) {
 	}
 
 	flattened := s.Flatten()
-	require.Equal(t, flattened["Account"], s.Account)
-	require.Equal(t, flattened["SignerWeight"], s.SignerWeight)
-	require.Equal(t, flattened["WalletLocator"], s.WalletLocator)
+	require.Equal(t, flattened["Account"], s.Account.String())
+	require.Equal(t, flattened["SignerWeight"], int(s.SignerWeight))
+	require.Equal(t, flattened["WalletLocator"], s.WalletLocator.String())
 }

@@ -8,13 +8,9 @@ type Signer struct {
 	SignerData SignerData `json:"Signer"`
 }
 
-type FlatSigner map[string]interface{}
-
-func (s *Signer) Flatten() FlatSigner {
-	flattened := make(FlatSigner)
-	if s.SignerData != (SignerData{}) {
-		flattened["SignerData"] = s.SignerData.Flatten()
-	}
+func (s *Signer) Flatten() map[string]interface{} {
+	flattened := make(map[string]interface{})
+	flattened["Signer"] = s.SignerData.Flatten()
 	return flattened
 }
 
@@ -26,8 +22,8 @@ type SignerData struct {
 
 type FlatSignerData map[string]interface{}
 
-func (sd *SignerData) Flatten() FlatSignerData {
-	flattened := make(FlatSignerData)
+func (sd *SignerData) Flatten() map[string]interface{} {
+	flattened := make(map[string]interface{})
 	if sd.Account != "" {
 		flattened["Account"] = sd.Account.String()
 	}

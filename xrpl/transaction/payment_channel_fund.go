@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/Peersyst/xrpl-go/xrpl"
+	rippletime "github.com/Peersyst/xrpl-go/xrpl/time"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -67,7 +67,7 @@ func (p *PaymentChannelFund) Validate() (bool, error) {
 	}
 
 	// check the expiration time is in the future. /!\ Incomplete as the channel SettleDelay is not taken into account but it's already a good check.
-	currentRippleTime := xrpl.UnixTimeToRippleTime(time.Now().Unix())
+	currentRippleTime := rippletime.UnixTimeToRippleTime(time.Now().Unix())
 	if (p.Expiration != 0) && (p.Expiration < uint32(currentRippleTime)) {
 		return false, ErrInvalidExpiration
 	}

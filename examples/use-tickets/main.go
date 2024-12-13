@@ -70,7 +70,7 @@ func main() {
 	fmt.Println("Submitting TicketCreate transaction...")
 	tc := &transaction.TicketCreate{
 		BaseTx: transaction.BaseTx{
-			Account: wallet.GetAddress(),
+			Account:  wallet.GetAddress(),
 			Sequence: info.AccountData.Sequence,
 		},
 		TicketCount: 10,
@@ -120,8 +120,8 @@ func main() {
 
 	as := &transaction.AccountSet{
 		BaseTx: transaction.BaseTx{
-			Account: wallet.GetAddress(),
-			Sequence: 0,
+			Account:        wallet.GetAddress(),
+			Sequence:       0,
 			TicketSequence: uint32(seq),
 		},
 	}

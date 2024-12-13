@@ -210,7 +210,7 @@ func TestBaseTx_Flatten(t *testing.T) {
 				"NetworkId": 1,
 				"Signers": [
 					{
-						"SignerData": {
+						"Signer": {
 							"Account": "rDqbKhee18wUCnvjPjZA5Kgpe4zeubLQUC", 
 							"TxnSignature": "abc123", 
 							"SigningPubKey": "def456"

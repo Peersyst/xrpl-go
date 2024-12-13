@@ -89,8 +89,7 @@ func TestSignerListSet_Flatten(t *testing.T) {
 			expected: `{
 				"TransactionType": "SignerListSet",
 				"Account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
-				"Fee": "12",
-				"SignerQuorum": 0
+				"Fee": "12"
 			}`,
 		},
 		{
@@ -104,8 +103,7 @@ func TestSignerListSet_Flatten(t *testing.T) {
 			expected: `{
 				"TransactionType": "SignerListSet",
 				"Account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
-				"Fee": "12",
-				"SignerQuorum": 0
+				"Fee": "12"
 			}`,
 		},
 	}

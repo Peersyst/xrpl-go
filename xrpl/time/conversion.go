@@ -1,4 +1,4 @@
-package xrpl
+package time
 
 import (
 	"time"

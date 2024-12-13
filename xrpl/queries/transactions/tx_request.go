@@ -34,10 +34,11 @@ func (*TxRequest) Validate() error {
 
 // The expected response from the tx method.
 type TxResponse struct {
-	Date        uint                        `json:"date"`
-	Hash        types.Hash256               `json:"hash"`
-	LedgerIndex common.LedgerIndex          `json:"ledger_index"`
-	Meta        transaction.TxMeta          `json:"meta"`
-	Validated   bool                        `json:"validated"`
-	Tx          transaction.FlatTransaction `json:",omitempty"`
+	Date        uint               `json:"date"`
+	Hash        types.Hash256      `json:"hash"`
+	LedgerIndex common.LedgerIndex `json:"ledger_index"`
+	// TODO: Improve Meta parsing
+	Meta      any                         `json:"meta"`
+	Validated bool                        `json:"validated"`
+	Tx        transaction.FlatTransaction `json:",omitempty"`
 }

@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
+	rippletime "github.com/Peersyst/xrpl-go/xrpl/time"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/stretchr/testify/assert"
 )
@@ -105,7 +105,7 @@ func TestPaymentChannelFund_Validate(t *testing.T) {
 				Amount:  types.XRPCurrencyAmount(200000),
 			},
 			expirationSetter: func(tx *PaymentChannelFund) {
-				tx.Expiration = uint32(xrpl.UnixTimeToRippleTime(time.Now().Unix()) + 5000)
+				tx.Expiration = uint32(rippletime.UnixTimeToRippleTime(time.Now().Unix()) + 5000)
 			},
 			wantValid:   false,
 			wantErr:     true,

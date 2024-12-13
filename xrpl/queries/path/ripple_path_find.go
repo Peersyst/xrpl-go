@@ -13,13 +13,13 @@ import (
 // The ripple_path_find method is a simplified version of the path_find method
 // that provides a single response with a payment path you can use right away.
 type RipplePathFindRequest struct {
-	SourceAccount      types.Address                `json:"source_account"`
-	DestinationAccount types.Address                `json:"destination_account"`
-	DestinationAmount  types.CurrencyAmount         `json:"destination_amount"`
-	SendMax            types.CurrencyAmount         `json:"send_max,omitempty"`
-	SourceCurrencies   []types.IssuedCurrencyAmount `json:"source_currencies,omitempty"`
-	LedgerHash         common.LedgerHash            `json:"ledger_hash,omitempty"`
-	LedgerIndex        common.LedgerSpecifier       `json:"ledger_index,omitempty"`
+	SourceAccount      types.Address                      `json:"source_account"`
+	DestinationAccount types.Address                      `json:"destination_account"`
+	DestinationAmount  types.CurrencyAmount               `json:"destination_amount"`
+	SendMax            types.CurrencyAmount               `json:"send_max,omitempty"`
+	SourceCurrencies   []pathtypes.RipplePathFindCurrency `json:"source_currencies,omitempty"`
+	LedgerHash         common.LedgerHash                  `json:"ledger_hash,omitempty"`
+	LedgerIndex        common.LedgerSpecifier             `json:"ledger_index,omitempty"`
 }
 
 func (*RipplePathFindRequest) Method() string {

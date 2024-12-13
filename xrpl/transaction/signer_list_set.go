@@ -79,17 +79,20 @@ func (s *SignerListSet) Flatten() FlatTransaction {
 	flattened := s.BaseTx.Flatten()
 
 	flattened["TransactionType"] = "SignerListSet"
-	flattened["SignerQuorum"] = s.SignerQuorum
+
+	if s.SignerQuorum != 0 {
+		flattened["SignerQuorum"] = s.SignerQuorum
+	}
 
 	if len(s.SignerEntries) > 0 {
-		flattedSignerListEntries := make([]map[string]interface{}, 0)
-		for _, signerEntry := range s.SignerEntries {
-			flattenedEntry := signerEntry.Flatten()
-			if flattenedEntry != nil {
-				flattedSignerListEntries = append(flattedSignerListEntries, flattenedEntry)
-			}
+		signerEntries := make([]interface{}, len(s.SignerEntries))
+		for i, entry := range s.SignerEntries {
+			signerEntry := make(map[string]interface{})
+
+			signerEntry["SignerEntry"] = entry.SignerEntry.Flatten()
+			signerEntries[i] = signerEntry
 		}
-		flattened["SignerEntries"] = flattedSignerListEntries
+		flattened["SignerEntries"] = signerEntries
 	}
 
 	return flattened

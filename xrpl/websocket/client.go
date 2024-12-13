@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"strconv"
 	"sync/atomic"
 
 	binarycodec "github.com/Peersyst/xrpl-go/binary-codec"
@@ -102,7 +103,7 @@ func (c *Client) Autofill(tx *transaction.FlatTransaction) error {
 		}
 	}
 	if _, ok := (*tx)["Fee"]; !ok {
-		err := c.calculateFeePerTransactionType(tx)
+		err := c.calculateFeePerTransactionType(tx, 0)
 		if err != nil {
 			return err
 		}
@@ -127,6 +128,20 @@ func (c *Client) Autofill(tx *transaction.FlatTransaction) error {
 			}
 		}
 	}
+	return nil
+}
+
+func (c *Client) AutofillMultisigned(tx *transaction.FlatTransaction, nSigners int) error {
+	err := c.Autofill(tx)
+	if err != nil {
+		return err
+	}
+
+	err = c.calculateFeePerTransactionType(tx, nSigners)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -195,15 +210,8 @@ func (c *Client) Submit(txBlob string, failHard bool) (*requests.SubmitResponse,
 
 	_, okTxSig := tx["TxSignature"].(string)
 	_, okPubKey := tx["SigningPubKey"].(string)
-	signers, okSigners := tx["Signers"].([]transaction.Signer)
 
-	if okSigners && len(signers) > 0 {
-		for _, signer := range signers {
-			if signer.SignerData.SigningPubKey == "" && signer.SignerData.TxnSignature == "" {
-				return nil, errors.New("signer data is empty")
-			}
-		}
-	} else if !okTxSig && !okPubKey {
+	if !okTxSig && !okPubKey {
 		return nil, errors.New("transaction must have a TxSignature or SigningPubKey set")
 	}
 
@@ -211,6 +219,42 @@ func (c *Client) Submit(txBlob string, failHard bool) (*requests.SubmitResponse,
 		TxBlob:   txBlob,
 		FailHard: failHard,
 	})
+}
+
+func (c *Client) SubmitMultisigned(txBlob string, failHard bool) (*requests.SubmitMultisignedResponse, error) {
+	tx, err := binarycodec.Decode(txBlob)
+	if err != nil {
+		return nil, err
+	}
+	signers, okSigners := tx["Signers"].([]interface{})
+
+	if okSigners && len(signers) > 0 {
+		for _, sig := range signers {
+			signer := sig.(map[string]any)
+			signerData := signer["Signer"].(map[string]any)
+			if signerData["SigningPubKey"] == "" && signerData["TxnSignature"] == "" {
+				return nil, errors.New("signer data is empty")
+			}
+		}
+	}
+
+	return c.submitMultisignedRequest(&requests.SubmitMultisignedRequest{
+		Tx:       tx,
+		FailHard: failHard,
+	})
+}
+
+func (c *Client) submitMultisignedRequest(req *requests.SubmitMultisignedRequest) (*requests.SubmitMultisignedResponse, error) {
+	res, err := c.Request(req)
+	if err != nil {
+		return nil, err
+	}
+	var subRes requests.SubmitMultisignedResponse
+	err = res.GetResult(&subRes)
+	if err != nil {
+		return nil, err
+	}
+	return &subRes, nil
 }
 
 func (c *Client) submitRequest(req *requests.SubmitRequest) (*requests.SubmitResponse, error) {
@@ -343,7 +387,7 @@ func (c *Client) getFeeXrp(cushion float32) (string, error) {
 // Calculates the fee per transaction type.
 //
 // TODO: Add fee support for `EscrowFinish` `AccountDelete`, `AMMCreate`, and multisigned transactions.
-func (c *Client) calculateFeePerTransactionType(tx *transaction.FlatTransaction) error {
+func (c *Client) calculateFeePerTransactionType(tx *transaction.FlatTransaction, nSigners int) error {
 	fee, err := c.getFeeXrp(c.cfg.feeCushion)
 	if err != nil {
 		return err
@@ -352,6 +396,23 @@ func (c *Client) calculateFeePerTransactionType(tx *transaction.FlatTransaction)
 	feeDrops, err := currency.XrpToDrops(fee)
 	if err != nil {
 		return err
+	}
+
+	if nSigners > 0 {
+		// Convert feeDrops to uint64 for safe arithmetic
+		baseFee, err := strconv.ParseUint(feeDrops, 10, 64)
+		if err != nil {
+			return err
+		}
+
+		// Calculate total signers fee: fee * nSigners
+		signersFee := baseFee * uint64(nSigners)
+
+		// Add base fee and signers fee
+		totalFee := baseFee + signersFee
+
+		// Convert back to string
+		feeDrops = strconv.FormatUint(totalFee, 10)
 	}
 
 	(*tx)["Fee"] = feeDrops

@@ -77,7 +77,7 @@ type SignerEntryWrapper struct {
 
 // Flatten returns a map of the SignerEntryWrapper object
 func (s *SignerEntryWrapper) Flatten() FlatLedgerObject {
-	flattened := make(map[string]interface{})
+	flattened := make(FlatLedgerObject)
 	flattened["SignerEntry"] = s.SignerEntry.Flatten()
 	return flattened
 }
@@ -94,19 +94,19 @@ type SignerEntry struct {
 }
 
 // Flatten returns a map of the SignerEntry object
-func (s *SignerEntry) Flatten() FlatLedgerObject {
+func (s *SignerEntry) Flatten() map[string]interface{} {
 	flattened := make(map[string]interface{})
 
 	if s.Account != "" {
-		flattened["Account"] = s.Account
+		flattened["Account"] = s.Account.String()
 	}
 
 	if s.SignerWeight != 0 {
-		flattened["SignerWeight"] = s.SignerWeight
+		flattened["SignerWeight"] = int(s.SignerWeight)
 	}
 
 	if s.WalletLocator != "" {
-		flattened["WalletLocator"] = s.WalletLocator
+		flattened["WalletLocator"] = s.WalletLocator.String()
 	}
 
 	return flattened

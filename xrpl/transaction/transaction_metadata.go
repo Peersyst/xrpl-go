@@ -22,9 +22,9 @@ type TxObjMeta struct {
 func (TxObjMeta) TxMeta() {}
 
 type AffectedNode struct {
-	CreatedNode  *CreatedNode  `json:"CreatedNode,omitempty"`
-	ModifiedNode *ModifiedNode `json:"ModifiedNode,omitempty"`
-	DeletedNode  *DeletedNode  `json:"DeletedNode,omitempty"`
+	CreatedNode  CreatedNode  `json:"CreatedNode,omitempty"`
+	ModifiedNode ModifiedNode `json:"ModifiedNode,omitempty"`
+	DeletedNode  DeletedNode  `json:"DeletedNode,omitempty"`
 }
 
 type CreatedNode struct {

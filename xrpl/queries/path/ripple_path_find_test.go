@@ -18,7 +18,7 @@ func TestRipplePathFindRequest(t *testing.T) {
 			Currency: "USD",
 			Value:    "0.001",
 		},
-		SourceCurrencies: []types.IssuedCurrencyAmount{
+		SourceCurrencies: []pathtypes.RipplePathFindCurrency{
 			{
 				Currency: "XRP",
 			},

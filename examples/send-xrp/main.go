@@ -72,8 +72,8 @@ func main() {
 			Account: types.Address(wallet.GetAddress()),
 		},
 		Destination: "rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe",
-		Amount: types.XRPCurrencyAmount(xrpAmountInt),
-		DeliverMax: types.XRPCurrencyAmount(xrpAmountInt),
+		Amount:      types.XRPCurrencyAmount(xrpAmountInt),
+		DeliverMax:  types.XRPCurrencyAmount(xrpAmountInt),
 	}
 
 	flattenedTx := p.Flatten()

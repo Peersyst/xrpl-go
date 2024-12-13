@@ -46,15 +46,8 @@ func main() {
 		return
 	}
 
-	regularKeyWallet, err := xrpl.NewWallet(crypto.ED25519())
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
 	fmt.Println("Wallet 1:", w1.GetAddress())
 	fmt.Println("Wallet 2:", w2.GetAddress())
-	fmt.Println("Regular key wallet:", regularKeyWallet.GetAddress())
 
 	fmt.Println()
 	fmt.Println("Requesting XRP from faucet for wallet 1...")
@@ -75,35 +68,30 @@ func main() {
 	fmt.Println("Wallet 2 funded")
 	fmt.Println()
 
-	fmt.Println("Requesting XRP from faucet for regular key wallet...")
-	if err := client.FundWallet(&regularKeyWallet); err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Println("Regular key wallet funded")
-	fmt.Println()
-
-	rk := &transaction.SetRegularKey{
+	ts := &transaction.TrustSet{
 		BaseTx: transaction.BaseTx{
-			Account: w1.GetAddress(),
+			Account: w2.GetAddress(),
 		},
-		RegularKey: regularKeyWallet.GetAddress(),
+		LimitAmount: types.IssuedCurrencyAmount{
+			Currency: "FOO",
+			Issuer:   w1.GetAddress(),
+			Value:    "10000000000",
+		},
 	}
 
-	flatRk := rk.Flatten()
+	flatTs := ts.Flatten()
 
-	err = client.Autofill(&flatRk)
+	err = client.Autofill(&flatTs)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Set regular key transaction autofill complete")
+	fmt.Println("TrustSet transaction autofill complete")
 	fmt.Println()
 
-	fmt.Println("Submitting SetRegularKey transaction...")
-	blob, hash, err := w1.Sign(flatRk)
+	fmt.Println("Submitting TrustSet transaction...")
+	blob, hash, err := w2.Sign(flatTs)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -115,20 +103,24 @@ func main() {
 		return
 	}
 
-	fmt.Println("SetRegularKey transaction submitted")
+	fmt.Println("TrustSet transaction submitted")
 	fmt.Println("Transaction hash:", hash)
 	fmt.Println("Result:", res.EngineResult)
 	fmt.Println()
 
 	time.Sleep(3 * time.Second)
 
-	fmt.Println("Checking if regular key is set...")
+	fmt.Println("Issuing tokens for wallet 2...")
 	p := &transaction.Payment{
 		BaseTx: transaction.BaseTx{
 			Account: w1.GetAddress(),
 		},
+		Amount: types.IssuedCurrencyAmount{
+			Currency: "FOO",
+			Issuer:   w1.GetAddress(),
+			Value:    "50",
+		},
 		Destination: w2.GetAddress(),
-		Amount:      types.XRPCurrencyAmount(10000),
 	}
 
 	flatP := p.Flatten()
@@ -139,7 +131,11 @@ func main() {
 		return
 	}
 
-	blob, hash, err = regularKeyWallet.Sign(flatP)
+	fmt.Println("Payment transaction autofill complete")
+	fmt.Println()
+
+	fmt.Println("Submitting Payment transaction...")
+	blob, hash, err = w1.Sign(flatP)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -155,5 +151,49 @@ func main() {
 	fmt.Println("Transaction hash:", hash)
 	fmt.Println("Result:", res.EngineResult)
 	fmt.Println()
-}
 
+	time.Sleep(3 * time.Second)
+
+	pp := &transaction.Payment{
+		BaseTx: transaction.BaseTx{
+			Account: w2.GetAddress(),
+		},
+		Amount: types.IssuedCurrencyAmount{
+			Currency: "FOO",
+			Issuer:   w1.GetAddress(),
+			Value:    "10",
+		},
+		Destination: w1.GetAddress(),
+	}
+
+	pp.SetPartialPaymentFlag()
+
+	flatPP := pp.Flatten()
+
+	err = client.Autofill(&flatPP)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Partial Payment transaction autofill complete")
+	fmt.Println()
+
+	fmt.Println("Submitting Partial Payment transaction...")
+	blob, hash, err = w2.Sign(flatPP)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	res, err = client.Submit(blob, false)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("Partial Payment transaction submitted")
+	fmt.Println("Transaction hash:", hash)
+	fmt.Println("Result:", res.EngineResult)
+	fmt.Println()
+}

@@ -12,6 +12,7 @@ import (
 	"github.com/Peersyst/xrpl-go/pkg/random"
 	"github.com/Peersyst/xrpl-go/xrpl/hash"
 	"github.com/Peersyst/xrpl-go/xrpl/interfaces"
+	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/tyler-smith/go-bip32"
 	"github.com/tyler-smith/go-bip39"
@@ -131,22 +132,12 @@ func NewWalletFromMnemonic(mnemonic string) (*Wallet, error) {
 func (w *Wallet) Sign(tx map[string]interface{}) (string, string, error) {
 	tx["SigningPubKey"] = w.PublicKey
 
-	// Validate the transaction fields
-	// err := transactions.ValidateTx(tx)
-	// if err != nil {
-	// 	return "", "", err
-	// }
-
 	encodedTx, err := binarycodec.EncodeForSigning(tx)
 	if err != nil {
 		return "", "", err
 	}
-	hexTx, err := hex.DecodeString(encodedTx)
-	if err != nil {
-		return "", "", err
-	}
 
-	txHash, err := keypairs.Sign(string(hexTx), w.PrivateKey)
+	txHash, err := w.computeSignature(encodedTx)
 	if err != nil {
 		return "", "", err
 	}
@@ -169,6 +160,56 @@ func (w *Wallet) Sign(tx map[string]interface{}) (string, string, error) {
 // Returns the classic address of the wallet.
 func (w *Wallet) GetAddress() types.Address {
 	return types.Address(w.ClassicAddress)
+}
+
+// Signs a multisigned transaction offline.
+// Returns the transaction blob and the transaction hash.
+func (w *Wallet) Multisign(tx map[string]interface{}) (string, string, error) {
+	encodedTx, err := binarycodec.EncodeForMultisigning(tx, w.ClassicAddress.String())
+	if err != nil {
+		return "", "", err
+	}
+
+	txHash, err := w.computeSignature(encodedTx)
+	if err != nil {
+		return "", "", err
+	}
+
+	signer := transaction.Signer{
+		SignerData: transaction.SignerData{
+			Account:       w.ClassicAddress,
+			TxnSignature:  txHash,
+			SigningPubKey: w.PublicKey,
+		},
+	}
+
+	tx["Signers"] = []any{signer.Flatten()}
+	blob, err := binarycodec.Encode(tx)
+	if err != nil {
+		return "", "", err
+	}
+	blobHash, err := hash.TxBlob(blob)
+	if err != nil {
+		return "", "", err
+	}
+
+	return blob, blobHash, nil
+}
+
+// Computes the signature of a transaction.
+// Returns the signature of the transaction. If an error occurs, it will return an error.
+func (w *Wallet) computeSignature(encodedTx string) (string, error) {
+	hexTx, err := hex.DecodeString(encodedTx)
+	if err != nil {
+		return "", err
+	}
+
+	txHash, err := keypairs.Sign(string(hexTx), w.PrivateKey)
+	if err != nil {
+		return "", err
+	}
+
+	return txHash, nil
 }
 
 // Verifies a signed transaction offline.

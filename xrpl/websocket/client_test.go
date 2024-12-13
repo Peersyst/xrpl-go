@@ -640,7 +640,7 @@ func TestClient_calculateFeePerTransactionType(t *testing.T) {
 				t.Errorf("Error connecting to server: %v", err)
 			}
 
-			err := cl.calculateFeePerTransactionType(&tt.tx)
+			err := cl.calculateFeePerTransactionType(&tt.tx, 0)
 
 			if tt.expectedErr != nil {
 				if !reflect.DeepEqual(err.Error(), tt.expectedErr.Error()) {
