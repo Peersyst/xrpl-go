@@ -5,12 +5,12 @@ import (
 	"time"
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
-	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	transactionquery "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
@@ -36,26 +36,26 @@ func main() {
 	fmt.Println("Connected to testnet")
 	fmt.Println()
 
-	wallet, err := xrpl.NewWallet(crypto.ED25519())
+	w, err := wallet.New(crypto.ED25519())
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	receiverWallet, err := xrpl.NewWallet(crypto.ED25519())
+	receiverWallet, err := wallet.New(crypto.ED25519())
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Wallet: ", wallet.GetAddress())
+	fmt.Println("Wallet: ", w.GetAddress())
 	fmt.Println("Requesting XRP from faucet...")
-	if err := client.FundWallet(&wallet); err != nil {
+	if err := client.FundWallet(&w); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Printf("Wallet %s funded", wallet.GetAddress())
+	fmt.Printf("Wallet %s funded", w.GetAddress())
 	fmt.Println()
 
 	fmt.Println("Wallet: ", receiverWallet.GetAddress())
@@ -70,7 +70,7 @@ func main() {
 
 	cc := &transaction.CheckCreate{
 		BaseTx: transaction.BaseTx{
-			Account: wallet.GetAddress(),
+			Account: w.GetAddress(),
 		},
 		Destination: receiverWallet.GetAddress(),
 		SendMax:     types.XRPCurrencyAmount(1000000),
@@ -84,7 +84,7 @@ func main() {
 		return
 	}
 
-	blob, hash, err := wallet.Sign(flatCc)
+	blob, hash, err := w.Sign(flatCc)
 	if err != nil {
 		fmt.Println(err)
 		return

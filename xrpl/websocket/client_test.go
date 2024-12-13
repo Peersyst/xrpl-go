@@ -9,6 +9,7 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/websocket/interfaces"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket/testutil"
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/require"
@@ -43,8 +44,8 @@ func TestClient_IsConnected(t *testing.T) {
 func TestClient_SendRequest(t *testing.T) {
 	tt := []struct {
 		description    string
-		req            XRPLRequest
-		res            XRPLResponse
+		req            interfaces.Request
+		res            *ClientResponse
 		expectedErr    error
 		serverMessages []map[string]any
 	}{
@@ -53,7 +54,7 @@ func TestClient_SendRequest(t *testing.T) {
 			req: &account.ChannelsRequest{
 				Account: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
 			},
-			res: &ClientXrplResponse{
+			res: &ClientResponse{
 				ID: 1,
 				Result: map[string]any{
 					"account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
@@ -104,7 +105,7 @@ func TestClient_SendRequest(t *testing.T) {
 			req: &account.ChannelsRequest{
 				Account: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
 			},
-			res: &ClientXrplResponse{
+			res: &ClientResponse{
 				Result: map[string]any{
 					"account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 					"channels": []any{
@@ -154,7 +155,7 @@ func TestClient_SendRequest(t *testing.T) {
 			req: &account.ChannelsRequest{
 				Account: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
 			},
-			res: &ClientXrplResponse{
+			res: &ClientResponse{
 				ID: 1,
 				Result: map[string]any{
 					"account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
@@ -231,7 +232,7 @@ func TestClient_formatRequest(t *testing.T) {
 	ws := &Client{}
 	tt := []struct {
 		description string
-		req         XRPLRequest
+		req         interfaces.Request
 		id          int
 		marker      any
 		expected    string

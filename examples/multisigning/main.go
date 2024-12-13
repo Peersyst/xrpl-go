@@ -11,6 +11,7 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
@@ -36,7 +37,7 @@ func main() {
 	fmt.Println("Connected to testnet")
 	fmt.Println()
 
-	w1, err := xrpl.NewWalletFromSeed("sEdTtvLmJmrb7GaivhWoXRkvU4NDjVf", "")
+	w1, err := wallet.FromSeed("sEdTtvLmJmrb7GaivhWoXRkvU4NDjVf", "")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -44,7 +45,7 @@ func main() {
 
 	fmt.Println("Wallet 1:", w1.GetAddress())
 
-	w2, err := xrpl.NewWalletFromSeed("sEdSFiKMQp7RvYLgH7t7FEpwNRWv2Gr", "")
+	w2, err := wallet.FromSeed("sEdSFiKMQp7RvYLgH7t7FEpwNRWv2Gr", "")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -52,7 +53,7 @@ func main() {
 
 	fmt.Println("Wallet 2:", w2.GetAddress())
 
-	master, err := xrpl.NewWalletFromSeed("sEdTMm2yv8c8Rg8YHFHQA9TxVMFy1ze", "")
+	master, err := wallet.FromSeed("sEdTMm2yv8c8Rg8YHFHQA9TxVMFy1ze", "")
 	if err != nil {
 		fmt.Println(err)
 		return

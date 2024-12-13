@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
-	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
@@ -34,13 +34,13 @@ func main() {
 	fmt.Println("Connected to testnet")
 	fmt.Println()
 
-	w1, err := xrpl.NewWallet(crypto.ED25519())
+	w1, err := wallet.New(crypto.ED25519())
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	w2, err := xrpl.NewWallet(crypto.ED25519())
+	w2, err := wallet.New(crypto.ED25519())
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -10,7 +10,6 @@ import (
 	"sync/atomic"
 
 	binarycodec "github.com/Peersyst/xrpl-go/binary-codec"
-	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/currency"
 	transaction "github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/mitchellh/mapstructure"
@@ -20,6 +19,8 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
 	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
+	"github.com/Peersyst/xrpl-go/xrpl/websocket/interfaces"
 	"github.com/gorilla/websocket"
 )
 
@@ -145,7 +146,7 @@ func (c *Client) AutofillMultisigned(tx *transaction.FlatTransaction, nSigners i
 	return nil
 }
 
-func (c *Client) FundWallet(wallet *xrpl.Wallet) error {
+func (c *Client) FundWallet(wallet *wallet.Wallet) error {
 	if wallet.ClassicAddress == "" {
 		return errors.New("fund wallet: cannot fund a wallet without a classic address")
 	}
@@ -158,7 +159,7 @@ func (c *Client) FundWallet(wallet *xrpl.Wallet) error {
 	return nil
 }
 
-func (c *Client) Request(req XRPLRequest) (XRPLResponse, error) {
+func (c *Client) Request(req interfaces.Request) (*ClientResponse, error) {
 	err := req.Validate()
 	if err != nil {
 		return nil, err
@@ -186,7 +187,7 @@ func (c *Client) Request(req XRPLRequest) (XRPLResponse, error) {
 	}
 	jDec := json.NewDecoder(bytes.NewReader(json.RawMessage(v)))
 	jDec.UseNumber()
-	var res ClientXrplResponse
+	var res ClientResponse
 	err = jDec.Decode(&res)
 	if err != nil {
 		return nil, err
@@ -270,7 +271,7 @@ func (c *Client) submitRequest(req *requests.SubmitRequest) (*requests.SubmitRes
 	return &subRes, nil
 }
 
-func (c *Client) formatRequest(req XRPLRequest, id int, marker any) ([]byte, error) {
+func (c *Client) formatRequest(req interfaces.Request, id int, marker any) ([]byte, error) {
 	m := make(map[string]any)
 	m["id"] = id
 	m["command"] = req.Method()

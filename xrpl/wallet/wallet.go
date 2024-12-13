@@ -1,4 +1,4 @@
-package xrpl
+package wallet
 
 import (
 	"encoding/hex"
@@ -30,17 +30,17 @@ type Wallet struct {
 
 // Creates a new random Wallet. In order to make this a valid account on ledger, you must
 // Send XRP to it.
-func NewWallet(alg interfaces.CryptoImplementation) (Wallet, error) {
+func New(alg interfaces.CryptoImplementation) (Wallet, error) {
 	seed, err := keypairs.GenerateSeed("", alg, random.NewRandomizer())
 	if err != nil {
 		return Wallet{}, err
 	}
-	return NewWalletFromSeed(seed, "")
+	return FromSeed(seed, "")
 }
 
 // Derives a wallet from a seed.
 // Returns a Wallet object. If an error occurs, it will be returned.
-func NewWalletFromSeed(seed string, masterAddress string) (Wallet, error) {
+func FromSeed(seed string, masterAddress string) (Wallet, error) {
 	privKey, pubKey, err := keypairs.DeriveKeypair(seed, false)
 	if err != nil {
 		return Wallet{}, err
@@ -68,13 +68,13 @@ func NewWalletFromSeed(seed string, masterAddress string) (Wallet, error) {
 
 // Derives a wallet from a secret (AKA a seed).
 // Returns a Wallet object. If an error occurs, it will be returned.
-func NewWalletFromSecret(seed string) (Wallet, error) {
-	return NewWalletFromSeed(seed, "")
+func FromSecret(seed string) (Wallet, error) {
+	return FromSeed(seed, "")
 }
 
 // // Derives a wallet from a bip39 or RFC1751 mnemonic (Defaults to bip39).
 // // Returns a Wallet object. If an error occurs, it will be returned.
-func NewWalletFromMnemonic(mnemonic string) (*Wallet, error) {
+func FromMnemonic(mnemonic string) (*Wallet, error) {
 	// Validate the mnemonic
 	if !bip39.IsMnemonicValid(mnemonic) {
 		return nil, errors.New("invalid mnemonic")

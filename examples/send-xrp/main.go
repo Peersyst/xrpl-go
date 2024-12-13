@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/currency"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
@@ -39,19 +39,19 @@ func main() {
 	fmt.Println("Connected to testnet")
 	fmt.Println()
 
-	wallet, err := xrpl.NewWalletFromSeed(WalletSeed, "")
+	w, err := wallet.FromSeed(WalletSeed, "")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("Requesting XRP from faucet...")
-	if err := client.FundWallet(&wallet); err != nil {
+	if err := client.FundWallet(&w); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Printf("Wallet %s funded", wallet.GetAddress())
+	fmt.Printf("Wallet %s funded", w.GetAddress())
 	fmt.Println()
 
 	fmt.Println("Sending 1 XRP to rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe")
@@ -69,7 +69,7 @@ func main() {
 
 	p := &transaction.Payment{
 		BaseTx: transaction.BaseTx{
-			Account: types.Address(wallet.GetAddress()),
+			Account: types.Address(w.GetAddress()),
 		},
 		Destination: "rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe",
 		Amount:      types.XRPCurrencyAmount(xrpAmountInt),
@@ -84,7 +84,7 @@ func main() {
 		return
 	}
 
-	txBlob, hash, err := wallet.Sign(flattenedTx)
+	txBlob, hash, err := w.Sign(flattenedTx)
 	if err != nil {
 		fmt.Println(err)
 		return

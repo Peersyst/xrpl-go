@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
-	"github.com/Peersyst/xrpl-go/xrpl"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 )
 
 // Note: This test interacts with the actual Devnet faucet.
@@ -16,7 +16,7 @@ func TestDevnetFaucetProvider_FundWallet(t *testing.T) {
 	provider := NewDevnetFaucetProvider()
 
 	// Test wallet address
-	testWallet, err := xrpl.NewWallet(crypto.ED25519())
+	testWallet, err := wallet.New(crypto.ED25519())
 	if err != nil {
 		t.Errorf("Wallet creation error: %v", err)
 	}

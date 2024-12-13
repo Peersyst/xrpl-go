@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
@@ -38,17 +38,17 @@ func main() {
 	fmt.Println("Connected to testnet")
 	fmt.Println()
 
-	wallet, err := xrpl.NewWalletFromSeed(WalletSeed, "")
+	w, err := wallet.FromSeed(WalletSeed, "")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Wallet:", wallet.GetAddress())
+	fmt.Println("Wallet:", w.GetAddress())
 	fmt.Println()
 
 	fmt.Println("Requesting XRP from faucet...")
-	if err := client.FundWallet(&wallet); err != nil {
+	if err := client.FundWallet(&w); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -57,7 +57,7 @@ func main() {
 	fmt.Println()
 
 	info, err := client.GetAccountInfo(&account.InfoRequest{
-		Account: wallet.GetAddress(),
+		Account: w.GetAddress(),
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -70,7 +70,7 @@ func main() {
 	fmt.Println("Submitting TicketCreate transaction...")
 	tc := &transaction.TicketCreate{
 		BaseTx: transaction.BaseTx{
-			Account:  wallet.GetAddress(),
+			Account:  w.GetAddress(),
 			Sequence: info.AccountData.Sequence,
 		},
 		TicketCount: 10,
@@ -83,7 +83,7 @@ func main() {
 		return
 	}
 
-	blob, hash, err := wallet.Sign(flatTc)
+	blob, hash, err := w.Sign(flatTc)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -103,7 +103,7 @@ func main() {
 	time.Sleep(3 * time.Second)
 
 	objects, err := client.GetAccountObjects(&account.ObjectsRequest{
-		Account: wallet.GetAddress(),
+		Account: w.GetAddress(),
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -120,7 +120,7 @@ func main() {
 
 	as := &transaction.AccountSet{
 		BaseTx: transaction.BaseTx{
-			Account:        wallet.GetAddress(),
+			Account:        w.GetAddress(),
 			Sequence:       0,
 			TicketSequence: uint32(seq),
 		},
@@ -135,7 +135,7 @@ func main() {
 
 	flatAs["Sequence"] = uint32(0)
 
-	blob, hash, err = wallet.Sign(flatAs)
+	blob, hash, err = w.Sign(flatAs)
 	if err != nil {
 		fmt.Println(err)
 		return

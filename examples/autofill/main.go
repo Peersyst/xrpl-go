@@ -4,9 +4,9 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/Peersyst/xrpl-go/xrpl"
 	transactions "github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
@@ -26,13 +26,13 @@ func main() {
 
 	fmt.Println("Connection: ", wsClient.IsConnected())
 
-	wallet, err := xrpl.NewWalletFromSeed("sEdSMVV4dJ1JbdBxmakRR4Puu3XVZz2", "")
+	w, err := wallet.FromSeed("sEdSMVV4dJ1JbdBxmakRR4Puu3XVZz2", "")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	receiverWallet, err := xrpl.NewWalletFromSeed("sEd7d8Ci9nevdLCeUMctF3uGXp9WQqJ", "")
+	receiverWallet, err := wallet.FromSeed("sEd7d8Ci9nevdLCeUMctF3uGXp9WQqJ", "")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -40,19 +40,19 @@ func main() {
 
 	payment := transactions.Payment{
 		BaseTx: transactions.BaseTx{
-			Account: types.Address(wallet.GetAddress()),
+			Account: types.Address(w.GetAddress()),
 			Signers: []transactions.Signer{
 				{
 					SignerData: transactions.SignerData{
-						Account:       types.Address(wallet.GetAddress()),
-						SigningPubKey: wallet.PublicKey,
+						Account:       types.Address(w.GetAddress()),
+						SigningPubKey: w.PublicKey,
 						TxnSignature:  "",
 					},
 				},
 				{
 					SignerData: transactions.SignerData{
-						Account:       types.Address(wallet.GetAddress()),
-						SigningPubKey: wallet.PublicKey,
+						Account:       types.Address(w.GetAddress()),
+						SigningPubKey: w.PublicKey,
 						TxnSignature:  "",
 					},
 				},

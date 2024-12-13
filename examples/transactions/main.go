@@ -3,22 +3,22 @@ package main
 import (
 	"fmt"
 
-	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	transactions "github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
 func main() {
 
-	wallet, err := xrpl.NewWalletFromSeed("sEdSMVV4dJ1JbdBxmakRR4Puu3XVZz2", "")
+	w, err := wallet.FromSeed("sEdSMVV4dJ1JbdBxmakRR4Puu3XVZz2", "")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	_, err = xrpl.NewWalletFromSeed("sEd7d8Ci9nevdLCeUMctF3uGXp9WQqJ", "")
+	_, err = wallet.FromSeed("sEd7d8Ci9nevdLCeUMctF3uGXp9WQqJ", "")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -46,7 +46,7 @@ func main() {
 	fmt.Println(payment)
 	fmt.Println(payment.Flatten())
 
-	txBlob, hash, err := wallet.Sign(payment.Flatten())
+	txBlob, hash, err := w.Sign(payment.Flatten())
 	if err != nil {
 		fmt.Println(err)
 		return

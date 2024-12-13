@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
-	"github.com/Peersyst/xrpl-go/xrpl"
 	transactions "github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 )
 
 const (
@@ -19,7 +19,7 @@ const (
 )
 
 func main() {
-	mnemonicWallet, err := xrpl.NewWalletFromMnemonic("monster march exile fee forget response seven push dragon oil clinic attack black miss craft surface patient stomach tank float cabbage visual image resource")
+	mnemonicWallet, err := wallet.FromMnemonic("monster march exile fee forget response seven push dragon oil clinic attack black miss craft surface patient stomach tank float cabbage visual image resource")
 	if err != nil {
 		panic(err)
 	}
@@ -31,18 +31,18 @@ func main() {
 	fmt.Printf("Classic address: %s\n", mnemonicWallet.ClassicAddress)
 	fmt.Printf("Seed: %s\n", mnemonicWallet.Seed)
 
-	wallet, err := xrpl.NewWallet(crypto.ED25519())
+	w, err := wallet.New(crypto.ED25519())
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("Wallet generated from random seed")
 
-	fmt.Printf("Private key: %s\n", wallet.PrivateKey)
-	fmt.Printf("Public 	key: %s\n", wallet.PublicKey)
-	fmt.Printf("Classic address: %s\n", wallet.ClassicAddress)
-	fmt.Printf("Seed: %s\n", wallet.Seed)
+	fmt.Printf("Private key: %s\n", w.PrivateKey)
+	fmt.Printf("Public 	key: %s\n", w.PublicKey)
+	fmt.Printf("Classic address: %s\n", w.ClassicAddress)
+	fmt.Printf("Seed: %s\n", w.Seed)
 
-	walletFromSeed, _ := xrpl.NewWalletFromSeed(wallet.Seed, "")
+	walletFromSeed, _ := wallet.FromSeed(w.Seed, "")
 
 	fmt.Println("\nWallet generated from previous seed")
 
@@ -51,7 +51,7 @@ func main() {
 	fmt.Printf("Classic address: %s\n", walletFromSeed.ClassicAddress)
 	fmt.Printf("Seed: %s\n", walletFromSeed.Seed)
 
-	walletFromSecret, _ := xrpl.NewWalletFromSecret(wallet.Seed)
+	walletFromSecret, _ := wallet.FromSecret(w.Seed)
 
 	fmt.Println("\nWallet generated from previous seed")
 
@@ -62,7 +62,7 @@ func main() {
 
 	tx := transactions.Payment{
 		BaseTx: transactions.BaseTx{
-			Account: types.Address(wallet.ClassicAddress),
+			Account: types.Address(w.ClassicAddress),
 			Memos: []types.MemoWrapper{
 				{
 					Memo: types.Memo{
@@ -92,7 +92,7 @@ func main() {
 
 	fmt.Println("\nSigning a transaction with wallet generated from seed")
 
-	txBlob, hash, err := wallet.Sign(tx.Flatten())
+	txBlob, hash, err := w.Sign(tx.Flatten())
 	if err != nil {
 		panic(err)
 	}

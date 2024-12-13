@@ -1,4 +1,4 @@
-package xrpl
+package wallet
 
 import (
 	"testing"
@@ -34,7 +34,7 @@ func TestNewWalletFromSeed(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		wallet, err := NewWalletFromSeed(tc.Seed, "")
+		wallet, err := FromSeed(tc.Seed, "")
 		if err != nil {
 			t.Errorf("Error generating wallet from seed: %s", err)
 		}
@@ -81,7 +81,7 @@ func TestNewWalletFromSecret(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		wallet, err := NewWalletFromSecret(tc.Seed)
+		wallet, err := FromSecret(tc.Seed)
 		if err != nil {
 			t.Errorf("Error generating wallet from seed: %s", err)
 		}
@@ -128,7 +128,7 @@ func TestNewWalletFromMnemonic(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		wallet, err := NewWalletFromMnemonic(tc.Mnemonic)
+		wallet, err := FromMnemonic(tc.Mnemonic)
 		if err != nil {
 			t.Errorf("Error generating wallet from mnemonic: %s", err)
 		}

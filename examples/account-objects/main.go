@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 
-	"github.com/Peersyst/xrpl-go/xrpl"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
 func main() {
-	wallet, err := xrpl.NewWalletFromSeed("sEdSMVV4dJ1JbdBxmakRR4Puu3XVZz2", "")
+	w, err := wallet.FromSeed("sEdSMVV4dJ1JbdBxmakRR4Puu3XVZz2", "")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -33,20 +33,20 @@ func main() {
 	fmt.Println("Connection: ", client.IsConnected())
 
 	accountObjRes, err := client.GetAccountObjects(&account.ObjectsRequest{
-		Account: types.Address(wallet.GetAddress()),
+		Account: types.Address(w.GetAddress()),
 	})
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Account address: ", wallet.GetAddress())
+	fmt.Println("Account address: ", w.GetAddress())
 	for _, obj := range accountObjRes.AccountObjects {
 		fmt.Println("Object: ", obj)
 	}
 
 	accountLinesRes, err := client.GetAccountLines(&account.LinesRequest{
-		Account: types.Address(wallet.GetAddress()),
+		Account: types.Address(w.GetAddress()),
 	})
 	if err != nil {
 		fmt.Println(err)
