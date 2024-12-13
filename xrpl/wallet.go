@@ -12,6 +12,7 @@ import (
 	"github.com/Peersyst/xrpl-go/pkg/random"
 	"github.com/Peersyst/xrpl-go/xrpl/hash"
 	"github.com/Peersyst/xrpl-go/xrpl/interfaces"
+	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/tyler-smith/go-bip32"
 	"github.com/tyler-smith/go-bip39"
 )
@@ -22,7 +23,7 @@ import (
 type Wallet struct {
 	PublicKey      string
 	PrivateKey     string
-	ClassicAddress string
+	ClassicAddress types.Address
 	Seed           string
 }
 
@@ -44,15 +45,15 @@ func NewWalletFromSeed(seed string, masterAddress string) (Wallet, error) {
 		return Wallet{}, err
 	}
 
-	var classicAddr string
+	var classicAddr types.Address
 	if ok := addresscodec.IsValidClassicAddress(masterAddress); ok {
-		classicAddr = masterAddress
+		classicAddr = types.Address(masterAddress)
 	} else {
 		addr, err := keypairs.DeriveClassicAddress(pubKey)
 		if err != nil {
 			return Wallet{}, err
 		}
-		classicAddr = addr
+		classicAddr = types.Address(addr)
 	}
 
 	return Wallet{
@@ -117,7 +118,7 @@ func NewWalletFromMnemonic(mnemonic string) (*Wallet, error) {
 	return &Wallet{
 		PublicKey:      pubKey,
 		PrivateKey:     fmt.Sprintf("00%s", privKey),
-		ClassicAddress: classicAddr,
+		ClassicAddress: types.Address(classicAddr),
 		Seed:           "", // We don't have the seed in this case
 	}, nil
 }
@@ -166,8 +167,8 @@ func (w *Wallet) Sign(tx map[string]interface{}) (string, string, error) {
 }
 
 // Returns the classic address of the wallet.
-func (w *Wallet) GetAddress() string {
-	return w.ClassicAddress
+func (w *Wallet) GetAddress() types.Address {
+	return types.Address(w.ClassicAddress)
 }
 
 // Verifies a signed transaction offline.

@@ -1,13 +1,17 @@
 package xrpl
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+)
 
 func TestNewWalletFromSeed(t *testing.T) {
 	testCases := []struct {
 		Seed           string
 		PublicKey      string
 		PrivateKey     string
-		ClassicAddress string
+		ClassicAddress types.Address
 	}{
 		{
 			Seed:           "sEd7io6yt5dFJrcePgRiFVHvmkJhJD1",
@@ -54,7 +58,7 @@ func TestNewWalletFromSecret(t *testing.T) {
 		Seed           string
 		PublicKey      string
 		PrivateKey     string
-		ClassicAddress string
+		ClassicAddress types.Address
 	}{
 		{
 			Seed:           "sEd7io6yt5dFJrcePgRiFVHvmkJhJD1",
@@ -101,7 +105,7 @@ func TestNewWalletFromMnemonic(t *testing.T) {
 		Mnemonic       string
 		PublicKey      string
 		PrivateKey     string
-		ClassicAddress string
+		ClassicAddress types.Address
 	}{
 		{
 			Mnemonic:       "midnight help already frost arena force omit physical please dwarf envelope royal dice surge eight often muscle tired blast begin waste fat rescue debate",

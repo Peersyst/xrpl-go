@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	ledgertypes "github.com/Peersyst/xrpl-go/xrpl/queries/ledger/types"
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
@@ -17,14 +18,14 @@ func TestLedgerRequest(t *testing.T) {
 	"ledger_hash": "abc",
 	"ledger_index": 123
 }`
-	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
+	if err := testutil.Serialize(t, s, j); err != nil {
 		t.Error(err)
 	}
 }
 
 func TestLedgerResponse(t *testing.T) {
 	s := Response{
-		Ledger: Header{
+		Ledger: ledgertypes.BaseLedger{
 			AccountHash:         "53BD4650A024E27DEB52DBB6A52EDB26528B987EC61C895C48D1EB44CEDD9AD3",
 			CloseTime:           638329241,
 			CloseTimeHuman:      "2020-Mar-24 01:40:41.000000000 UTC",

@@ -27,10 +27,14 @@ const (
 	DefaultMaxFeeXRP  float32 = 2
 )
 
-var ErrIncorrectID = errors.New("incorrect id")
+var (
+	ErrIncorrectID          = errors.New("incorrect id")
+	ErrNotConnectedToServer = errors.New("not connected to server")
+)
 
 type Client struct {
-	cfg ClientConfig
+	cfg  ClientConfig
+	conn *websocket.Conn
 
 	idCounter atomic.Uint32
 	NetworkID uint32
@@ -44,6 +48,38 @@ func NewClient(cfg ClientConfig) *Client {
 	}
 }
 
+// Connect opens a websocket connection to the server.
+func (c *Client) Connect() error {
+	conn, _, err := websocket.DefaultDialer.Dial(c.cfg.host, nil)
+	if err != nil {
+		return err
+	}
+	c.conn = conn
+	return nil
+}
+
+// Disconnect closes the websocket connection.
+func (c *Client) Disconnect() {
+	if c.conn == nil {
+		return
+	}
+	if err := c.conn.Close(); err != nil {
+		fmt.Println("Error closing websocket connection: ", err)
+	}
+	c.conn = nil
+}
+
+// IsConnected returns true if the client is connected to the server.
+func (c *Client) IsConnected() bool {
+	return c.conn != nil
+}
+
+// Conn returns the websocket connection.
+func (c *Client) Conn() *websocket.Conn {
+	return c.conn
+}
+
+// Autofill fills in the missing fields in a transaction.
 func (c *Client) Autofill(tx *transaction.FlatTransaction) error {
 	if err := c.setValidTransactionAddresses(tx); err != nil {
 		return err
@@ -107,7 +143,7 @@ func (c *Client) FundWallet(wallet *xrpl.Wallet) error {
 	return nil
 }
 
-func (c *Client) sendRequest(req XRPLRequest) (XRPLResponse, error) {
+func (c *Client) Request(req XRPLRequest) (XRPLResponse, error) {
 	err := req.Validate()
 	if err != nil {
 		return nil, err
@@ -115,24 +151,21 @@ func (c *Client) sendRequest(req XRPLRequest) (XRPLResponse, error) {
 
 	id := c.idCounter.Add(1)
 
-	// TODO: Decouple connection
-	conn, _, err := websocket.DefaultDialer.Dial(c.cfg.host, nil)
-	if err != nil {
-		return nil, err
-	}
-	defer conn.Close()
-
 	msg, err := c.formatRequest(req, int(id), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	err = conn.WriteMessage(websocket.TextMessage, msg)
+	if !c.IsConnected() {
+		return nil, ErrNotConnectedToServer
+	}
+
+	err = c.Conn().WriteMessage(websocket.TextMessage, msg)
 	if err != nil {
 		return nil, err
 	}
 
-	_, v, err := conn.ReadMessage()
+	_, v, err := c.Conn().ReadMessage()
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +187,7 @@ func (c *Client) sendRequest(req XRPLRequest) (XRPLResponse, error) {
 	return &res, nil
 }
 
-func (c *Client) SubmitTransactionBlob(txBlob string, failHard bool) (*requests.SubmitResponse, error) {
+func (c *Client) Submit(txBlob string, failHard bool) (*requests.SubmitResponse, error) {
 	tx, err := binarycodec.Decode(txBlob)
 	if err != nil {
 		return nil, err
@@ -181,7 +214,7 @@ func (c *Client) SubmitTransactionBlob(txBlob string, failHard bool) (*requests.
 }
 
 func (c *Client) submitRequest(req *requests.SubmitRequest) (*requests.SubmitResponse, error) {
-	res, err := c.sendRequest(req)
+	res, err := c.Request(req)
 	if err != nil {
 		return nil, err
 	}

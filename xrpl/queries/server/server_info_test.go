@@ -3,18 +3,19 @@ package server
 import (
 	"testing"
 
+	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
 )
 
 func TestServerInfoResponse(t *testing.T) {
 	s := InfoResponse{
-		Info: Info{
+		Info: servertypes.Info{
 			BuildVersion:    "1.9.4",
 			CompleteLedgers: "32570-75801736",
 			HostID:          "ARMY",
 			IOLatencyMS:     1,
 			JQTransOverflow: "2282",
-			LastClose: &Close{
+			LastClose: servertypes.ServerClose{
 				ConvergeTimeS: 3.002,
 				Proposers:     35,
 			},
@@ -23,31 +24,31 @@ func TestServerInfoResponse(t *testing.T) {
 			PubkeyNode:            "n9KKBZvwPZ95rQi4BP3an1MRctTyavYkZiLpQwasmFYTE6RYdeX3",
 			ServerState:           "full",
 			ServerStateDurationUS: "69205850392",
-			StateAccounting: map[string]InfoAccounting{
-				"connected": {
+			StateAccounting: servertypes.StateAccountingFinal{
+				Connected: servertypes.InfoAccounting{
 					DurationUS:  "141058919",
 					Transitions: "7",
 				},
-				"disconnected": {
+				Disconnected: servertypes.InfoAccounting{
 					DurationUS:  "514136273",
 					Transitions: "3",
 				},
-				"full": {
+				Full: servertypes.InfoAccounting{
 					DurationUS:  "4360230140761",
 					Transitions: "32",
 				},
-				"syncing": {
+				Syncing: servertypes.InfoAccounting{
 					DurationUS:  "50606510",
 					Transitions: "30",
 				},
-				"tracking": {
+				Tracking: servertypes.InfoAccounting{
 					DurationUS:  "40245486",
 					Transitions: "34",
 				},
 			},
 			Time:   "2022-Nov-16 21:50:22.711679 UTC",
 			Uptime: 4360976,
-			ValidatedLedger: &LedgerInfo{
+			ValidatedLedger: servertypes.ClosedLedger{
 				Age:            1,
 				BaseFeeXRP:     0.00001,
 				Hash:           "3147A41F5F013209581FCDCBBB7A87A4F01EF6842963E13B2B14C8565E00A22B",
@@ -63,6 +64,14 @@ func TestServerInfoResponse(t *testing.T) {
 	"info": {
 		"build_version": "1.9.4",
 		"complete_ledgers": "32570-75801736",
+		"closed_ledger": {
+			"age": 0,
+			"base_fee_xrp": 0,
+			"hash": "",
+			"reserve_base_xrp": 0,
+			"reserve_inc_xrp": 0,
+			"seq": 0
+		},
 		"hostid": "ARMY",
 		"io_latency_ms": 1,
 		"jq_trans_overflow": "2282",
@@ -70,19 +79,23 @@ func TestServerInfoResponse(t *testing.T) {
 			"converge_time_s": 3.002,
 			"proposers": 35
 		},
+		"load": {
+			"job_types": null,
+			"threads": 0
+		},
 		"load_factor": 1,
 		"peers": 20,
 		"pubkey_node": "n9KKBZvwPZ95rQi4BP3an1MRctTyavYkZiLpQwasmFYTE6RYdeX3",
 		"server_state": "full",
 		"server_state_duration_us": "69205850392",
 		"state_accounting": {
-			"connected": {
-				"duration_us": "141058919",
-				"transitions": "7"
-			},
 			"disconnected": {
 				"duration_us": "514136273",
 				"transitions": "3"
+			},
+			"connected": {
+				"duration_us": "141058919",
+				"transitions": "7"
 			},
 			"full": {
 				"duration_us": "4360230140761",
@@ -107,7 +120,12 @@ func TestServerInfoResponse(t *testing.T) {
 			"reserve_inc_xrp": 2,
 			"seq": 75801736
 		},
-		"validation_quorum": 28
+		"validation_quorum": 28,
+		"validator_list": {
+			"count": 0,
+			"expiration": "",
+			"status": ""
+		}
 	}
 }`
 

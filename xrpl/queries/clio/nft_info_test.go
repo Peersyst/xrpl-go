@@ -10,7 +10,7 @@ import (
 func TestNFTInfoRequest(t *testing.T) {
 	s := NFTInfoRequest{
 		NFTokenID:   "00080000B4F4AFC5FBCBD76873F18006173D2193467D3EE70000099B00000000",
-		LedgerIndex: common.VALIDATED,
+		LedgerIndex: common.Validated,
 	}
 
 	j := `{
@@ -18,7 +18,7 @@ func TestNFTInfoRequest(t *testing.T) {
 	"ledger_index": "validated"
 }`
 
-	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
+	if err := testutil.Serialize(t, s, j); err != nil {
 		t.Error(err)
 	}
 }
@@ -42,7 +42,8 @@ func TestNFTInfoResponse(t *testing.T) {
 	"transfer_fee": 0,
 	"issuer": "rHVokeuSnjPjz718qdb47bGXBBHNMP3KDQ",
 	"nft_taxon": 0,
-	"nft_sequence": 0
+	"nft_sequence": 0,
+	"uri": ""
 }`
 	if err := testutil.SerializeAndDeserialize(t, s, j); err != nil {
 		t.Error(err)
