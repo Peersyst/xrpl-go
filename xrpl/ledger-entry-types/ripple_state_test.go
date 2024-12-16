@@ -120,3 +120,15 @@ func TestRippleState_SetLsfHighFreeze(t *testing.T) {
 	s.SetLsfHighFreeze()
 	require.Equal(t, s.Flags&lsfHighFreeze, lsfHighFreeze)
 }
+
+func TestRippleState_SetLsfLowDeepFreeze(t *testing.T) {
+	s := &RippleState{}
+	s.SetLsfLowDeepFreeze()
+	require.Equal(t, s.Flags&lsfLowDeepFreeze, lsfLowDeepFreeze)
+}
+
+func TestRippleState_SetLsfHighDeepFreeze(t *testing.T) {
+	s := &RippleState{}
+	s.SetLsfHighDeepFreeze()
+	require.Equal(t, s.Flags&lsfHighDeepFreeze, lsfHighDeepFreeze)
+}

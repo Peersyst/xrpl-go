@@ -21,6 +21,16 @@ const (
 	lsfLowFreeze uint32 = 0x00400000
 	// The high account has frozen the trust line, preventing the low account from transferring the asset.
 	lsfHighFreeze uint32 = 0x00800000
+
+	// XLS-77d Deep freeze
+	// The following flags are only available in the XLS-77d Deep freeze.
+
+	// The low account has deep-frozen the trust line, preventing the high account from sending and
+	// receiving the asset.
+	lsfLowDeepFreeze uint32 = 0x02000000
+	// The high account has deep-frozen the trust line, preventing the low account from sending and
+	// receiving the asset.
+	lsfHighDeepFreeze uint32 = 0x04000000
 )
 
 // A RippleState ledger entry represents a trust line between two accounts.
@@ -146,4 +156,18 @@ func (r *RippleState) SetLsfLowFreeze() {
 // SetLsfHighFreeze sets the high freeze flag.
 func (r *RippleState) SetLsfHighFreeze() {
 	r.Flags |= lsfHighFreeze
+}
+
+// XLS-77d Deep freeze only.
+//
+// SetLsfLowDeepFreeze sets the low deep freeze flag.
+func (r *RippleState) SetLsfLowDeepFreeze() {
+	r.Flags |= lsfLowDeepFreeze
+}
+
+// XLS-77d Deep freeze only.
+//
+// SetLsfHighDeepFreeze sets the high deep freeze flag.
+func (r *RippleState) SetLsfHighDeepFreeze() {
+	r.Flags |= lsfHighDeepFreeze
 }
