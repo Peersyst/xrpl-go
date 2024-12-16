@@ -8,9 +8,11 @@ import (
 	"math"
 	"strconv"
 	"sync/atomic"
+	"time"
 
 	binarycodec "github.com/Peersyst/xrpl-go/binary-codec"
 	"github.com/Peersyst/xrpl-go/xrpl/currency"
+	"github.com/Peersyst/xrpl-go/xrpl/hash"
 	transaction "github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/mitchellh/mapstructure"
 
@@ -132,7 +134,10 @@ func (c *Client) Autofill(tx *transaction.FlatTransaction) error {
 	return nil
 }
 
-func (c *Client) AutofillMultisigned(tx *transaction.FlatTransaction, nSigners int) error {
+// AutofillMultisigned fills in the missing fields in a multisigned transaction.
+// This function is used to fill in the missing fields in a multisigned transaction.
+// It fills in the missing fields in the transaction and calculates the fee per number of signers.
+func (c *Client) AutofillMultisigned(tx *transaction.FlatTransaction, nSigners uint64) error {
 	err := c.Autofill(tx)
 	if err != nil {
 		return err
@@ -146,6 +151,8 @@ func (c *Client) AutofillMultisigned(tx *transaction.FlatTransaction, nSigners i
 	return nil
 }
 
+// FundWallet funds a wallet with XRP from the faucet.
+// If the wallet does not have a classic address, it will return an error.
 func (c *Client) FundWallet(wallet *wallet.Wallet) error {
 	if wallet.ClassicAddress == "" {
 		return errors.New("fund wallet: cannot fund a wallet without a classic address")
@@ -159,6 +166,9 @@ func (c *Client) FundWallet(wallet *wallet.Wallet) error {
 	return nil
 }
 
+// Request sends a request to the server and returns the response.
+// This function is used to send requests to the server.
+// It returns the response from the server.
 func (c *Client) Request(req interfaces.Request) (*ClientResponse, error) {
 	err := req.Validate()
 	if err != nil {
@@ -203,6 +213,9 @@ func (c *Client) Request(req interfaces.Request) (*ClientResponse, error) {
 	return &res, nil
 }
 
+// Submit sends a transaction to the server and returns the response.
+// This function is used to send transactions to the server.
+// It returns the response from the server.
 func (c *Client) Submit(txBlob string, failHard bool) (*requests.SubmitResponse, error) {
 	tx, err := binarycodec.Decode(txBlob)
 	if err != nil {
@@ -222,6 +235,9 @@ func (c *Client) Submit(txBlob string, failHard bool) (*requests.SubmitResponse,
 	})
 }
 
+// SubmitMultisigned sends a multisigned transaction to the server and returns the response.
+// This function is used to send multisigned transactions to the server.
+// It returns the response from the server.
 func (c *Client) SubmitMultisigned(txBlob string, failHard bool) (*requests.SubmitMultisignedResponse, error) {
 	tx, err := binarycodec.Decode(txBlob)
 	if err != nil {
@@ -243,6 +259,80 @@ func (c *Client) SubmitMultisigned(txBlob string, failHard bool) (*requests.Subm
 		Tx:       tx,
 		FailHard: failHard,
 	})
+}
+
+// SubmitAndWait sends a transaction to the server and waits for it to be included in a ledger.
+// This function is used to send transactions to the server and wait for them to be included in a ledger.
+// It returns the transaction response from the server.
+func (c *Client) SubmitAndWait(txBlob string, failHard bool) (*requests.TxResponse, error) {
+	tx, err := binarycodec.Decode(txBlob)
+	if err != nil {
+		return nil, err
+	}
+
+	lastLedgerSequence := tx["LastLedgerSequence"].(uint32)
+
+	txResponse, err := c.Submit(txBlob, failHard)
+	if err != nil {
+		return nil, err
+	}
+
+	if txResponse.EngineResult != "tesSUCCESS" {
+		return nil, errors.New("transaction failed to submit with engine result: " + txResponse.EngineResult)
+	}
+
+	txHash, err := hash.TxBlob(txBlob)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.waitForTransaction(txHash, lastLedgerSequence)
+}
+
+func (c *Client) waitForTransaction(txHash string, lastLedgerSequence uint32) (*requests.TxResponse, error) {
+	var txResponse *requests.TxResponse
+	i := 0
+
+	for i < c.cfg.maxRetries {
+		// Get the current ledger index
+		currentLedger, err := c.GetLedgerIndex()
+		if err != nil {
+			return nil, err
+		}
+
+		// Check if the transaction has been included in the current ledger
+		if currentLedger.Int() >= int(lastLedgerSequence) {
+			break
+		}
+
+		// Request the transaction from the server
+		res, err := c.Request(&requests.TxRequest{
+			Transaction: txHash,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		err = res.GetResult(&txResponse)
+		if err != nil {
+			return nil, err
+		}
+
+		// Check if the transaction has been included in the current ledger
+		if txResponse.LedgerIndex.Int() >= int(lastLedgerSequence) {
+			break
+		}
+
+		// Wait for the retry delay before retrying
+		time.Sleep(c.cfg.retryDelay)
+		i++
+	}
+
+	if txResponse == nil {
+		return nil, errors.New("transaction not found")
+	}
+
+	return txResponse, nil
 }
 
 func (c *Client) submitMultisignedRequest(req *requests.SubmitMultisignedRequest) (*requests.SubmitMultisignedResponse, error) {
@@ -388,7 +478,7 @@ func (c *Client) getFeeXrp(cushion float32) (string, error) {
 // Calculates the fee per transaction type.
 //
 // TODO: Add fee support for `EscrowFinish` `AccountDelete`, `AMMCreate`, and multisigned transactions.
-func (c *Client) calculateFeePerTransactionType(tx *transaction.FlatTransaction, nSigners int) error {
+func (c *Client) calculateFeePerTransactionType(tx *transaction.FlatTransaction, nSigners uint64) error {
 	fee, err := c.getFeeXrp(c.cfg.feeCushion)
 	if err != nil {
 		return err
@@ -407,7 +497,7 @@ func (c *Client) calculateFeePerTransactionType(tx *transaction.FlatTransaction,
 		}
 
 		// Calculate total signers fee: fee * nSigners
-		signersFee := baseFee * uint64(nSigners)
+		signersFee := baseFee * nSigners
 
 		// Add base fee and signers fee
 		totalFee := baseFee + signersFee
@@ -429,7 +519,7 @@ func (c *Client) setLastLedgerSequence(tx *transaction.FlatTransaction) error {
 		return err
 	}
 
-	(*tx)["LastLedgerSequence"] = uint32(index.Int() + int(LedgerOffset))
+	(*tx)["LastLedgerSequence"] = index.Uint32() + LedgerOffset
 	return err
 }
 

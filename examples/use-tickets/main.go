@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
@@ -83,24 +82,22 @@ func main() {
 		return
 	}
 
-	blob, hash, err := w.Sign(flatTc)
+	blob, _, err := w.Sign(flatTc)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err := client.Submit(blob, false)
+	res, err := client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("TicketCreate transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 	fmt.Println()
-
-	time.Sleep(3 * time.Second)
 
 	objects, err := client.GetAccountObjects(&account.ObjectsRequest{
 		Account: w.GetAddress(),
@@ -135,19 +132,19 @@ func main() {
 
 	flatAs["Sequence"] = uint32(0)
 
-	blob, hash, err = w.Sign(flatAs)
+	blob, _, err = w.Sign(flatAs)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err = client.Submit(blob, false)
+	res, err = client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("AccountSet transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 }

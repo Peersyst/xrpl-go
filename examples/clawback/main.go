@@ -102,21 +102,21 @@ func main() {
 		return
 	}
 
-	response, err := client.Submit(txBlob, false)
+	response, err := client.SubmitAndWait(txBlob, false)
 	if err != nil {
 		fmt.Printf("❌ Error submitting transaction: %s\n", err)
 		return
 	}
 
-	if response.EngineResult != "tesSUCCESS" {
-		fmt.Println("❌ Cold wallet unfreezing failed!", response.EngineResult)
+	if !response.Validated {
+		fmt.Println("❌ Cold wallet unfreezing failed!")
 		fmt.Println("Try again!")
 		fmt.Println()
 		return
 	}
 
 	fmt.Println("✅ Cold address settings configured!")
-	fmt.Printf("🌐 Hash: %s\n", response.Tx["hash"])
+	fmt.Printf("🌐 Hash: %s\n", response.Hash.String())
 	fmt.Println()
 
 	//
@@ -147,21 +147,21 @@ func main() {
 		return
 	}
 
-	response, err = client.Submit(txBlob, false)
+	response, err = client.SubmitAndWait(txBlob, false)
 	if err != nil {
 		fmt.Printf("❌ Error submitting transaction: %s\n", err)
 		return
 	}
 
-	if response.EngineResult != "tesSUCCESS" {
-		fmt.Println("❌ Trust line from hot to cold address creation failed!", response.EngineResult)
+	if !response.Validated {
+		fmt.Println("❌ Trust line from hot to cold address creation failed!")
 		fmt.Println("Try again!")
 		fmt.Println()
 		return
 	}
 
 	fmt.Println("✅ Trust line from hot to cold address created!")
-	fmt.Printf("🌐 Hash: %s\n", response.Tx["hash"])
+	fmt.Printf("🌐 Hash: %s\n", response.Hash.String())
 	fmt.Println()
 
 	//
@@ -194,21 +194,21 @@ func main() {
 		return
 	}
 
-	response, err = client.Submit(txBlob, false)
+	response, err = client.SubmitAndWait(txBlob, false)
 	if err != nil {
 		fmt.Printf("❌ Error submitting transaction: %s\n", err)
 		return
 	}
 
-	if response.EngineResult != "tesSUCCESS" {
-		fmt.Println("❌ Tokens not sent from cold wallet to hot wallet!", response.EngineResult)
+	if !response.Validated {
+		fmt.Println("❌ Tokens not sent from cold wallet to hot wallet!")
 		fmt.Println("Try again!")
 		fmt.Println()
 		return
 	}
 
 	fmt.Println("✅ Tokens sent from cold wallet to hot wallet!")
-	fmt.Printf("🌐 Hash: %s\n", response.Tx["hash"])
+	fmt.Printf("🌐 Hash: %s\n", response.Hash.String())
 	fmt.Println()
 
 	//
@@ -240,19 +240,19 @@ func main() {
 		return
 	}
 
-	response, err = client.Submit(txBlob, false)
+	response, err = client.SubmitAndWait(txBlob, false)
 	if err != nil {
 		fmt.Printf("❌ Error submitting transaction: %s\n", err)
 		return
 	}
 
-	if response.EngineResult != "tesSUCCESS" {
-		fmt.Println("❌ Tokens not clawed back from customer one!", response.EngineResult)
+	if !response.Validated {
+		fmt.Println("❌ Tokens not clawed back from customer one!")
 		fmt.Println("Try again!")
 		return
 	}
 
 	fmt.Println("✅ Tokens clawed back from customer one!")
-	fmt.Printf("🌐 Hash: %s\n", response.Tx["hash"])
+	fmt.Printf("🌐 Hash: %s\n", response.Hash.String())
 	fmt.Println()
 }

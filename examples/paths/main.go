@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
@@ -64,8 +63,6 @@ func main() {
 
 	fmt.Printf("Wallet %s funded", wallet.GetAddress())
 	fmt.Println()
-
-	time.Sleep(10 * time.Second)
 
 	r, err := client.Request(&path.RipplePathFindRequest{
 		SourceAccount: wallet.GetAddress(),

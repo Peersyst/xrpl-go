@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
@@ -103,24 +102,22 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("Submitting SetRegularKey transaction...")
-	blob, hash, err := w1.Sign(flatRk)
+	blob, _, err := w1.Sign(flatRk)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err := client.Submit(blob, false)
+	res, err := client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("SetRegularKey transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 	fmt.Println()
-
-	time.Sleep(3 * time.Second)
 
 	fmt.Println("Checking if regular key is set...")
 	p := &transaction.Payment{
@@ -139,20 +136,20 @@ func main() {
 		return
 	}
 
-	blob, hash, err = regularKeyWallet.Sign(flatP)
+	blob, _, err = regularKeyWallet.Sign(flatP)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err = client.Submit(blob, false)
+	res, err = client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("Payment transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 	fmt.Println()
 }

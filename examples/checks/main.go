@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
@@ -90,18 +89,17 @@ func main() {
 		return
 	}
 
-	res, err := client.Submit(blob, false)
+	res, err := client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("CheckCreate transaction submitted")
-	fmt.Println("Transaction hash: ", hash)
-	fmt.Println("Result: ", res.EngineResult)
+	fmt.Println("Transaction hash: ", res.Hash.String())
+	fmt.Println("Validated: ", res.Validated)
 	fmt.Println()
 
-	time.Sleep(10 * time.Second)
 
 	r, err := client.Request(&transactionquery.TxRequest{
 		Transaction: hash,
@@ -168,19 +166,19 @@ func main() {
 		return
 	}
 
-	blob, hash, err = receiverWallet.Sign(flatCheckCash)
+	blob, _, err = receiverWallet.Sign(flatCheckCash)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err = client.Submit(blob, false)
+	res, err = client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("CheckCash transaction submitted")
-	fmt.Println("Transaction hash: ", hash)
-	fmt.Println("Result: ", res.EngineResult)
+	fmt.Println("Transaction hash: ", res.Hash.String())
+	fmt.Println("Validated: ", res.Validated)
 }
