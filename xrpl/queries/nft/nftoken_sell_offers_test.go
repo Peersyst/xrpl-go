@@ -1,4 +1,4 @@
-package path
+package nft
 
 import (
 	"testing"

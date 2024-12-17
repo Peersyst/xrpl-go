@@ -95,8 +95,10 @@ func TestTrustSetFlags(t *testing.T) {
 				ts.SetSetAuthFlag()
 				ts.SetSetNoRippleFlag()
 				ts.SetClearNoRippleFlag()
+				ts.SetSetFreezeFlag()
+				ts.SetClearFreezeFlag()
 			},
-			expected: tfSetAuth | tfSetNoRipple | tfClearNoRipple,
+			expected: tfSetAuth | tfSetNoRipple | tfClearNoRipple | tfSetFreeze | tfClearFreeze,
 		},
 	}
 

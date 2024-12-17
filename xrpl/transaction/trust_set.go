@@ -15,16 +15,16 @@ var (
 const (
 	// Authorize the other party to hold currency issued by this account. (No
 	// effect unless using the asfRequireAuth AccountSet flag.) Cannot be unset.
-	tfSetAuth uint32 = 65536 // 0x00010000
+	tfSetAuth uint32 = 0x00010000
 	// Enable the No Ripple flag, which blocks rippling between two trust lines.
 	// of the same currency if this flag is enabled on both.
-	tfSetNoRipple uint32 = 131072 // 0x00020000
+	tfSetNoRipple uint32 = 0x00020000
 	// Disable the No Ripple flag, allowing rippling on this trust line.
-	tfClearNoRipple uint32 = 262144 // 0x00040000
-	// Freeze the trust line
-	tfSetFreeze uint32 = 1048576 // 0x00100000
-	// Unfreeze the trust line
-	tfClearFreeze uint32 = 2097152 // 0x00200000
+	tfClearNoRipple uint32 = 0x00040000
+	// Freeze the trust line.
+	tfSetFreeze uint32 = 0x00100000
+	// Unfreeze the trust line.
+	tfClearFreeze uint32 = 0x00200000
 )
 
 // Create or modify a trust line linking two accounts.

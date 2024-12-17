@@ -1,4 +1,4 @@
-package path
+package nft
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"

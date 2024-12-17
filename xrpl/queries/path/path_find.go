@@ -32,6 +32,11 @@ func (*FindCreateRequest) Method() string {
 	return "path_find"
 }
 
+// TODO: Implement V2
+func (*FindCreateRequest) Validate() error {
+	return nil
+}
+
 // ############################################################################
 // Close Request
 // ############################################################################
@@ -78,9 +83,10 @@ func (*FindStatusRequest) Validate() error {
 type FindResponse struct {
 	Alternatives       []pathtypes.Alternative `json:"alternatives"`
 	DestinationAccount types.Address           `json:"destination_account"`
-	DestinationAmount  types.CurrencyAmount    `json:"destination_amount"`
-	SourceAccount      types.Address           `json:"source_account"`
-	FullReply          bool                    `json:"full_reply"`
-	Closed             bool                    `json:"closed,omitempty"`
-	Status             bool                    `json:"status,omitempty"`
+	// DestinationAmount  types.CurrencyAmount    `json:"destination_amount"`
+	DestinationAmount any           `json:"destination_amount"`
+	SourceAccount     types.Address `json:"source_account"`
+	FullReply         bool          `json:"full_reply"`
+	Closed            bool          `json:"closed,omitempty"`
+	Status            bool          `json:"status,omitempty"`
 }
