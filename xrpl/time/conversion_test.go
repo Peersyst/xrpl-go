@@ -46,17 +46,17 @@ func TestTimeConversion_UnixTimeToRippleTime(t *testing.T) {
 		{
 			name:       "pass - ripple Time 0",
 			rippleTime: 0,
-			unixTime:   946684800000,
+			unixTime:   946684800,
 		},
 		{
 			name:       "pass - ripple Time 1",
 			rippleTime: 1,
-			unixTime:   946684801000,
+			unixTime:   946684801,
 		},
 		{
 			name:       "pass - ripple Time 100",
 			rippleTime: 100,
-			unixTime:   946684900000,
+			unixTime:   946684900,
 		},
 	}
 	for _, tc := range testCases {

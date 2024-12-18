@@ -3,13 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
+	"github.com/Peersyst/xrpl-go/xrpl/rpc"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/wallet"
-	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
 const (
@@ -17,26 +16,15 @@ const (
 )
 
 func main() {
-	fmt.Println("Connecting to testnet...")
-	client := websocket.NewClient(
-		websocket.NewClientConfig().
-			WithHost("wss://s.altnet.rippletest.net:51233").
-			WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
+	cfg, err := rpc.NewClientConfig(
+		"https://s.altnet.rippletest.net:51234/",
+		rpc.WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
 	)
-	defer client.Disconnect()
-
-	if err := client.Connect(); err != nil {
-		fmt.Println(err)
-		return
+	if err != nil {
+		panic(err)
 	}
 
-	if !client.IsConnected() {
-		fmt.Println("Failed to connect to testnet")
-		return
-	}
-
-	fmt.Println("Connected to testnet")
-	fmt.Println()
+	client := rpc.NewClient(cfg)
 
 	w, err := wallet.FromSeed(WalletSeed, "")
 	if err != nil {
@@ -83,24 +71,22 @@ func main() {
 		return
 	}
 
-	blob, hash, err := w.Sign(flatTc)
+	blob, _, err := w.Sign(flatTc)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err := client.Submit(blob, false)
+	res, err := client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("TicketCreate transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 	fmt.Println()
-
-	time.Sleep(3 * time.Second)
 
 	objects, err := client.GetAccountObjects(&account.ObjectsRequest{
 		Account: w.GetAddress(),
@@ -135,19 +121,19 @@ func main() {
 
 	flatAs["Sequence"] = uint32(0)
 
-	blob, hash, err = w.Sign(flatAs)
+	blob, _, err = w.Sign(flatAs)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err = client.Submit(blob, false)
+	res, err = client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("AccountSet transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 }

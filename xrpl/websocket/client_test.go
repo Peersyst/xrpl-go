@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"testing"
 
+	commonconstants "github.com/Peersyst/xrpl-go/xrpl/common"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -680,7 +681,7 @@ func TestClient_setLastLedgerSequence(t *testing.T) {
 				},
 			},
 			tx:          transaction.FlatTransaction{},
-			expectedTx:  transaction.FlatTransaction{"LastLedgerSequence": uint32(1000 + LedgerOffset)},
+			expectedTx:  transaction.FlatTransaction{"LastLedgerSequence": uint32(1000 + commonconstants.LedgerOffset)},
 			expectedErr: nil,
 		},
 	}

@@ -27,7 +27,7 @@ func RippleTimeToUnixTime(rpepoch int64) int64 {
 //
 // It returns the number of seconds since the Ripple epoch (January 1, 2000 00:00 UTC).
 func UnixTimeToRippleTime(timestamp int64) int64 {
-	return timestamp/1000 - RippleEpochDiff
+	return timestamp - RippleEpochDiff
 }
 
 // RippleTimeToISOTime converts a ripple timestamp to an ISO 8601 formatted time string.
@@ -50,7 +50,7 @@ func IsoTimeToRippleTime(isoTime string) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	return UnixTimeToRippleTime(t.UnixMilli()), nil
+	return UnixTimeToRippleTime(t.Unix()), nil
 }
 
 // ParseISO8601 parses an ISO 8601 formatted string into a time.Time object.

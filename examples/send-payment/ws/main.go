@@ -112,13 +112,12 @@ func main() {
 	fmt.Println("Transaction signed")
 	fmt.Println("Transaction submitted")
 
-	response, err := client.Submit(txBlob, true)
+	response, err := client.SubmitAndWait(txBlob, true)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Transaction engine result:", response.EngineResult)
-	fmt.Println("Transaction accepted:", response.Accepted)
-	fmt.Println("Transaction hash:", response.Tx["hash"])
+	fmt.Println("Transaction validated:", response.Validated)
+	fmt.Println("Transaction hash:", response.Hash.String())
 }

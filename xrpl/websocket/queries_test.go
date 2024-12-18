@@ -318,7 +318,6 @@ func TestClient_GetAccountChannels(t *testing.T) {
 	}
 }
 
-
 func TestClient_GetAccountObjects(t *testing.T) {
 	tests := []struct {
 		name           string

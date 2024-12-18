@@ -2,37 +2,25 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
 	"github.com/Peersyst/xrpl-go/xrpl/faucet"
+	"github.com/Peersyst/xrpl-go/xrpl/rpc"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/Peersyst/xrpl-go/xrpl/wallet"
-	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
 func main() {
-	fmt.Println("Connecting to testnet...")
-	client := websocket.NewClient(
-		websocket.NewClientConfig().
-			WithHost("wss://s.altnet.rippletest.net:51233").
-			WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
+	cfg, err := rpc.NewClientConfig(
+		"https://s.altnet.rippletest.net:51234/",
+		rpc.WithFaucetProvider(faucet.NewTestnetFaucetProvider()),
 	)
-	defer client.Disconnect()
-
-	if err := client.Connect(); err != nil {
-		fmt.Println(err)
-		return
+	if err != nil {
+		panic(err)
 	}
 
-	if !client.IsConnected() {
-		fmt.Println("Failed to connect to testnet")
-		return
-	}
-
-	fmt.Println("Connected to testnet")
-	fmt.Println()
+	client := rpc.NewClient(cfg)
 
 	w1, err := wallet.New(crypto.ED25519())
 	if err != nil {
@@ -91,24 +79,22 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("Submitting TrustSet transaction...")
-	blob, hash, err := w2.Sign(flatTs)
+	blob, _, err := w2.Sign(flatTs)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err := client.Submit(blob, false)
+	res, err := client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("TrustSet transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 	fmt.Println()
-
-	time.Sleep(3 * time.Second)
 
 	fmt.Println("Issuing tokens for wallet 2...")
 	p := &transaction.Payment{
@@ -135,24 +121,22 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("Submitting Payment transaction...")
-	blob, hash, err = w1.Sign(flatP)
+	blob, _, err = w1.Sign(flatP)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err = client.Submit(blob, false)
+	res, err = client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("Payment transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 	fmt.Println()
-
-	time.Sleep(3 * time.Second)
 
 	pp := &transaction.Payment{
 		BaseTx: transaction.BaseTx{
@@ -180,20 +164,20 @@ func main() {
 	fmt.Println()
 
 	fmt.Println("Submitting Partial Payment transaction...")
-	blob, hash, err = w2.Sign(flatPP)
+	blob, _, err = w2.Sign(flatPP)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err = client.Submit(blob, false)
+	res, err = client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	fmt.Println("Partial Payment transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Result:", res.EngineResult)
+	fmt.Println("Transaction hash:", res.Hash.String())
+	fmt.Println("Validated:", res.Validated)
 	fmt.Println()
 }

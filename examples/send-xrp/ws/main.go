@@ -91,7 +91,7 @@ func main() {
 	}
 
 	fmt.Println("Submitting transaction...")
-	res, err := client.Submit(txBlob, false)
+	res, err := client.SubmitAndWait(txBlob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -99,6 +99,6 @@ func main() {
 
 	fmt.Println()
 	fmt.Println("Transaction hash:", hash)
-	fmt.Printf("Transaction submitted: %s", res.EngineResult)
+	fmt.Printf("Transaction submitted: %d", res.LedgerIndex.Int())
 	fmt.Println()
 }

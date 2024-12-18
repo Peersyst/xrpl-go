@@ -1,4 +1,4 @@
-package websocket
+package common
 
 import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 
