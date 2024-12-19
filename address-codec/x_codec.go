@@ -2,7 +2,6 @@ package addresscodec
 
 import (
 	"bytes"
-	"errors"
 )
 
 var (
@@ -10,15 +9,6 @@ var (
 	TestnetXAddressPrefix = []byte{0x04, 0x93}
 	// X-address length - value is 35
 	XAddressLength = 35
-
-	// Errors
-
-	// Invalid x-address
-	ErrInvalidXAddress = errors.New("invalid x-address")
-	// Invalid tag
-	ErrInvalidTag = errors.New("invalid tag")
-	// Invalid accountId
-	ErrInvalidAccountID = errors.New("invalid accountId")
 )
 
 // IsValidXAddress returns true if the x-address is valid. Otherwise, it returns false.

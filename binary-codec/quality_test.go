@@ -17,7 +17,7 @@ func TestQualityCodec_Encode(t *testing.T) {
 		{
 			name:        "fail - invalid quality - empty string",
 			input:       "",
-			expectedErr: errInvalidQuality,
+			expectedErr: ErrInvalidQuality,
 		},
 		{
 			name:        "fail - invalid quality - invalid character",
@@ -27,12 +27,12 @@ func TestQualityCodec_Encode(t *testing.T) {
 		{
 			name:        "fail - invalid quality - overflow",
 			input:       "195796912.51716641",
-			expectedErr: errInvalidQuality,
+			expectedErr: ErrInvalidQuality,
 		},
 		{
 			name:        "fail - invalid quality - overflow",
 			input:       "1195796912.5171664",
-			expectedErr: errInvalidQuality,
+			expectedErr: ErrInvalidQuality,
 		},
 		{
 			name:     "pass - valid zero quality",
@@ -94,7 +94,7 @@ func TestQualityCodec_Decode(t *testing.T) {
 		{
 			name:        "fail - invalid quality - empty string",
 			input:       "",
-			expectedErr: errInvalidQuality,
+			expectedErr: ErrInvalidQuality,
 		},
 		{
 			name:     "pass - valid zero quality",

@@ -7,6 +7,7 @@ import (
 	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
+// Ledger is a struct that represents the ledger information.
 type Ledger struct {
 	AccountHash         string                        `json:"account_hash"`
 	AccountState        []ledger.FlatLedgerObject     `json:"accountState,omitempty"`

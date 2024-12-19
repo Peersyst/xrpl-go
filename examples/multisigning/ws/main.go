@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"maps"
 	"strings"
-	"time"
 
 	"github.com/Peersyst/xrpl-go/v1/xrpl"
 	"github.com/Peersyst/xrpl-go/v1/xrpl/faucet"
@@ -16,7 +15,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Connecting to testnet...")
+	fmt.Println("⏳ Connecting to testnet...")
 	client := websocket.NewClient(
 		websocket.NewClientConfig().
 			WithHost("wss://s.altnet.rippletest.net:51233").
@@ -30,11 +29,11 @@ func main() {
 	}
 
 	if !client.IsConnected() {
-		fmt.Println("Failed to connect to testnet")
+		fmt.Println("❌ Failed to connect to testnet")
 		return
 	}
 
-	fmt.Println("Connected to testnet")
+	fmt.Println("✅ Connected to testnet")
 	fmt.Println()
 
 	w1, err := wallet.FromSeed("sEdTtvLmJmrb7GaivhWoXRkvU4NDjVf", "")
@@ -43,15 +42,11 @@ func main() {
 		return
 	}
 
-	fmt.Println("Wallet 1:", w1.GetAddress())
-
 	w2, err := wallet.FromSeed("sEdSFiKMQp7RvYLgH7t7FEpwNRWv2Gr", "")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	fmt.Println("Wallet 2:", w2.GetAddress())
 
 	master, err := wallet.FromSeed("sEdTMm2yv8c8Rg8YHFHQA9TxVMFy1ze", "")
 	if err != nil {
@@ -59,30 +54,28 @@ func main() {
 		return
 	}
 
-	fmt.Println("Master Wallet:", master.GetAddress())
-	fmt.Println()
-	fmt.Println("Funding wallets...")
+	fmt.Println("⏳ Funding wallets...")
 
 	if err := client.FundWallet(&w1); err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Wallet 1 funded")
+	fmt.Println("💸 Wallet 1 funded")
 
 	if err := client.FundWallet(&w2); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Wallet 2 funded")
+	fmt.Println("💸 Wallet 2 funded")
 
 	if err := client.FundWallet(&master); err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Master wallet funded")
+	fmt.Println("💸 Master wallet funded")
 	fmt.Println()
-	fmt.Println("Setting up signer list...")
+	fmt.Println("⏳ Setting up signer list...")
 
 	ss := &transaction.SignerListSet{
 		BaseTx: transaction.BaseTx{
@@ -112,26 +105,23 @@ func main() {
 		return
 	}
 
-	blob, hash, err := master.Sign(flatSs)
+	blob, _, err := master.Sign(flatSs)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	res, err := client.Submit(blob, false)
+	res, err := client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("SignerListSet transaction submitted")
-	fmt.Println("Transaction hash:", hash)
-	fmt.Println("Transaction result:", res.EngineResult)
+	fmt.Println("✅ SignerListSet transaction submitted!")
+	fmt.Printf("🌐 Hash: %s\n", res.Hash.String())
 	fmt.Println()
 
-	time.Sleep(10 * time.Second)
-
-	fmt.Println("Setting up AccountSet multisign transaction...")
+	fmt.Println("⏳ Setting up AccountSet multisign transaction...")
 
 	as := &transaction.AccountSet{
 		BaseTx: transaction.BaseTx{
@@ -175,6 +165,6 @@ func main() {
 		return
 	}
 
-	fmt.Println("Multisigned transaction submitted")
-	fmt.Println("Transaction result:", mRes.EngineResult)
+	fmt.Println("✅ Multisigned transaction submitted!")
+	fmt.Printf("🌐 Result: %s\n", mRes.EngineResult)
 }

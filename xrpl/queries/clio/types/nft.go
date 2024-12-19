@@ -5,6 +5,10 @@ import (
 	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
+// NFToken is a struct that represents an NFToken.
+// It contains the information about the NFToken, such as the ID,
+// the ledger index, the owner, if it is burned, the flags, the transfer fee,
+// the issuer, the taxon, the sequence, the URI, and the URI JSON.
 type NFToken struct {
 	NFTokenID       types.NFTokenID    `json:"nft_id"`
 	LedgerIndex     common.LedgerIndex `json:"ledger_index"`

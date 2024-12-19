@@ -283,7 +283,7 @@ func (c *Client) SubmitAndWait(txBlob string, failHard bool) (*requests.TxRespon
 		return nil, errors.New("transaction failed to submit with engine result: " + txResponse.EngineResult)
 	}
 
-	txHash, err := hash.TxBlob(txBlob)
+	txHash, err := hash.SignTxBlob(txBlob)
 	if err != nil {
 		return nil, err
 	}

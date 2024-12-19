@@ -18,7 +18,7 @@ const (
 
 func main() {
 
-	fmt.Println("Connecting to testnet...")
+	fmt.Println("⏳ Connecting to testnet...")
 	client := websocket.NewClient(
 		websocket.NewClientConfig().
 			WithHost("wss://s.altnet.rippletest.net:51233").
@@ -32,11 +32,11 @@ func main() {
 	}
 
 	if !client.IsConnected() {
-		fmt.Println("Failed to connect to testnet")
+		fmt.Println("❌ Failed to connect to testnet")
 		return
 	}
 
-	fmt.Println("Connected to testnet")
+	fmt.Println("✅ Connected to testnet")
 	fmt.Println()
 
 	w, err := wallet.FromSeed(WalletSeed, "")
@@ -45,16 +45,15 @@ func main() {
 		return
 	}
 
-	fmt.Println("Requesting XRP from faucet...")
+	fmt.Println("⏳ Funding wallet...")
 	if err := client.FundWallet(&w); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Printf("Wallet %s funded", w.GetAddress())
+	fmt.Println("💸 Wallet funded")
 	fmt.Println()
 
-	fmt.Println("Sending 1 XRP to rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe")
 	xrpAmount, err := currency.XrpToDrops("1")
 	if err != nil {
 		fmt.Println(err)
@@ -67,6 +66,7 @@ func main() {
 		return
 	}
 
+	fmt.Println("⏳ Sending 1 XRP to rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe...")
 	p := &transaction.Payment{
 		BaseTx: transaction.BaseTx{
 			Account: types.Address(w.GetAddress()),
@@ -78,27 +78,24 @@ func main() {
 
 	flattenedTx := p.Flatten()
 
-	fmt.Println("Autofilling transaction...")
 	if err := client.Autofill(&flattenedTx); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	txBlob, hash, err := w.Sign(flattenedTx)
+	txBlob, _, err := w.Sign(flattenedTx)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Submitting transaction...")
 	res, err := client.SubmitAndWait(txBlob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println()
-	fmt.Println("Transaction hash:", hash)
-	fmt.Printf("Transaction submitted: %d", res.LedgerIndex.Int())
-	fmt.Println()
+	fmt.Println("✅ Payment submitted")
+	fmt.Printf("🌐 Hash: %s\n", res.Hash)
+	fmt.Printf("🌐 Validated: %t\n", res.Validated)
 }

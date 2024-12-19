@@ -22,13 +22,16 @@ const (
 )
 
 var (
-	errInvalidQuality = errors.New("invalid quality")
+	// Static errors
+
+	// ErrInvalidQuality is returned when the quality is invalid.
+	ErrInvalidQuality = errors.New("invalid quality")
 )
 
 // EncodeQuality encodes a quality amount to a hex string.
 func EncodeQuality(quality string) (string, error) {
 	if len(quality) == 0 {
-		return "", errInvalidQuality
+		return "", ErrInvalidQuality
 	}
 	if len(strings.Trim(strings.Trim(quality, "0"), ".")) == 0 {
 		zeroAmount := make([]byte, 8)
@@ -42,7 +45,7 @@ func EncodeQuality(quality string) (string, error) {
 	}
 
 	if !isValidQuality(*bigDecimal) {
-		return "", errInvalidQuality
+		return "", ErrInvalidQuality
 	}
 
 	if bigDecimal.UnscaledValue == "" {
@@ -71,7 +74,7 @@ func EncodeQuality(quality string) (string, error) {
 // Decode a quality amount from a hex string to a string.
 func DecodeQuality(quality string) (string, error) {
 	if quality == "" {
-		return "", errInvalidQuality
+		return "", ErrInvalidQuality
 	}
 
 	decoded, err := hex.DecodeString(quality)

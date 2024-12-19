@@ -36,16 +36,15 @@ func main() {
 		return
 	}
 
-	fmt.Println("Requesting XRP from faucet...")
+	fmt.Println("⏳ Funding wallet...")
 	if err := client.FundWallet(&w); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Printf("Wallet %s funded", w.GetAddress())
+	fmt.Println("💸 Wallet funded")
 	fmt.Println()
 
-	fmt.Println("Sending 1 XRP to rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe")
 	xrpAmount, err := currency.XrpToDrops("1")
 	if err != nil {
 		fmt.Println(err)
@@ -58,6 +57,7 @@ func main() {
 		return
 	}
 
+	fmt.Println("⏳ Sending 1 XRP to rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe...")
 	p := &transaction.Payment{
 		BaseTx: transaction.BaseTx{
 			Account: types.Address(w.GetAddress()),
@@ -69,7 +69,6 @@ func main() {
 
 	flattenedTx := p.Flatten()
 
-	fmt.Println("Autofilling transaction...")
 	if err := client.Autofill(&flattenedTx); err != nil {
 		fmt.Println(err)
 		return
@@ -81,15 +80,13 @@ func main() {
 		return
 	}
 
-	fmt.Println("Submitting transaction...")
 	res, err := client.SubmitAndWait(txBlob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println()
-	fmt.Println("Transaction hash:", res.Hash)
-	fmt.Println("Transaction submitted:", res.Validated)
-	fmt.Println()
+	fmt.Println("✅ Payment submitted")
+	fmt.Printf("🌐 Hash: %s\n", res.Hash)
+	fmt.Printf("🌐 Validated: %t\n", res.Validated)
 }

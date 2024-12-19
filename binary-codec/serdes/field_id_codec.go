@@ -9,13 +9,18 @@ import (
 )
 
 var (
+	// Static errors
+
+	// ErrInvalidFieldIDLength is returned when the field ID length is invalid.
 	ErrInvalidFieldIDLength = errors.New("invalid field ID length")
 )
 
+// FieldIDCodec is a struct that represents the field ID codec.
 type FieldIDCodec struct {
 	definitions interfaces.Definitions
 }
 
+// NewFieldIDCodec creates a new FieldIDCodec.
 func NewFieldIDCodec(definitions interfaces.Definitions) *FieldIDCodec {
 	return &FieldIDCodec{definitions: definitions}
 }

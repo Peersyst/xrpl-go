@@ -40,38 +40,30 @@ func main() {
 		return
 	}
 
-	fmt.Println("Wallet 1:", w1.GetAddress())
-	fmt.Println("Wallet 2:", w2.GetAddress())
-	fmt.Println("Regular key wallet:", regularKeyWallet.GetAddress())
-
-	fmt.Println()
-	fmt.Println("Requesting XRP from faucet for wallet 1...")
+	fmt.Println("⏳ Funding wallets...")
 	if err := client.FundWallet(&w1); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Wallet 1 funded")
-	fmt.Println()
+	fmt.Println("💸 Wallet 1 funded")
 
-	fmt.Println("Requesting XRP from faucet for wallet 2...")
 	if err := client.FundWallet(&w2); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Wallet 2 funded")
-	fmt.Println()
+	fmt.Println("💸 Wallet 2 funded")
 
-	fmt.Println("Requesting XRP from faucet for regular key wallet...")
 	if err := client.FundWallet(&regularKeyWallet); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Regular key wallet funded")
+	fmt.Println("💸 Regular key wallet funded")
 	fmt.Println()
 
+	fmt.Println("⏳ Setting regular key...")
 	rk := &transaction.SetRegularKey{
 		BaseTx: transaction.BaseTx{
 			Account: w1.GetAddress(),
@@ -87,10 +79,6 @@ func main() {
 		return
 	}
 
-	fmt.Println("Set regular key transaction autofill complete")
-	fmt.Println()
-
-	fmt.Println("Submitting SetRegularKey transaction...")
 	blob, _, err := w1.Sign(flatRk)
 	if err != nil {
 		fmt.Println(err)
@@ -103,12 +91,12 @@ func main() {
 		return
 	}
 
-	fmt.Println("SetRegularKey transaction submitted")
-	fmt.Println("Transaction hash:", res.Hash.String())
-	fmt.Println("Validated:", res.Validated)
+	fmt.Println("✅ SetRegularKey transaction submitted")
+	fmt.Printf("🌐 Hash: %s\n", res.Hash)
+	fmt.Printf("🌐 Validated: %t\n", res.Validated)
 	fmt.Println()
 
-	fmt.Println("Checking if regular key is set...")
+	fmt.Println("⏳ Checking if regular key is set...")
 	p := &transaction.Payment{
 		BaseTx: transaction.BaseTx{
 			Account: w1.GetAddress(),
@@ -137,8 +125,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("Payment transaction submitted")
-	fmt.Println("Transaction hash:", res.Hash.String())
-	fmt.Println("Validated:", res.Validated)
-	fmt.Println()
+	fmt.Println("✅ Payment transaction submitted")
+	fmt.Printf("🌐 Hash: %s\n", res.Hash)
+	fmt.Printf("🌐 Validated: %t\n", res.Validated)
 }

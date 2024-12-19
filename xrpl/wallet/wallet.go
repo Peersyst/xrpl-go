@@ -149,7 +149,7 @@ func (w *Wallet) Sign(tx map[string]interface{}) (string, string, error) {
 		return "", "", err
 	}
 
-	txHash, err = hash.TxBlob(txBlob)
+	txHash, err = hash.SignTxBlob(txBlob)
 	if err != nil {
 		return "", "", err
 	}
@@ -188,7 +188,7 @@ func (w *Wallet) Multisign(tx map[string]interface{}) (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
-	blobHash, err := hash.TxBlob(blob)
+	blobHash, err := hash.SignTxBlob(blob)
 	if err != nil {
 		return "", "", err
 	}

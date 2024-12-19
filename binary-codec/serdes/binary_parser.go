@@ -8,8 +8,13 @@ import (
 )
 
 var (
+	// Static errors
+
+	// ErrParserOutOfBound is returned when the parser is out of bounds.
 	ErrParserOutOfBound = errors.New("parser out of bounds")
-	ErrInvalidTypecode  = errors.New("invalid typecode")
+	// ErrInvalidTypecode is returned when the typecode is invalid.
+	ErrInvalidTypecode = errors.New("invalid typecode")
+	// ErrInvalidFieldcode is returned when the fieldcode is invalid.
 	ErrInvalidFieldcode = errors.New("invalid fieldcode")
 )
 

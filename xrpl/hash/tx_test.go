@@ -25,7 +25,7 @@ func TestHashTxBlob(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			got, err := TxBlob(tc.txBlob)
+			got, err := SignTxBlob(tc.txBlob)
 			if (err != nil) != tc.wantErr {
 				t.Errorf("HashSignedTx() error = %v, wantErr %v", err, tc.wantErr)
 				return

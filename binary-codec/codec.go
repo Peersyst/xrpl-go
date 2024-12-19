@@ -13,7 +13,10 @@ import (
 )
 
 var (
-	errSigningClaimFieldNotFound = errors.New("'Channel' & 'Amount' fields are both required, but were not found")
+	// Static errors
+
+	// ErrSigningClaimFieldNotFound is returned when the 'Channel' & 'Amount' fields are both required, but were not found.
+	ErrSigningClaimFieldNotFound = errors.New("'Channel' & 'Amount' fields are both required, but were not found")
 )
 
 const (
@@ -89,7 +92,7 @@ func EncodeForSigning(json map[string]any) (string, error) {
 func EncodeForSigningClaim(json map[string]any) (string, error) {
 
 	if json["Channel"] == nil || json["Amount"] == nil {
-		return "", errSigningClaimFieldNotFound
+		return "", ErrSigningClaimFieldNotFound
 	}
 
 	channel, err := types.NewHash256().FromJSON(json["Channel"])

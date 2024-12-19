@@ -2,6 +2,7 @@ package definitions
 
 import "github.com/ugorji/go/codec"
 
+// FieldInstance is a struct that represents a field instance.
 type FieldInstance struct {
 	FieldName string
 	*FieldInfo
@@ -9,6 +10,7 @@ type FieldInstance struct {
 	Ordinal     int32
 }
 
+// FieldInfo is a struct that represents the field info.
 type FieldInfo struct {
 	Nth            int32
 	IsVLEncoded    bool
@@ -17,11 +19,13 @@ type FieldInfo struct {
 	Type           string
 }
 
+// FieldHeader is a struct that represents the field header.
 type FieldHeader struct {
 	TypeCode  int32
 	FieldCode int32
 }
 
+// CreateFieldHeader creates a new field header.
 func (d *Definitions) CreateFieldHeader(tc, fc int32) FieldHeader {
 	return FieldHeader{
 		TypeCode:  tc,

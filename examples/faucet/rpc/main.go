@@ -10,8 +10,7 @@ import (
 )
 
 func main() {
-
-	fmt.Println("Funding wallet on testnet:")
+	fmt.Println("⏳ Funding wallet on testnet...")
 
 	cfg, err := rpc.NewClientConfig(
 		"https://s.altnet.rippletest.net:51234/",
@@ -34,9 +33,10 @@ func main() {
 		balance = "0"
 	}
 
-	fmt.Println("Balance", wallet.ClassicAddress, balance)
+	fmt.Println("💳 Balance", balance)
+	fmt.Println()
 
-	fmt.Println("Funding wallet", wallet.ClassicAddress)
+	fmt.Println("⏳ Funding wallet...")
 	err = client.FundWallet(&wallet)
 	if err != nil {
 		fmt.Println(err)
@@ -48,18 +48,20 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Balance", wallet.ClassicAddress, balance)
+	fmt.Println("💳 Balance", balance)
+	fmt.Println()
 
-	fmt.Println("Funding wallet on devnet:")
+	fmt.Println("⏳ Funding wallet on devnet...")
 
 	balance, err = client.GetXrpBalance(wallet.ClassicAddress)
 	if err != nil {
 		balance = "0"
 	}
 
-	fmt.Println("Balance", wallet.ClassicAddress, balance)
+	fmt.Println("💳 Balance", balance)
+	fmt.Println()
 
-	fmt.Println("Funding wallet", wallet.ClassicAddress)
+	fmt.Println("⏳ Funding wallet...")
 	err = client.FundWallet(&wallet)
 	if err != nil {
 		fmt.Println(err)
@@ -71,5 +73,5 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Balance", wallet.ClassicAddress, balance)
+	fmt.Println("💳 Balance", balance)
 }

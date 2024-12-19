@@ -7,7 +7,10 @@ import (
 	"github.com/Peersyst/xrpl-go/v1/binary-codec/serdes/interfaces"
 )
 
-var ErrLengthPrefixTooLong = errors.New("length of value must not exceed 918744 bytes of data")
+var (
+	// ErrLengthPrefixTooLong is returned when the length of the value exceeds 918744 bytes.
+	ErrLengthPrefixTooLong = errors.New("length of value must not exceed 918744 bytes of data")
+)
 
 type BinarySerializer struct {
 	sink         []byte

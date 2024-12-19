@@ -10,10 +10,10 @@ import (
 	"github.com/Peersyst/xrpl-go/v1/pkg/crypto"
 )
 
-// TxBlob hashes a signed transaction blob
+// SignTxBlob hashes a signed transaction blob
 // It takes a transaction blob and returns the hash of the signed transaction.
 // It returns an error if the transaction blob is invalid.
-func TxBlob(txBlob string) (string, error) {
+func SignTxBlob(txBlob string) (string, error) {
 	tx, err := binarycodec.Decode(txBlob)
 	if err != nil {
 		return "", err

@@ -8,9 +8,9 @@ import (
 )
 
 var (
-	// Errors
+	// Static errors
 
-	// Derived keypair did not generate verifiable signature.
+	// ErrInvalidSignature is returned when the derived keypair did not generate a verifiable signature.
 	ErrInvalidSignature = errors.New("derived keypair did not generate verifiable signature")
 )
 

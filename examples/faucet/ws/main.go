@@ -10,10 +10,7 @@ import (
 )
 
 func main() {
-
-	fmt.Println("Funding wallet on testnet:")
-
-	fmt.Println("Connecting to testnet...")
+	fmt.Println("⏳ Connecting to testnet...")
 	client := websocket.NewClient(
 		websocket.NewClientConfig().
 			WithHost("wss://s.altnet.rippletest.net:51233").
@@ -27,11 +24,11 @@ func main() {
 	}
 
 	if !client.IsConnected() {
-		fmt.Println("Failed to connect to testnet")
+		fmt.Println("❌ Failed to connect to testnet")
 		return
 	}
 
-	fmt.Println("Connected to testnet")
+	fmt.Println("✅ Connected to testnet")
 	fmt.Println()
 
 	wallet, err := wallet.New(crypto.ED25519())
@@ -45,9 +42,10 @@ func main() {
 		balance = "0"
 	}
 
-	fmt.Println("Balance", wallet.ClassicAddress, balance)
+	fmt.Println("💳 Balance", balance)
+	fmt.Println()
 
-	fmt.Println("Funding wallet", wallet.ClassicAddress)
+	fmt.Println("⏳ Funding wallet...")
 	err = client.FundWallet(&wallet)
 	if err != nil {
 		fmt.Println(err)
@@ -59,18 +57,20 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Balance", wallet.ClassicAddress, balance)
+	fmt.Println("💳 Balance", balance)
+	fmt.Println()
 
-	fmt.Println("Funding wallet on devnet:")
+	fmt.Println("⏳ Funding wallet on devnet...")
 
 	balance, err = client.GetXrpBalance(wallet.ClassicAddress)
 	if err != nil {
 		balance = "0"
 	}
 
-	fmt.Println("Balance", wallet.ClassicAddress, balance)
+	fmt.Println("💳 Balance", balance)
+	fmt.Println()
 
-	fmt.Println("Funding wallet", wallet.ClassicAddress)
+	fmt.Println("⏳ Funding wallet...")
 	err = client.FundWallet(&wallet)
 	if err != nil {
 		fmt.Println(err)
@@ -82,5 +82,5 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Balance", wallet.ClassicAddress, balance)
+	fmt.Println("💳 Balance", balance)
 }

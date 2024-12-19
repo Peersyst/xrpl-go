@@ -33,29 +33,30 @@ func main() {
 	)
 	defer client.Disconnect()
 
-	fmt.Println("Connecting to server...")
+	fmt.Println("⏳ Connecting to server...")
 	if err := client.Connect(); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Connection: ", client.IsConnected())
+	fmt.Println("✅ Connected to server")
+	fmt.Println()
 
 	balance, err := client.GetXrpBalance(w.GetAddress())
 
 	if err != nil || balance == "0" {
-		fmt.Println("Balance: 0")
-		fmt.Println("Funding wallet")
+		fmt.Println("⏳ Funding wallet...")
 		err = client.FundWallet(&w)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
+		fmt.Println("💸 Wallet funded")
 	}
 
 	balance, _ = client.GetXrpBalance(w.GetAddress())
 
-	fmt.Println("Balance: ", balance)
+	fmt.Printf("💸 Balance: %s\n", balance)
 
 	amount, err := currency.XrpToDrops("1")
 	if err != nil {
@@ -69,6 +70,7 @@ func main() {
 		return
 	}
 
+	fmt.Println("⏳ Sending payment...")
 	payment := transactions.Payment{
 		BaseTx: transactions.BaseTx{
 			Account: types.Address(w.GetAddress()),
@@ -101,16 +103,11 @@ func main() {
 		return
 	}
 
-	fmt.Println("Transaction autofilled")
-
 	txBlob, _, err := w.Sign(flatTx)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	fmt.Println("Transaction signed")
-	fmt.Println("Transaction submitted")
 
 	response, err := client.SubmitAndWait(txBlob, true)
 	if err != nil {
@@ -118,6 +115,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("Transaction validated:", response.Validated)
-	fmt.Println("Transaction hash:", response.Hash.String())
+	fmt.Println("✅ Payment submitted")
+	fmt.Printf("🌐 Hash: %s\n", response.Hash.String())
+	fmt.Printf("🌐 Validated: %t\n", response.Validated)
 }

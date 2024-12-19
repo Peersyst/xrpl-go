@@ -27,7 +27,7 @@ var (
 )
 
 func main() {
-	fmt.Println("Connecting to testnet...")
+	fmt.Println("⏳ Connecting to testnet...")
 	client := websocket.NewClient(
 		websocket.NewClientConfig().
 			WithHost("wss://s.altnet.rippletest.net:51233").
@@ -41,11 +41,11 @@ func main() {
 	}
 
 	if !client.IsConnected() {
-		fmt.Println("Failed to connect to testnet")
+		fmt.Println("❌ Failed to connect to testnet")
 		return
 	}
 
-	fmt.Println("Connected to testnet")
+	fmt.Println("✅ Connected to testnet")
 	fmt.Println()
 
 	wallet, err := wallet.New(crypto.ED25519())
@@ -54,16 +54,16 @@ func main() {
 		return
 	}
 
-	fmt.Println("Wallet: ", wallet.GetAddress())
-	fmt.Println("Requesting XRP from faucet...")
+	fmt.Println("⏳ Funding wallet...")
 	if err := client.FundWallet(&wallet); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Printf("Wallet %s funded", wallet.GetAddress())
+	fmt.Println("💸 Wallet funded")
 	fmt.Println()
 
+	fmt.Println("⏳ Getting paths...")
 	res, err := client.GetRipplePathFind(&path.RipplePathFindRequest{
 		SourceAccount: wallet.GetAddress(),
 		SourceCurrencies: []pathtypes.RipplePathFindCurrency{
@@ -79,15 +79,15 @@ func main() {
 		return
 	}
 
-	fmt.Println("Computed paths: ", len(res.Alternatives))
+	fmt.Printf("🌐 Computed paths: %d\n", len(res.Alternatives))
 	fmt.Println()
 
 	if len(res.Alternatives) == 0 {
-		fmt.Println("No alternatives found")
+		fmt.Println("❌ No alternatives found")
 		return
 	}
 
-	fmt.Println("Submitting Payment through path: ", res.Alternatives[0].PathsComputed)
+	fmt.Println("⏳ Submitting Payment through path: ", res.Alternatives[0].PathsComputed)
 	p := &transaction.Payment{
 		BaseTx: transaction.BaseTx{
 			Account: wallet.GetAddress(),
@@ -110,14 +110,13 @@ func main() {
 		return
 	}
 
-	txRes, err := client.Submit(blob, false)
+	txRes, err := client.SubmitAndWait(blob, false)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Payment submitted")
-	fmt.Println("Transaction hash: ", hash)
-	fmt.Println("Result: ", txRes.EngineResult)
-	fmt.Println()
+	fmt.Println("✅ Payment submitted")
+	fmt.Printf("🌐 Hash: %s\n", hash)
+	fmt.Printf("🌐 Validated: %t\n", txRes.Validated)
 }

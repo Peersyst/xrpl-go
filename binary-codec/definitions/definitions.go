@@ -2,55 +2,17 @@ package definitions
 
 import (
 	_ "embed"
-	"errors"
-	"fmt"
 
 	"github.com/ugorji/go/codec"
 )
 
 var (
+	//go:embed definitions.json
+	docBytes []byte
+
 	// definitions is the singleton instance of the Definitions struct.
 	definitions *Definitions
-
-	// Errors
-
-	// ErrUnableToCastFieldInfo is returned when the field info cannot be cast.
-	ErrUnableToCastFieldInfo = errors.New("unable to cast to field info")
 )
-
-//go:embed definitions.json
-var docBytes []byte
-
-func Get() *Definitions {
-	return definitions
-}
-
-type NotFoundError struct {
-	Instance string
-	Input    string
-}
-
-func (e *NotFoundError) Error() string {
-	return fmt.Sprintf("%v %v not found", e.Instance, e.Input)
-}
-
-type NotFoundErrorInt struct {
-	Instance string
-	Input    int32
-}
-
-func (e *NotFoundErrorInt) Error() string {
-	return fmt.Sprintf("%v %v not found", e.Instance, e.Input)
-}
-
-type NotFoundErrorFieldHeader struct {
-	Instance string
-	Input    FieldHeader
-}
-
-func (e *NotFoundErrorFieldHeader) Error() string {
-	return fmt.Sprintf("%v %v not found", e.Instance, e.Input)
-}
 
 type Definitions struct {
 	Types              map[string]int32
@@ -60,6 +22,11 @@ type Definitions struct {
 	TransactionTypes   map[string]int32
 	FieldIDNameMap     map[FieldHeader]string
 }
+
+func Get() *Definitions {
+	return definitions
+}
+
 type definitionsDoc struct {
 	Types              map[string]int32 `json:"TYPES"`
 	LedgerEntryTypes   map[string]int32 `json:"LEDGER_ENTRY_TYPES"`

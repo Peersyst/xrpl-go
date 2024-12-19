@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/hex"
 	"errors"
-	"fmt"
 
 	"github.com/Peersyst/xrpl-go/v1/address-codec/interfaces"
 	"github.com/Peersyst/xrpl-go/v1/pkg/crypto"
@@ -26,24 +25,6 @@ const (
 	// Node/validation public key prefix - value is 28
 	NodePublicKeyPrefix = 0x1C
 )
-
-var (
-	// Errors
-
-	// Invalid classic address
-	ErrInvalidClassicAddress = errors.New("invalid classic address")
-	ErrInvalidSeed           = errors.New("invalid seed; could not determine encoding algorithm")
-)
-
-type EncodeLengthError struct {
-	Instance string
-	Input    int
-	Expected int
-}
-
-func (e *EncodeLengthError) Error() string {
-	return fmt.Sprintf("`%v` length should be %v not %v", e.Instance, e.Expected, e.Input)
-}
 
 // Returns the base58 encoding of byte slice, with the given type prefix, whilst ensuring that the byte slice is the expected length.
 func Encode(b []byte, typePrefix []byte, expectedLength int) (string, error) {

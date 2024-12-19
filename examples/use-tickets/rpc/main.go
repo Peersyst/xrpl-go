@@ -32,16 +32,13 @@ func main() {
 		return
 	}
 
-	fmt.Println("Wallet:", w.GetAddress())
-	fmt.Println()
-
-	fmt.Println("Requesting XRP from faucet...")
+	fmt.Println("⏳ Funding wallet...")
 	if err := client.FundWallet(&w); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("XRP funded")
+	fmt.Println("💸 Wallet funded")
 	fmt.Println()
 
 	info, err := client.GetAccountInfo(&account.InfoRequest{
@@ -52,10 +49,10 @@ func main() {
 		return
 	}
 
-	fmt.Println("Current wallet sequence:", info.AccountData.Sequence)
+	fmt.Println("🌐 Current wallet sequence:", info.AccountData.Sequence)
 	fmt.Println()
 
-	fmt.Println("Submitting TicketCreate transaction...")
+	fmt.Println("⏳ Submitting TicketCreate transaction...")
 	tc := &transaction.TicketCreate{
 		BaseTx: transaction.BaseTx{
 			Account:  w.GetAddress(),
@@ -83,9 +80,9 @@ func main() {
 		return
 	}
 
-	fmt.Println("TicketCreate transaction submitted")
-	fmt.Println("Transaction hash:", res.Hash.String())
-	fmt.Println("Validated:", res.Validated)
+	fmt.Println("✅ TicketCreate transaction submitted")
+	fmt.Printf("🌐 Hash: %s\n", res.Hash)
+	fmt.Printf("🌐 Validated: %t\n", res.Validated)
 	fmt.Println()
 
 	objects, err := client.GetAccountObjects(&account.ObjectsRequest{
@@ -96,7 +93,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("Account objects:", objects.AccountObjects[0]["TicketSequence"])
+	fmt.Println("🌐 Account objects:", objects.AccountObjects[0]["TicketSequence"])
 
 	seq, err := objects.AccountObjects[0]["TicketSequence"].(json.Number).Int64()
 	if err != nil {
@@ -104,6 +101,7 @@ func main() {
 		return
 	}
 
+	fmt.Println("⏳ Submitting AccountSet transaction...")
 	as := &transaction.AccountSet{
 		BaseTx: transaction.BaseTx{
 			Account:        w.GetAddress(),
@@ -133,7 +131,7 @@ func main() {
 		return
 	}
 
-	fmt.Println("AccountSet transaction submitted")
-	fmt.Println("Transaction hash:", res.Hash.String())
-	fmt.Println("Validated:", res.Validated)
+	fmt.Println("✅ AccountSet transaction submitted")
+	fmt.Printf("🌐 Hash: %s\n", res.Hash)
+	fmt.Printf("🌐 Validated: %t\n", res.Validated)
 }

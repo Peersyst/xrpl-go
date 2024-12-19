@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	// Errors
+	// Static errors
 
 	// ErrInvalidCryptoImplementation is returned when the key does not match any crypto implementation.
 	ErrInvalidCryptoImplementation = errors.New("not a valid crypto implementation")

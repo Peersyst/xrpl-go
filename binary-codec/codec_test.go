@@ -565,7 +565,7 @@ func TestEncodeForSigningClaim(t *testing.T) {
 				"Amount": "1000",
 			},
 			output:      "",
-			expectedErr: errSigningClaimFieldNotFound,
+			expectedErr: ErrSigningClaimFieldNotFound,
 		},
 		{
 			description: "fail to encode claim - no amount",
@@ -573,7 +573,7 @@ func TestEncodeForSigningClaim(t *testing.T) {
 				"Channel": "43904CBFCDCEC530B4037871F86EE90BF799DF8D2E0EA564BC8A3F332E4F5FB1",
 			},
 			output:      "",
-			expectedErr: errSigningClaimFieldNotFound,
+			expectedErr: ErrSigningClaimFieldNotFound,
 		},
 	}
 

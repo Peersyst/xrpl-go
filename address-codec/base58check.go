@@ -2,15 +2,6 @@ package addresscodec
 
 import (
 	"crypto/sha256"
-	"errors"
-)
-
-// ErrChecksum indicates that the checksum of a check-encoded string does not verify against
-// the checksum.
-// ErrInvalidFormat indicates that the check-encoded string has an invalid format.
-var (
-	ErrChecksum      = errors.New("checksum error")
-	ErrInvalidFormat = errors.New("invalid format: version and/or checksum bytes missing")
 )
 
 // checksum: first four bytes of sha256^2
