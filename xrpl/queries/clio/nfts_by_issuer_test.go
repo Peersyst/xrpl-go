@@ -3,8 +3,8 @@ package clio
 import (
 	"testing"
 
-	cliotypes "github.com/Peersyst/xrpl-go/xrpl/queries/clio/types"
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
+	cliotypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/clio/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/testutil"
 )
 
 func TestNFTsByIssuerRequest(t *testing.T) {

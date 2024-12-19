@@ -3,7 +3,7 @@ package transaction
 import (
 	"fmt"
 
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 func ValidateRequiredField(tx FlatTransaction, field string, checkValidity func(interface{}) bool) error {

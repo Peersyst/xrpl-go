@@ -6,12 +6,12 @@ import (
 	"strconv"
 	"strings"
 
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	maputils "github.com/Peersyst/xrpl-go/pkg/map_utils"
-	"github.com/Peersyst/xrpl-go/pkg/typecheck"
-	"github.com/Peersyst/xrpl-go/xrpl/currency"
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
+	maputils "github.com/Peersyst/xrpl-go/v1/pkg/map_utils"
+	"github.com/Peersyst/xrpl-go/v1/pkg/typecheck"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/currency"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 const (

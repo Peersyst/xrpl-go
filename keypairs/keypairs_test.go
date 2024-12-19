@@ -4,10 +4,10 @@ import (
 	"errors"
 	"testing"
 
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/keypairs/interfaces"
-	"github.com/Peersyst/xrpl-go/keypairs/testutil"
-	"github.com/Peersyst/xrpl-go/pkg/crypto"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
+	"github.com/Peersyst/xrpl-go/v1/keypairs/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/keypairs/testutil"
+	"github.com/Peersyst/xrpl-go/v1/pkg/crypto"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )

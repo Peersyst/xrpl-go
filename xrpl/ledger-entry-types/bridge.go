@@ -1,6 +1,6 @@
 package ledger
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 // (Requires the XChainBridge amendment)
 // The Bridge ledger entry represents a single cross-chain bridge that connects the XRP Ledger with

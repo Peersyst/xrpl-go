@@ -1,9 +1,9 @@
 package transaction
 
 import (
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/pkg/typecheck"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
+	"github.com/Peersyst/xrpl-go/v1/pkg/typecheck"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // Create a payment channel and fund it with XRP. The address sending this transaction becomes the "source address" of the payment channel.

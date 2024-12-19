@@ -1,9 +1,9 @@
 package path
 
 import (
-	pathtypes "github.com/Peersyst/xrpl-go/xrpl/queries/path/types"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	pathtypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/path/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 type SubCommand string

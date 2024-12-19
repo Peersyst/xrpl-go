@@ -3,9 +3,9 @@ package account
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/account/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/testutil"
 	"github.com/stretchr/testify/assert"
 )
 

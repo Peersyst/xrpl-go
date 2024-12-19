@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	bigdecimal "github.com/Peersyst/xrpl-go/pkg/big-decimal"
+	bigdecimal "github.com/Peersyst/xrpl-go/v1/pkg/big-decimal"
 )
 
 const (

@@ -1,10 +1,10 @@
 package nft
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
-	nfttypes "github.com/Peersyst/xrpl-go/xrpl/queries/nft/types"
+	nfttypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/nft/types"
 )
 
 // ############################################################################

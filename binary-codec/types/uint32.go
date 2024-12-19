@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/types/interfaces"
 )
 
 // UInt32 represents a 32-bit unsigned integer.

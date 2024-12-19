@@ -1,8 +1,8 @@
 package transaction
 
 import (
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // Create a Check object in the ledger, which is a deferred payment that can be cashed by its intended destination. The sender of this transaction is the sender of the Check.

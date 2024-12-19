@@ -3,8 +3,8 @@ package keypairs
 import (
 	"errors"
 
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/keypairs/interfaces"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
+	"github.com/Peersyst/xrpl-go/v1/keypairs/interfaces"
 )
 
 var (

@@ -1,6 +1,6 @@
 package common
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 // FaucetProvider defines an interface for interacting with XRPL faucets.
 // Implementations of this interface can be used to fund wallets on different

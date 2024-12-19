@@ -1,6 +1,6 @@
 package types
 
-import "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
 
 type State struct {
 	Data            string                  `json:"data,omitempty"`

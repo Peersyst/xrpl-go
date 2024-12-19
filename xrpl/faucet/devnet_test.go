@@ -3,8 +3,8 @@ package faucet
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/pkg/crypto"
-	"github.com/Peersyst/xrpl-go/xrpl/wallet"
+	"github.com/Peersyst/xrpl-go/v1/pkg/crypto"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/wallet"
 )
 
 // Note: This test interacts with the actual Devnet faucet.

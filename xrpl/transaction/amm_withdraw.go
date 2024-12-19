@@ -1,8 +1,8 @@
 package transaction
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // Withdraw assets from an Automated Market Maker (AMM) instance by returning the AMM's liquidity provider tokens (LP Tokens).

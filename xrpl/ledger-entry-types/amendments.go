@@ -1,7 +1,7 @@
 package ledger
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // The Amendments ledger entry type contains a list of Amendments that are currently active.

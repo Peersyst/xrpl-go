@@ -3,7 +3,7 @@ package websocket
 import (
 	"time"
 
-	"github.com/Peersyst/xrpl-go/xrpl/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/common"
 )
 
 type ClientConfig struct {

@@ -1,8 +1,8 @@
 package transaction
 
 import (
-	"github.com/Peersyst/xrpl-go/pkg/typecheck"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/pkg/typecheck"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // Cancels an unredeemed Check, removing it from the ledger without sending any money.

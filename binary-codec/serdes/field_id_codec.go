@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/serdes/interfaces"
 )
 
 var (

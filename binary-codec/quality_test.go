@@ -3,7 +3,7 @@ package binarycodec
 import (
 	"testing"
 
-	bigdecimal "github.com/Peersyst/xrpl-go/pkg/big-decimal"
+	bigdecimal "github.com/Peersyst/xrpl-go/v1/pkg/big-decimal"
 	"github.com/stretchr/testify/require"
 )
 

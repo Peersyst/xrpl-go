@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/pkg/typecheck"
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
+	"github.com/Peersyst/xrpl-go/v1/pkg/typecheck"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
 )
 
 var (

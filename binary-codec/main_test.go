@@ -3,7 +3,7 @@ package binarycodec
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/types"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/types"
 	"github.com/stretchr/testify/require"
 )
 

@@ -1,6 +1,6 @@
 package ledger
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 // (Added by the NegativeUNL amendment.)
 // The NegativeUNL ledger entry type contains the current status of the Negative UNL, a list of trusted validators currently believed to be offline.

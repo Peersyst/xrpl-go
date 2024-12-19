@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/common"
-	"github.com/Peersyst/xrpl-go/xrpl/faucet"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/faucet"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

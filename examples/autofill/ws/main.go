@@ -4,10 +4,10 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	transactions "github.com/Peersyst/xrpl-go/xrpl/transaction"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
-	"github.com/Peersyst/xrpl-go/xrpl/wallet"
-	"github.com/Peersyst/xrpl-go/xrpl/websocket"
+	transactions "github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/wallet"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/websocket"
 )
 
 func main() {

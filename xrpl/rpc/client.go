@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"time"
 
-	binarycodec "github.com/Peersyst/xrpl-go/binary-codec"
-	"github.com/Peersyst/xrpl-go/xrpl/hash"
-	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
-	"github.com/Peersyst/xrpl-go/xrpl/wallet"
+	binarycodec "github.com/Peersyst/xrpl-go/v1/binary-codec"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/hash"
+	requests "github.com/Peersyst/xrpl-go/v1/xrpl/queries/transactions"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/wallet"
 )
 
 type Client struct {
@@ -26,8 +26,8 @@ func NewClient(cfg *Config) *Client {
 	}
 }
 
-// SendRequest sends a request to the XRPL server and returns the response and any error encountered.
-func (c *Client) SendRequest(reqParams XRPLRequest) (XRPLResponse, error) {
+// Request sends a request to the XRPL server and returns the response and any error encountered.
+func (c *Client) Request(reqParams XRPLRequest) (XRPLResponse, error) {
 
 	err := reqParams.Validate()
 	if err != nil {

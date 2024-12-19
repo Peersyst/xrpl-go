@@ -1,6 +1,6 @@
 package subscribe
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 type UnsubscribeOrderBook struct {
 	TakerGets types.IssuedCurrencyAmount `json:"taker_gets"`

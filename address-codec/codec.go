@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Peersyst/xrpl-go/address-codec/interfaces"
-	"github.com/Peersyst/xrpl-go/pkg/crypto"
+	"github.com/Peersyst/xrpl-go/v1/address-codec/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/pkg/crypto"
 )
 
 const (

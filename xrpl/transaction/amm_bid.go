@@ -3,9 +3,9 @@ package transaction
 import (
 	"errors"
 
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	ledger "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
+	ledger "github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 var (

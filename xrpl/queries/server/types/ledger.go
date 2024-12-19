@@ -1,6 +1,6 @@
 package types
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 type ClosedLedger struct {
 	Age            uint          `json:"age"`

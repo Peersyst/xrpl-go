@@ -3,8 +3,8 @@ package keypairs
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/keypairs/interfaces"
-	"github.com/Peersyst/xrpl-go/pkg/crypto"
+	"github.com/Peersyst/xrpl-go/v1/keypairs/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/pkg/crypto"
 	"github.com/stretchr/testify/require"
 )
 

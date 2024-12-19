@@ -1,7 +1,7 @@
 package rpc
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
 	"github.com/mitchellh/mapstructure"
 )
 

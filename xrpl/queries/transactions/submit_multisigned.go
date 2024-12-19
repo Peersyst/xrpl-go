@@ -1,6 +1,6 @@
 package transaction
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
 
 // ############################################################################
 // Request

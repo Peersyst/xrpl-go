@@ -1,7 +1,7 @@
 package ledger
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // A DepositPreauth entry tracks a preauthorization from one account to another.

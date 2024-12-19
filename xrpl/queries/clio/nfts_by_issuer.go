@@ -1,8 +1,8 @@
 package clio
 
 import (
-	cliotypes "github.com/Peersyst/xrpl-go/xrpl/queries/clio/types"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	cliotypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/clio/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // ############################################################################

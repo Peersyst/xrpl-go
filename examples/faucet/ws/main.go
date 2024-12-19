@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/Peersyst/xrpl-go/pkg/crypto"
-	"github.com/Peersyst/xrpl-go/xrpl/faucet"
-	"github.com/Peersyst/xrpl-go/xrpl/wallet"
-	"github.com/Peersyst/xrpl-go/xrpl/websocket"
+	"github.com/Peersyst/xrpl-go/v1/pkg/crypto"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/faucet"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/wallet"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/websocket"
 )
 
 func main() {

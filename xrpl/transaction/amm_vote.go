@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
 )
 
 // Vote on the trading fee for an Automated Market Maker instance. Up to 8 accounts can vote in proportion to the amount of the AMM's LP Tokens they hold.

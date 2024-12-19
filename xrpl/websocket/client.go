@@ -10,22 +10,22 @@ import (
 	"sync/atomic"
 	"time"
 
-	binarycodec "github.com/Peersyst/xrpl-go/binary-codec"
-	"github.com/Peersyst/xrpl-go/xrpl/currency"
-	"github.com/Peersyst/xrpl-go/xrpl/hash"
-	transaction "github.com/Peersyst/xrpl-go/xrpl/transaction"
+	binarycodec "github.com/Peersyst/xrpl-go/v1/binary-codec"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/currency"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/hash"
+	transaction "github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
 	"github.com/mitchellh/mapstructure"
 
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
-	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
-	"github.com/Peersyst/xrpl-go/xrpl/wallet"
-	"github.com/Peersyst/xrpl-go/xrpl/websocket/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/account"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/server"
+	requests "github.com/Peersyst/xrpl-go/v1/xrpl/queries/transactions"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/wallet"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/websocket/interfaces"
 	"github.com/gorilla/websocket"
 
-	commonconstants "github.com/Peersyst/xrpl-go/xrpl/common"
+	commonconstants "github.com/Peersyst/xrpl-go/v1/xrpl/common"
 )
 
 const (

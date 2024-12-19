@@ -1,9 +1,9 @@
 package path
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	pathtypes "github.com/Peersyst/xrpl-go/xrpl/queries/path/types"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	pathtypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/path/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // ############################################################################

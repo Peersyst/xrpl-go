@@ -3,8 +3,8 @@ package server
 import (
 	"testing"
 
-	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
+	servertypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/server/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/testutil"
 )
 
 func TestFeeResponse(t *testing.T) {

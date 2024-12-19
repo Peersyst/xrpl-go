@@ -4,23 +4,23 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
-	accounttypes "github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/channel"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	ledgerqueries "github.com/Peersyst/xrpl-go/xrpl/queries/ledger"
-	ledgertypes "github.com/Peersyst/xrpl-go/xrpl/queries/ledger/types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/nft"
-	nfttypes "github.com/Peersyst/xrpl-go/xrpl/queries/nft/types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/path"
-	pathtypes "github.com/Peersyst/xrpl-go/xrpl/queries/path/types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
-	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/utility"
-	"github.com/Peersyst/xrpl-go/xrpl/rpc/testutil"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/account"
+	accounttypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/account/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/channel"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	ledgerqueries "github.com/Peersyst/xrpl-go/v1/xrpl/queries/ledger"
+	ledgertypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/ledger/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/nft"
+	nfttypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/nft/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/path"
+	pathtypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/path/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/server"
+	servertypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/server/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/utility"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/rpc/testutil"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -86,7 +86,7 @@ func TestClient_GetAccountInfo(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -183,7 +183,7 @@ func TestClient_GetAccountChannels(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -300,7 +300,7 @@ func TestClient_GetAccountObjects(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -396,7 +396,7 @@ func TestClient_GetAccountLines(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -553,7 +553,7 @@ func TestClient_GetAccountNFTs(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -630,7 +630,7 @@ func TestClient_GetAccountCurrencies(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -730,7 +730,7 @@ func TestClient_GetAccountOffers(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -847,7 +847,7 @@ func TestClient_GetAccountTransactions(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -920,7 +920,7 @@ func TestClient_GetChannelVerify(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1176,7 +1176,7 @@ func TestClient_GetLedgerData(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1271,7 +1271,7 @@ func TestClient_GetLedger(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1356,7 +1356,7 @@ func TestClient_GetNFTBuyOffers(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1439,7 +1439,7 @@ func TestClient_GetNFTSellOffers(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1545,7 +1545,7 @@ func TestClient_GetBookOffers(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1622,7 +1622,7 @@ func TestClient_GetDepositAuthorized(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1741,7 +1741,7 @@ func TestClient_FindPathCreate(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1846,7 +1846,7 @@ func TestClient_FindPathClose(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -1965,7 +1965,7 @@ func TestClient_FindPathStatus(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2073,7 +2073,7 @@ func TestClient_GetRipplePathFind(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2182,7 +2182,7 @@ func TestClient_GetServerInfo(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2269,7 +2269,7 @@ func TestClient_GetAllFeatures(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2344,7 +2344,7 @@ func TestClient_GetFeature(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2441,7 +2441,7 @@ func TestClient_GetFee(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2518,7 +2518,7 @@ func TestClient_GetManifest(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2622,7 +2622,7 @@ func TestClient_GetServerState(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2689,7 +2689,7 @@ func TestClient_Ping(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)
@@ -2754,7 +2754,7 @@ func TestClient_GetRandom(t *testing.T) {
 
 			client := NewClient(cfg)
 
-			resp, err := client.SendRequest(tt.request)
+			resp, err := client.Request(tt.request)
 
 			if tt.expectedError != "" {
 				require.Error(t, err)

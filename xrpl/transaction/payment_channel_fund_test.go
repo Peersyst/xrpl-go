@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
-	rippletime "github.com/Peersyst/xrpl-go/xrpl/time"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/testutil"
+	rippletime "github.com/Peersyst/xrpl-go/v1/xrpl/time"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 	"github.com/stretchr/testify/assert"
 )
 
