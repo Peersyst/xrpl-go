@@ -14,7 +14,7 @@ func main() {
 	fmt.Println("Funding wallet on testnet:")
 
 	testnetFaucet := faucet.NewTestnetFaucetProvider()
-	testnetClientCfg := websocket.NewWebsocketClientConfig().
+	testnetClientCfg := websocket.NewClientConfig().
 		WithHost("wss://s.altnet.rippletest.net:51233").
 		WithFaucetProvider(testnetFaucet)
 	testnetClient := websocket.NewClient(testnetClientCfg)
@@ -50,7 +50,7 @@ func main() {
 
 	devnetFaucet := faucet.NewDevnetFaucetProvider()
 
-	clientCfg := websocket.NewWebsocketClientConfig().
+	clientCfg := websocket.NewClientConfig().
 		WithHost("wss://s.devnet.rippletest.net:51233").
 		WithFaucetProvider(devnetFaucet)
 
