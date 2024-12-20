@@ -3,7 +3,7 @@ package types
 import (
 	"errors"
 
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
 )
 
 var (

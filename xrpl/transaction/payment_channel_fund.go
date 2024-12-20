@@ -4,8 +4,8 @@ import (
 	"errors"
 	"time"
 
-	rippletime "github.com/Peersyst/xrpl-go/xrpl/time"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	rippletime "github.com/Peersyst/xrpl-go/v1/xrpl/time"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 var (

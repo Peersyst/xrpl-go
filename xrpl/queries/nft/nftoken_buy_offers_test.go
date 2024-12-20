@@ -3,10 +3,10 @@ package nft
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	nfttypes "github.com/Peersyst/xrpl-go/xrpl/queries/nft/types"
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	nfttypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/nft/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/testutil"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 func TestNFTokenBuyOffersRequest(t *testing.T) {

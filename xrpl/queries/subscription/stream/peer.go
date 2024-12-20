@@ -1,6 +1,6 @@
 package stream
 
-import "github.com/Peersyst/xrpl-go/xrpl/queries/common"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
 
 type PeerStatusStream struct {
 	Type           Type               `json:"type"`

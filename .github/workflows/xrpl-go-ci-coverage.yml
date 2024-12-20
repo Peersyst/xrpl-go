@@ -25,7 +25,7 @@ jobs:
           # If you are using config file (option 1) you shouldn't use these parameters, however
           # specifing these action parameters will override appropriate config values.
           profile: coverage.out
-          local-prefix: github.com/Peersyst/xrpl-go
+          local-prefix: github.com/Peersyst/xrpl-go/v1
           threshold-file: 0
           threshold-package: 0
           threshold-total: 0

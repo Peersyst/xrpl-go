@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
-	"github.com/Peersyst/xrpl-go/xrpl/rpc/testutil"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/account"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	requests "github.com/Peersyst/xrpl-go/v1/xrpl/queries/transactions"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/rpc/testutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -27,7 +27,7 @@ func TestClient(t *testing.T) {
 	})
 }
 
-func TestClient_SendRequest(t *testing.T) {
+func TestClient_Request(t *testing.T) {
 
 	t.Run("SendRequest - Check headers and URL", func(t *testing.T) {
 
@@ -47,7 +47,7 @@ func TestClient_SendRequest(t *testing.T) {
 
 		jsonRpcClient := NewClient(cfg)
 
-		_, err = jsonRpcClient.SendRequest(req)
+		_, err = jsonRpcClient.Request(req)
 
 		assert.NotNil(t, capturedRequest)
 		assert.NoError(t, err)
@@ -99,7 +99,7 @@ func TestClient_SendRequest(t *testing.T) {
 
 		jsonRpcClient := NewClient(cfg)
 
-		xrplResponse, err := jsonRpcClient.SendRequest(req)
+		xrplResponse, err := jsonRpcClient.Request(req)
 
 		expectedXrplResponse := &Response{
 			Result: AnyJSON{
@@ -172,7 +172,7 @@ func TestClient_SendRequest(t *testing.T) {
 
 		jsonRpcClient := NewClient(cfg)
 
-		_, err = jsonRpcClient.SendRequest(req)
+		_, err = jsonRpcClient.Request(req)
 
 		assert.EqualError(t, err, "ledgerIndexMalformed")
 	})
@@ -195,7 +195,7 @@ func TestClient_SendRequest(t *testing.T) {
 
 		jsonRpcClient := NewClient(cfg)
 
-		_, err = jsonRpcClient.SendRequest(req)
+		_, err = jsonRpcClient.Request(req)
 
 		// Check that 3 extra requests were made
 		assert.Equal(t, 4, mc.RequestCount)
@@ -232,7 +232,7 @@ func TestClient_SendRequest(t *testing.T) {
 
 		jsonRpcClient := NewClient(cfg)
 
-		xrplResponse, err := jsonRpcClient.SendRequest(req)
+		xrplResponse, err := jsonRpcClient.Request(req)
 
 		var channelsResponse account.ChannelsResponse
 		_ = xrplResponse.GetResult(&channelsResponse)
@@ -269,7 +269,7 @@ func TestClient_SendRequest(t *testing.T) {
 
 		jsonRpcClient := NewClient(cfg)
 
-		_, err = jsonRpcClient.SendRequest(req)
+		_, err = jsonRpcClient.Request(req)
 
 		// Check that the expected timeout error occurred
 		assert.Error(t, err)

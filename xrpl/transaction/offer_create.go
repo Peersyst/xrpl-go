@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // An OfferCreate transaction places an Offer in the decentralized exchange.

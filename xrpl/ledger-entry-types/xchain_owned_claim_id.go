@@ -1,6 +1,6 @@
 package ledger
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 type XChainClaimProofSig struct {
 	// The amount to claim in the XChainCommit transaction on the destination chain.

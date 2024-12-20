@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/types/interfaces"
 )
 
 // UInt64 represents a 64-bit unsigned integer.

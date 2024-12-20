@@ -3,7 +3,7 @@ package transaction
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 	"github.com/stretchr/testify/assert"
 )
 

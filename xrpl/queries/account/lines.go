@@ -1,9 +1,9 @@
 package account
 
 import (
-	accounttypes "github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	accounttypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/account/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // ############################################################################

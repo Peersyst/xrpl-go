@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sort"
 
-	binarycodec "github.com/Peersyst/xrpl-go/binary-codec"
+	binarycodec "github.com/Peersyst/xrpl-go/v1/binary-codec"
 )
 
 var (

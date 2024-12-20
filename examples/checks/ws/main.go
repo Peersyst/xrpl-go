@@ -3,14 +3,14 @@ package main
 import (
 	"fmt"
 
-	"github.com/Peersyst/xrpl-go/pkg/crypto"
-	"github.com/Peersyst/xrpl-go/xrpl/faucet"
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	transactionquery "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
-	"github.com/Peersyst/xrpl-go/xrpl/wallet"
-	"github.com/Peersyst/xrpl-go/xrpl/websocket"
+	"github.com/Peersyst/xrpl-go/v1/pkg/crypto"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/faucet"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	transactionquery "github.com/Peersyst/xrpl-go/v1/xrpl/queries/transactions"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/wallet"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/websocket"
 )
 
 func main() {

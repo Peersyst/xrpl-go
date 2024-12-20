@@ -12,16 +12,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Peersyst/xrpl-go/xrpl/currency"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
-	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/currency"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/account"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/server"
+	requests "github.com/Peersyst/xrpl-go/v1/xrpl/queries/transactions"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 	jsoniter "github.com/json-iterator/go"
 
-	commonconstants "github.com/Peersyst/xrpl-go/xrpl/common"
+	commonconstants "github.com/Peersyst/xrpl-go/v1/xrpl/common"
 )
 
 // CreateRequest formats the parameters and method name ready for sending request
@@ -288,7 +288,7 @@ func (c *Client) setTransactionFlags(tx *transaction.FlatTransaction) error {
 }
 
 func (c *Client) submitMultisignedRequest(req *requests.SubmitMultisignedRequest) (*requests.SubmitMultisignedResponse, error) {
-	res, err := c.SendRequest(req)
+	res, err := c.Request(req)
 	if err != nil {
 		return nil, err
 	}
@@ -301,7 +301,7 @@ func (c *Client) submitMultisignedRequest(req *requests.SubmitMultisignedRequest
 }
 
 func (c *Client) submitRequest(req *requests.SubmitRequest) (*requests.SubmitResponse, error) {
-	res, err := c.SendRequest(req)
+	res, err := c.Request(req)
 	if err != nil {
 		return nil, err
 	}
@@ -330,7 +330,7 @@ func (c *Client) waitForTransaction(txHash string, lastLedgerSequence uint32) (*
 		}
 
 		// Request the transaction from the server
-		res, err := c.SendRequest(&requests.TxRequest{
+		res, err := c.Request(&requests.TxRequest{
 			Transaction: txHash,
 		})
 		if err != nil {

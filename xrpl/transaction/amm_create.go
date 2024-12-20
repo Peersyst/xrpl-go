@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // Create a new Automated Market Maker (AMM) instance for trading a pair of assets (fungible tokens or XRP).

@@ -6,12 +6,12 @@ import (
 	"reflect"
 	"testing"
 
-	commonconstants "github.com/Peersyst/xrpl-go/xrpl/common"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
-	"github.com/Peersyst/xrpl-go/xrpl/websocket/interfaces"
-	"github.com/Peersyst/xrpl-go/xrpl/websocket/testutil"
+	commonconstants "github.com/Peersyst/xrpl-go/v1/xrpl/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/account"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/websocket/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/websocket/testutil"
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/require"
 )

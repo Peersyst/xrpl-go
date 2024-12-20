@@ -4,9 +4,9 @@ import (
 	"encoding/hex"
 	"testing"
 
-	ledger "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	ledger "github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/testutil"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 	"github.com/stretchr/testify/assert"
 )
 

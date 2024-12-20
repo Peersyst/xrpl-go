@@ -3,8 +3,8 @@ package transaction
 import (
 	"testing"
 
-	ledger "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	ledger "github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 func TestIsSigner(t *testing.T) {

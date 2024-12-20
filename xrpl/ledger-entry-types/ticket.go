@@ -1,6 +1,6 @@
 package ledger
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 // (Added by the TicketBatch amendment.)
 // A Ticket entry type represents a Ticket, which tracks an account sequence number that has

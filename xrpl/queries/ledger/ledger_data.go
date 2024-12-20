@@ -1,9 +1,9 @@
 package ledger
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	ledgertypes "github.com/Peersyst/xrpl-go/xrpl/queries/ledger/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	ledgertypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/ledger/types"
 )
 
 // ############################################################################

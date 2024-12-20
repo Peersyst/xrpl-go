@@ -3,8 +3,8 @@ package serdes
 import (
 	"errors"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/definitions"
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/definitions"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/serdes/interfaces"
 )
 
 var (

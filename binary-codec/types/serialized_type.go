@@ -1,9 +1,9 @@
 package types
 
 import (
-	"github.com/Peersyst/xrpl-go/binary-codec/definitions"
-	"github.com/Peersyst/xrpl-go/binary-codec/serdes"
-	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/definitions"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/serdes"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/types/interfaces"
 )
 
 // SerializedType is an interface representing any type that can be serialized

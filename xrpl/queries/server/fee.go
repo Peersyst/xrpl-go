@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	servertypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/server/types"
 )
 
 // ############################################################################

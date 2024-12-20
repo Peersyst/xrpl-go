@@ -3,10 +3,10 @@ package path
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
-	pathtypes "github.com/Peersyst/xrpl-go/xrpl/queries/path/types"
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
+	pathtypes "github.com/Peersyst/xrpl-go/v1/xrpl/queries/path/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/testutil"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 func TestBookOffersRequest(t *testing.T) {

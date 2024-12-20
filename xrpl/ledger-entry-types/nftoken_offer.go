@@ -3,7 +3,7 @@ package ledger
 import (
 	"encoding/json"
 
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // An NFTokenOffer entry represents an offer to buy, sell or transfer an NFT.

@@ -1,6 +1,6 @@
 package ledger
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 type XChainCreateAccountProofSig struct {
 	// The amount committed by the XChainAccountCreateCommit transaction on the source chain.

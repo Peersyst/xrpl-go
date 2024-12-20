@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/types/interfaces"
 )
 
 // ErrNoLengthPrefix error is raised when no length prefix size is given.

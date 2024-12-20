@@ -3,7 +3,7 @@ package ledger
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/testutil"
 )
 
 // Ledger Current request has no fields to test

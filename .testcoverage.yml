@@ -9,7 +9,7 @@ profile: coverage.out
 
 # (optional; but recommended to set) 
 # When specified reported file paths will not contain local prefix in the output
-local-prefix: "github.com/Peersyst/xrpl-go"
+local-prefix: "github.com/Peersyst/xrpl-go/v1"
 
 # Holds coverage thresholds percentages, values should be in range [0-100]
 threshold:

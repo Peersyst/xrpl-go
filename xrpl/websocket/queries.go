@@ -1,16 +1,16 @@
 package websocket
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/currency"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/channel"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/ledger"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/nft"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/path"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/utility"
-	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/currency"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/account"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/channel"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/ledger"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/nft"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/path"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/server"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/utility"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 )
 
 // Account queries

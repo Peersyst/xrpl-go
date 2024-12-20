@@ -1,8 +1,8 @@
 package stream
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	transactions "github.com/Peersyst/xrpl-go/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/queries/common"
+	transactions "github.com/Peersyst/xrpl-go/v1/xrpl/transaction"
 )
 
 type TransactionStream struct {

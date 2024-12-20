@@ -1,6 +1,6 @@
 package ledger
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import "github.com/Peersyst/xrpl-go/v1/xrpl/transaction/types"
 
 // (Added by the Checks amendment.)
 // A Check entry describes a check, similar to a paper personal check,

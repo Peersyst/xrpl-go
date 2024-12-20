@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/binary-codec/definitions"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/definitions"
 	"github.com/stretchr/testify/require"
 )
 

@@ -1,7 +1,7 @@
 package transaction
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
 )
 
 type TxMeta interface {

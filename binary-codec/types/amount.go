@@ -11,9 +11,9 @@ import (
 	"strconv"
 	"strings"
 
-	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
-	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
-	bigdecimal "github.com/Peersyst/xrpl-go/pkg/big-decimal"
+	addresscodec "github.com/Peersyst/xrpl-go/v1/address-codec"
+	"github.com/Peersyst/xrpl-go/v1/binary-codec/types/interfaces"
+	bigdecimal "github.com/Peersyst/xrpl-go/v1/pkg/big-decimal"
 )
 
 const (

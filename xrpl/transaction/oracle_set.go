@@ -3,7 +3,7 @@ package transaction
 import (
 	"fmt"
 
-	ledger "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+	ledger "github.com/Peersyst/xrpl-go/v1/xrpl/ledger-entry-types"
 )
 
 const (
