@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
 const (
@@ -30,9 +32,9 @@ func NewTestnetFaucetProvider() *TestnetFaucetProvider {
 
 // FundWallet sends a request to the Testnet faucet to fund the specified wallet address.
 // It returns an error if the funding request fails.
-func (fp *TestnetFaucetProvider) FundWallet(address string) error {
+func (fp *TestnetFaucetProvider) FundWallet(address types.Address) error {
 	url := fmt.Sprintf("https://%s%s", fp.host, fp.accountPath)
-	payload := map[string]string{"destination": address, "userAgent": UserAgent}
+	payload := map[string]string{"destination": address.String(), "userAgent": UserAgent}
 	jsonPayload, err := json.Marshal(payload)
 
 	if err != nil {

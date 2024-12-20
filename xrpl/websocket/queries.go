@@ -13,7 +13,7 @@ import (
 // It takes an AccountInfoRequest as input and returns an AccountInfoResponse,
 // along with the raw XRPL response and any error encountered.
 func (c *Client) GetAccountInfo(req *account.InfoRequest) (*account.InfoResponse, error) {
-	res, err := c.sendRequest(req)
+	res, err := c.Request(req)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func (c *Client) GetAccountInfo(req *account.InfoRequest) (*account.InfoResponse
 // It takes an AccountObjectsRequest as input and returns an AccountObjectsResponse,
 // along with any error encountered.
 func (c *Client) GetAccountObjects(req *account.ObjectsRequest) (*account.ObjectsResponse, error) {
-	res, err := c.sendRequest(req)
+	res, err := c.Request(req)
 	if err != nil {
 		return nil, err
 	}
@@ -43,9 +43,9 @@ func (c *Client) GetAccountObjects(req *account.ObjectsRequest) (*account.Object
 
 // GetXrpBalance retrieves the XRP balance of a given account address.
 // It returns the balance as a string in XRP (not drops) and any error encountered.
-func (c *Client) GetXrpBalance(address string) (string, error) {
+func (c *Client) GetXrpBalance(address types.Address) (string, error) {
 	res, err := c.GetAccountInfo(&account.InfoRequest{
-		Account: types.Address(address),
+		Account: address,
 	})
 	if err != nil {
 		return "", err
@@ -63,7 +63,7 @@ func (c *Client) GetXrpBalance(address string) (string, error) {
 // It takes an AccountLinesRequest as input and returns an AccountLinesResponse,
 // along with any error encountered.
 func (c *Client) GetAccountLines(req *account.LinesRequest) (*account.LinesResponse, error) {
-	res, err := c.sendRequest(req)
+	res, err := c.Request(req)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (c *Client) GetAccountLines(req *account.LinesRequest) (*account.LinesRespo
 
 // Returns the index of the most recently validated ledger.
 func (c *Client) GetLedgerIndex() (common.LedgerIndex, error) {
-	res, err := c.sendRequest(&ledger.Request{
+	res, err := c.Request(&ledger.Request{
 		LedgerIndex: common.LedgerTitle("validated"),
 	})
 	if err != nil {
@@ -96,7 +96,7 @@ func (c *Client) GetLedgerIndex() (common.LedgerIndex, error) {
 // It takes a ServerInfoRequest as input and returns a ServerInfoResponse,
 // along with any error encountered.
 func (c *Client) GetServerInfo(req *server.InfoRequest) (*server.InfoResponse, error) {
-	res, err := c.sendRequest(req)
+	res, err := c.Request(req)
 	if err != nil {
 		return nil, err
 	}

@@ -49,7 +49,7 @@ func (s *SetRegularKey) Flatten() FlatTransaction {
 	flattened["TransactionType"] = "SetRegularKey"
 
 	if s.RegularKey != "" {
-		flattened["RegularKey"] = s.RegularKey
+		flattened["RegularKey"] = s.RegularKey.String()
 	}
 
 	return flattened

@@ -21,12 +21,12 @@ func UnmarshalLedgerSpecifier(data []byte) (LedgerSpecifier, error) {
 			return nil, err
 		}
 		switch s {
-		case CURRENT.Ledger():
-			return CURRENT, nil
-		case VALIDATED.Ledger():
-			return VALIDATED, nil
-		case CLOSED.Ledger():
-			return CLOSED, nil
+		case Current.Ledger():
+			return Current, nil
+		case Validated.Ledger():
+			return Validated, nil
+		case Closed.Ledger():
+			return Closed, nil
 		}
 		return nil, fmt.Errorf("decoding LedgerTitle: invalid string %s", s)
 	default:
@@ -55,9 +55,9 @@ func (l LedgerIndex) Int() int {
 type LedgerTitle string
 
 const (
-	CURRENT   LedgerTitle = "current"
-	VALIDATED LedgerTitle = "validated"
-	CLOSED    LedgerTitle = "closed"
+	Current   LedgerTitle = "current"
+	Validated LedgerTitle = "validated"
+	Closed    LedgerTitle = "closed"
 )
 
 func (l LedgerTitle) Ledger() string {

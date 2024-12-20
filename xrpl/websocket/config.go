@@ -12,7 +12,7 @@ type ClientConfig struct {
 	faucetProvider FaucetProvider
 }
 
-func NewWebsocketClientConfig() *ClientConfig {
+func NewClientConfig() *ClientConfig {
 	return &ClientConfig{
 		host:       "localhost",
 		feeCushion: DefaultFeeCushion,

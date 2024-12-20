@@ -14,7 +14,33 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSendRequest(t *testing.T) {
+func TestClient_Connect(t *testing.T) {
+	ws := NewClient(NewClientConfig().WithHost("wss://s.altnet.rippletest.net"))
+	err := ws.Connect()
+	require.NoError(t, err)
+	require.True(t, ws.IsConnected())
+	ws.Disconnect()
+	require.False(t, ws.IsConnected())
+}
+
+func TestClient_Disconnect(t *testing.T) {
+	ws := NewClient(NewClientConfig().WithHost("wss://s.altnet.rippletest.net"))
+	ws.Connect()
+	require.True(t, ws.IsConnected())
+	ws.Disconnect()
+	require.False(t, ws.IsConnected())
+}
+
+func TestClient_IsConnected(t *testing.T) {
+	ws := NewClient(NewClientConfig().WithHost("wss://s.altnet.rippletest.net"))
+	require.False(t, ws.IsConnected())
+	ws.Connect()
+	require.True(t, ws.IsConnected())
+	ws.Disconnect()
+	require.False(t, ws.IsConnected())
+}
+
+func TestClient_SendRequest(t *testing.T) {
 	tt := []struct {
 		description    string
 		req            XRPLRequest
@@ -183,8 +209,11 @@ func TestSendRequest(t *testing.T) {
 			cl := &Client{cfg: ClientConfig{
 				host: url,
 			}}
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
 
-			res, err := cl.sendRequest(tc.req)
+			res, err := cl.Request(tc.req)
 
 			if tc.expectedErr != nil {
 				require.EqualError(t, err, tc.expectedErr.Error())
@@ -192,11 +221,13 @@ func TestSendRequest(t *testing.T) {
 				require.NoError(t, err)
 				require.EqualValues(t, tc.res, res)
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
 
-func TestWebsocketClient_formatRequest(t *testing.T) {
+func TestClient_formatRequest(t *testing.T) {
 	ws := &Client{}
 	tt := []struct {
 		description string
@@ -259,7 +290,7 @@ func TestWebsocketClient_formatRequest(t *testing.T) {
 	}
 }
 
-func TestWebsocketClient_convertTransactionAddressToClassicAddress(t *testing.T) {
+func TestClient_convertTransactionAddressToClassicAddress(t *testing.T) {
 	ws := &Client{}
 	tests := []struct {
 		name      string
@@ -299,7 +330,7 @@ func TestWebsocketClient_convertTransactionAddressToClassicAddress(t *testing.T)
 	}
 }
 
-func TestWebsocketClient_validateTransactionAddress(t *testing.T) {
+func TestClient_validateTransactionAddress(t *testing.T) {
 	ws := &Client{}
 	tests := []struct {
 		name         string
@@ -356,7 +387,7 @@ func TestWebsocketClient_validateTransactionAddress(t *testing.T) {
 	}
 }
 
-func TestWebsocketClient_setValidTransactionAddresses(t *testing.T) {
+func TestClient_setValidTransactionAddresses(t *testing.T) {
 	tests := []struct {
 		name        string
 		tx          transaction.FlatTransaction
@@ -414,7 +445,7 @@ func TestWebsocketClient_setValidTransactionAddresses(t *testing.T) {
 	}
 }
 
-func TestWebsocketClient_setTransactionNextValidSequenceNumber(t *testing.T) {
+func TestClient_setTransactionNextValidSequenceNumber(t *testing.T) {
 	tests := []struct {
 		name           string
 		tx             transaction.FlatTransaction
@@ -473,6 +504,10 @@ func TestWebsocketClient_setTransactionNextValidSequenceNumber(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			err := cl.setTransactionNextValidSequenceNumber(&tt.tx)
 
 			if tt.expectedErr != nil {
@@ -496,11 +531,13 @@ func TestWebsocketClient_setTransactionNextValidSequenceNumber(t *testing.T) {
 				}
 				t.Errorf("Expected %v but got %v", tt.expected, tt.tx)
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
 
-func TestWebsocket_calculateFeePerTransactionType(t *testing.T) {
+func TestClient_calculateFeePerTransactionType(t *testing.T) {
 	tests := []struct {
 		name           string
 		tx             transaction.FlatTransaction
@@ -599,6 +636,10 @@ func TestWebsocket_calculateFeePerTransactionType(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			err := cl.calculateFeePerTransactionType(&tt.tx)
 
 			if tt.expectedErr != nil {
@@ -613,11 +654,13 @@ func TestWebsocket_calculateFeePerTransactionType(t *testing.T) {
 					t.Errorf("Expected fee %v, but got %v", tt.expectedFee, tt.tx["Fee"])
 				}
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
 
-func TestWebsocketClient_setLastLedgerSequence(t *testing.T) {
+func TestClient_setLastLedgerSequence(t *testing.T) {
 	tests := []struct {
 		name           string
 		serverMessages []map[string]any
@@ -660,6 +703,11 @@ func TestWebsocketClient_setLastLedgerSequence(t *testing.T) {
 					host: url,
 				},
 			}
+
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			err := cl.setLastLedgerSequence(&tt.tx)
 
 			if tt.expectedErr != nil {
@@ -674,11 +722,13 @@ func TestWebsocketClient_setLastLedgerSequence(t *testing.T) {
 					t.Errorf("Expected tx %v, but got %v", tt.expectedTx, tt.tx)
 				}
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
 
-func TestWebsocketClient_checkAccountDeleteBlockers(t *testing.T) {
+func TestClient_checkAccountDeleteBlockers(t *testing.T) {
 	tests := []struct {
 		name           string
 		address        types.Address
@@ -724,6 +774,10 @@ func TestWebsocketClient_checkAccountDeleteBlockers(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			err := cl.checkAccountDeleteBlockers(tt.address)
 
 			if tt.expectedErr != nil {
@@ -735,11 +789,13 @@ func TestWebsocketClient_checkAccountDeleteBlockers(t *testing.T) {
 					t.Errorf("Unexpected error: %v", err)
 				}
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
 
-func TestWebsocketClient_setTransactionFlags(t *testing.T) {
+func TestClient_setTransactionFlags(t *testing.T) {
 	tests := []struct {
 		name     string
 		tx       transaction.FlatTransaction

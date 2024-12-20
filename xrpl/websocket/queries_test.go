@@ -7,8 +7,10 @@ import (
 
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
+	accounttypes "github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
+	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket/testutil"
 	"github.com/gorilla/websocket"
 )
@@ -40,7 +42,7 @@ func TestWebsocketClient_GetServerInfo(t *testing.T) {
 				},
 			},
 			expected: &server.InfoResponse{
-				Info: server.Info{
+				Info: servertypes.Info{
 					BuildVersion:     "1.9.4",
 					CompleteLedgers:  "32570-62964740",
 					HostID:           "MIST",
@@ -81,6 +83,10 @@ func TestWebsocketClient_GetServerInfo(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			result, err := cl.GetServerInfo(&server.InfoRequest{})
 
 			if tt.expectedErr != nil {
@@ -96,6 +102,8 @@ func TestWebsocketClient_GetServerInfo(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
@@ -169,6 +177,10 @@ func TestGetAccountInfo(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			result, err := cl.GetAccountInfo(&account.InfoRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
 			})
@@ -186,6 +198,8 @@ func TestGetAccountInfo(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
@@ -264,6 +278,10 @@ func TestGetAccountObjects(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			result, err := cl.GetAccountObjects(&account.ObjectsRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
 			})
@@ -281,6 +299,8 @@ func TestGetAccountObjects(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
@@ -335,6 +355,10 @@ func TestGetXrpBalance(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			result, err := cl.GetXrpBalance("rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn")
 
 			if tt.expectedErr != nil {
@@ -350,6 +374,8 @@ func TestGetXrpBalance(t *testing.T) {
 			if tt.expected != result {
 				t.Errorf("Expected %s, but got %s", tt.expected, result)
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
@@ -380,7 +406,7 @@ func TestGetAccountLines(t *testing.T) {
 			}},
 			expected: &account.LinesResponse{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
-				Lines: []account.TrustLine{
+				Lines: []accounttypes.TrustLine{
 					{
 						Account:  "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",
 						Balance:  "10",
@@ -419,6 +445,10 @@ func TestGetAccountLines(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			result, err := cl.GetAccountLines(&account.LinesRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
 			})
@@ -436,6 +466,8 @@ func TestGetAccountLines(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
+
+			cl.Disconnect()
 		})
 	}
 }
@@ -487,6 +519,10 @@ func TestGetLedgerIndex(t *testing.T) {
 				},
 			}
 
+			if err := cl.Connect(); err != nil {
+				t.Errorf("Error connecting to server: %v", err)
+			}
+
 			result, err := cl.GetLedgerIndex()
 
 			if tt.expectedErr != nil {
@@ -502,6 +538,8 @@ func TestGetLedgerIndex(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
+
+			cl.Disconnect()
 		})
 	}
 }

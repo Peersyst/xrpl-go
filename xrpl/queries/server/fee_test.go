@@ -3,6 +3,7 @@ package server
 import (
 	"testing"
 
+	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
 )
 
@@ -10,7 +11,7 @@ func TestFeeResponse(t *testing.T) {
 	s := FeeResponse{
 		CurrentLedgerSize: "14",
 		CurrentQueueSize:  "0",
-		Drops: FeeDrops{
+		Drops: servertypes.FeeDrops{
 			BaseFee:       10,
 			MedianFee:     11000,
 			MinimumFee:    10,
@@ -18,7 +19,7 @@ func TestFeeResponse(t *testing.T) {
 		},
 		ExpectedLedgerSize: "24",
 		LedgerCurrentIndex: 26575101,
-		Levels: FeeLevels{
+		Levels: servertypes.FeeLevels{
 			MedianLevel:     281600,
 			MinimumLevel:    256,
 			OpenLedgerLevel: 256,
