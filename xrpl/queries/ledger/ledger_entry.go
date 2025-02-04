@@ -6,32 +6,30 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 )
 
-
-
 type EntryRequest struct {
 	common.BaseRequest
-	MPTIssuance bool        `json:"mp_issuance,omitempty"`
-	MPToken     interface{}`json:"mp_token,omitempty"`
-	AMM         types.EntryAssetPair   `json:"amm,omitempty"`
-	IncludeDeleted bool      `json:"include_deleted,omitempty"`
-	Binary         bool      `json:"binary,omitempty"`
-	Index          string    `json:"index,omitempty"`
-	AccountRoot    string      `json:"account_root,omitempty"`
-	Check          string      `json:"check,omitempty"`
-	Credential     interface{} `json:"credential,omitempty"`
-	DepositPreauth interface{} `json:"deposit_preauth,omitempty"`
-	Did            string `json:"did,omitempty"`
-	Directory      interface{} `json:"directory,omitempty"`
-	Escrow         interface{} `json:"escrow,omitempty"`
-	Offer          interface{} `json:"offer,omitempty"`
-	PaymentChannel string `json:"payment_channel,omitempty"`
-	RippleState    types.EntryRippleState `json:"ripple_state,omitempty"`
-	Ticket         interface{} `json:"ticket,omitempty"`
-	NFTPage        string  `json:"nft_page,omitempty"`
-	BridgeAccount  string `json:"bridge_account,omitempty"`
-	Bridge         types.EntryXChainBridge `json:"bridge,omitempty"`
-	XChainOwnedClaimID interface{} `json:"xchain_owned_claim_id,omitempty"`
-	XChainOwnedCreateAccountClaimID interface{} `json:"xchain_owned_create_account_claim_id,omitempty"`
+	MPTIssuance                     bool                    `json:"mp_issuance,omitempty"`
+	MPToken                         interface{}             `json:"mp_token,omitempty"`
+	AMM                             types.EntryAssetPair    `json:"amm,omitempty"`
+	IncludeDeleted                  bool                    `json:"include_deleted,omitempty"`
+	Binary                          bool                    `json:"binary,omitempty"`
+	Index                           string                  `json:"index,omitempty"`
+	AccountRoot                     string                  `json:"account_root,omitempty"`
+	Check                           string                  `json:"check,omitempty"`
+	Credential                      interface{}             `json:"credential,omitempty"`
+	DepositPreauth                  interface{}             `json:"deposit_preauth,omitempty"`
+	Did                             string                  `json:"did,omitempty"`
+	Directory                       interface{}             `json:"directory,omitempty"`
+	Escrow                          interface{}             `json:"escrow,omitempty"`
+	Offer                           interface{}             `json:"offer,omitempty"`
+	PaymentChannel                  string                  `json:"payment_channel,omitempty"`
+	RippleState                     types.EntryRippleState  `json:"ripple_state,omitempty"`
+	Ticket                          interface{}             `json:"ticket,omitempty"`
+	NFTPage                         string                  `json:"nft_page,omitempty"`
+	BridgeAccount                   string                  `json:"bridge_account,omitempty"`
+	Bridge                          types.EntryXChainBridge `json:"bridge,omitempty"`
+	XChainOwnedClaimID              interface{}             `json:"xchain_owned_claim_id,omitempty"`
+	XChainOwnedCreateAccountClaimID interface{}             `json:"xchain_owned_create_account_claim_id,omitempty"`
 }
 
 func (e *EntryRequest) Method() string {
@@ -47,10 +45,10 @@ func (e *EntryRequest) Validate() error {
 }
 
 type EntryResponse struct {
-	Index string `json:"index"`
+	Index              string             `json:"index"`
 	LedgerCurrentIndex common.LedgerIndex `json:"ledger_current_index"`
-	Node interface{} `json:"node,omitempty"`
-	NodeBinary string `json:"node_binary,omitempty"`
-	Validated bool `json:"validated,omitempty"`
+	Node               interface{}        `json:"node,omitempty"`
+	NodeBinary         string             `json:"node_binary,omitempty"`
+	Validated          bool               `json:"validated,omitempty"`
 	DeletedLedgerIndex common.LedgerIndex `json:"deleted_ledger_index,omitempty"`
 }
