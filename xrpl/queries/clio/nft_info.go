@@ -2,6 +2,7 @@ package clio
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -11,6 +12,7 @@ import (
 
 // The nft_info method retrieves information about an NFToken.
 type NFTInfoRequest struct {
+	common.BaseRequest
 	NFTokenID   types.NFTokenID        `json:"nft_id"`
 	LedgerHash  common.LedgerHash      `json:"ledger_hash,omitempty"`
 	LedgerIndex common.LedgerSpecifier `json:"ledger_index,omitempty"`
@@ -20,7 +22,10 @@ func (*NFTInfoRequest) Method() string {
 	return "nft_info"
 }
 
-// TODO: Implement V2
+func (*NFTInfoRequest) APIVersion() int {
+	return version.RippledAPIV2
+}
+
 func (*NFTInfoRequest) Validate() error {
 	return nil
 }

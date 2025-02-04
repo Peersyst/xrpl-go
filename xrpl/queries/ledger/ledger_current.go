@@ -1,6 +1,9 @@
 package ledger
 
-import "github.com/Peersyst/xrpl-go/xrpl/queries/common"
+import (
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
+)
 
 // ############################################################################
 // Request
@@ -9,10 +12,15 @@ import "github.com/Peersyst/xrpl-go/xrpl/queries/common"
 // The ledger_current method returns the unique identifiers of the current
 // in-progress ledger.
 type CurrentRequest struct {
+	common.BaseRequest
 }
 
 func (*CurrentRequest) Method() string {
 	return "ledger_current"
+}
+
+func (*CurrentRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

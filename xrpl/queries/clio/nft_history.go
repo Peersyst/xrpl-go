@@ -1,6 +1,10 @@
 package clio
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction"
+import (
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
+	"github.com/Peersyst/xrpl-go/xrpl/transaction"
+)
 
 // ############################################################################
 // Request
@@ -9,6 +13,7 @@ import "github.com/Peersyst/xrpl-go/xrpl/transaction"
 // The nft_history method retrieves a list of transactions that involved the
 // specified NFToken.
 type NFTHistoryRequest struct {
+	common.BaseRequest
 	NFTokenID      string `json:"nft_id"`
 	LedgerIndexMin uint   `json:"ledger_index_min,omitempty"`
 	LedgerIndexMax uint   `json:"ledger_index_max,omitempty"`
@@ -20,6 +25,10 @@ type NFTHistoryRequest struct {
 
 func (*NFTHistoryRequest) Method() string {
 	return "nft_history"
+}
+
+func (*NFTHistoryRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

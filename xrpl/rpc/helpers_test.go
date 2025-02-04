@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
+	account "github.com/Peersyst/xrpl-go/xrpl/queries/account"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/utility"
+	utility "github.com/Peersyst/xrpl-go/xrpl/queries/utility"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,6 +21,8 @@ func TestCreateRequest(t *testing.T) {
 			DestinationAccount: "rnZvsWuLem5Ha46AZs61jLWR9R5esinkG3",
 			LedgerIndex:        common.Validated,
 		}
+
+		req.SetAPIVersion(req.APIVersion())
 
 		expetedBody := Request{
 			Method: "account_channels",
@@ -37,11 +39,13 @@ func TestCreateRequest(t *testing.T) {
 		assert.Equal(t, string(expectedRequestBytes), string(byteRequest))
 	})
 	t.Run("Create request - no parameters with using pointer declaration", func(t *testing.T) {
+		req := &utility.RandomRequest{} // params sent in as zero value struct
 
-		var req *utility.PingRequest // params sent in as zero value struct
+		req.SetAPIVersion(req.APIVersion())
 
 		expetedBody := Request{
-			Method: "ping",
+			Method: req.Method(),
+			Params: [1]interface{}{req},
 		}
 		expectedRequestBytes, _ := jsoniter.Marshal(expetedBody)
 
@@ -55,11 +59,13 @@ func TestCreateRequest(t *testing.T) {
 	})
 
 	t.Run("Create request - no parameters with struct initialisation", func(t *testing.T) {
+		req := &utility.RandomRequest{} // means params get set an empty object
 
-		req := &utility.PingRequest{} // means params get set an empty object
+		req.SetAPIVersion(req.APIVersion())
 
 		expetedBody := Request{
-			Method: "ping",
+			Method: req.Method(),
+			Params: [1]interface{}{req},
 		}
 		expectedRequestBytes, _ := jsoniter.Marshal(expetedBody)
 

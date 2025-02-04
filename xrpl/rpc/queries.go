@@ -2,14 +2,14 @@ package rpc
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/currency"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/channel"
+	account "github.com/Peersyst/xrpl-go/xrpl/queries/account"
+	channel "github.com/Peersyst/xrpl-go/xrpl/queries/channel"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/ledger"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/nft"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/path"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/utility"
+	ledger "github.com/Peersyst/xrpl-go/xrpl/queries/ledger"
+	nft "github.com/Peersyst/xrpl-go/xrpl/queries/nft"
+	path "github.com/Peersyst/xrpl-go/xrpl/queries/path"
+	server "github.com/Peersyst/xrpl-go/xrpl/queries/server"
+	utility "github.com/Peersyst/xrpl-go/xrpl/queries/utility"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 

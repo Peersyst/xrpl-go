@@ -1,6 +1,10 @@
 package server
 
-import "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
+import (
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
+)
 
 // ############################################################################
 // Feature All Request
@@ -9,10 +13,15 @@ import "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
 // The feature command returns information about amendments this server knows
 // about, including whether they are enabled.
 type FeatureAllRequest struct {
+	common.BaseRequest
 }
 
 func (*FeatureAllRequest) Method() string {
 	return "feature"
+}
+
+func (*FeatureAllRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2
@@ -35,11 +44,16 @@ type FeatureAllResponse struct {
 // ############################################################################
 
 type FeatureOneRequest struct {
+	common.BaseRequest
 	Feature string `json:"feature"`
 }
 
 func (*FeatureOneRequest) Method() string {
 	return "feature"
+}
+
+func (*FeatureOneRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

@@ -1,5 +1,10 @@
 package server
 
+import (
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
+)
+
 type ManifestDetails struct {
 	Domain       string `json:"domain"`
 	EphemeralKey string `json:"ephemeral_key"`
@@ -15,11 +20,16 @@ type ManifestDetails struct {
 // validator public key. The "manifest" is the public portion of that
 // validator's configured token.
 type ManifestRequest struct {
+	common.BaseRequest
 	PublicKey string `json:"public_key"`
 }
 
 func (*ManifestRequest) Method() string {
 	return "manifest"
+}
+
+func (*ManifestRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

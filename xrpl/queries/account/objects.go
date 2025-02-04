@@ -3,6 +3,7 @@ package account
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -28,6 +29,7 @@ const (
 // owned by an account. For a higher-level view of an account's trust lines and
 // balances, see the account_lines method instead.
 type ObjectsRequest struct {
+	common.BaseRequest
 	Account              types.Address          `json:"account"`
 	Type                 ObjectType             `json:"type,omitempty"`
 	DeletionBlockersOnly bool                   `json:"deletion_blockers_only,omitempty"`
@@ -39,6 +41,10 @@ type ObjectsRequest struct {
 
 func (*ObjectsRequest) Method() string {
 	return "account_objects"
+}
+
+func (*ObjectsRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement (V2)

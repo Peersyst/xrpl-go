@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Added `APIVersion` field to the `Client` struct.
+- Added `RippledAPIV1` and `RippledAPIV2` constants.
+- Added missing `ctid` field on `TxRequest` v1 query.
+- Added missing `NoRippleCheck` query (v1 & v2 support).
+
+### Changed
+
+- RippledAPIV2 is set as default API version. Queries and transactions are now compatible with Rippled v2 by default. V1 is still supported. In order to use v1, you need to use the `v1` package of each query type.
+
 ## [v0.1.2]
 
 ### Fixed

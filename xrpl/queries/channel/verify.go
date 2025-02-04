@@ -1,6 +1,10 @@
 package channel
 
-import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+import (
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
+	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
+)
 
 // ############################################################################
 // Request
@@ -9,6 +13,7 @@ import "github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 // The channel_verify method checks the validity of a signature that can be
 // used to redeem a specific amount of XRP from a payment channel.
 type VerifyRequest struct {
+	common.BaseRequest
 	Amount    types.XRPCurrencyAmount `json:"amount"`
 	ChannelID string                  `json:"channel_id"`
 	PublicKey string                  `json:"public_key"`
@@ -17,6 +22,10 @@ type VerifyRequest struct {
 
 func (*VerifyRequest) Method() string {
 	return "channel_verify"
+}
+
+func (*VerifyRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

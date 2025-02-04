@@ -2,6 +2,7 @@ package account
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
@@ -21,6 +22,7 @@ type Transaction struct {
 // The account_tx method retrieves a list of transactions that involved the
 // specified account.
 type TransactionsRequest struct {
+	common.BaseRequest
 	Account        types.Address          `json:"account"`
 	LedgerIndexMin int                    `json:"ledger_index_min,omitempty"`
 	LedgerIndexMax int                    `json:"ledger_index_max,omitempty"`
@@ -34,6 +36,10 @@ type TransactionsRequest struct {
 
 func (*TransactionsRequest) Method() string {
 	return "account_tx"
+}
+
+func (*TransactionsRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement (V2)

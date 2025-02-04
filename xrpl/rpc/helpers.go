@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/Peersyst/xrpl-go/xrpl/currency"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
+	account "github.com/Peersyst/xrpl-go/xrpl/queries/account"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
+	server "github.com/Peersyst/xrpl-go/xrpl/queries/server"
 	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
@@ -27,8 +27,11 @@ import (
 // CreateRequest formats the parameters and method name ready for sending request
 // Params will have been serialised if required and added to request struct before being passed to this method
 func createRequest(reqParams XRPLRequest) ([]byte, error) {
-
 	var body Request
+
+	reqParams.SetAPIVersion(
+		reqParams.APIVersion(),
+	)
 
 	body = Request{
 		Method: reqParams.Method(),

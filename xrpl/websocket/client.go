@@ -367,6 +367,7 @@ func (c *Client) formatRequest(req interfaces.Request, id int, marker any) ([]by
 	m := make(map[string]any)
 	m["id"] = id
 	m["command"] = req.Method()
+	m["api_version"] = req.APIVersion()
 	if marker != nil {
 		m["marker"] = marker
 	}

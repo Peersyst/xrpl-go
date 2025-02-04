@@ -1,7 +1,9 @@
 package server
 
 import (
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 )
 
 // ############################################################################
@@ -13,10 +15,15 @@ import (
 // the same as the server_info method, but uses units that are easier to process
 // instead of easier to read.
 type StateRequest struct {
+	common.BaseRequest
 }
 
 func (*StateRequest) Method() string {
 	return "server_state"
+}
+
+func (*StateRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

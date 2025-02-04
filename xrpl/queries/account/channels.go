@@ -5,6 +5,7 @@ import (
 
 	accounttypes "github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -23,6 +24,7 @@ var (
 // the same.) All information retrieved is relative to a particular version of
 // the ledger.
 type ChannelsRequest struct {
+	common.BaseRequest
 	Account            types.Address          `json:"account"`
 	DestinationAccount types.Address          `json:"destination_account,omitempty"`
 	LedgerIndex        common.LedgerSpecifier `json:"ledger_index,omitempty"`
@@ -34,6 +36,10 @@ type ChannelsRequest struct {
 // Method returns the method name for the ChannelsRequest.
 func (*ChannelsRequest) Method() string {
 	return "account_channels"
+}
+
+func (*ChannelsRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // Validate method to be added to each request struct

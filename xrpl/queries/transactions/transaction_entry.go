@@ -1,4 +1,4 @@
-package transaction
+package transactions
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"

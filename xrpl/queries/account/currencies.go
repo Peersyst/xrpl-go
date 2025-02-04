@@ -2,6 +2,7 @@ package account
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -12,6 +13,7 @@ import (
 // The `account_currencies` command retrieves a list of currencies that an
 // account can send or receive, based on its trust lines.
 type CurrenciesRequest struct {
+	common.BaseRequest
 	Account     types.Address          `json:"account"`
 	LedgerHash  common.LedgerHash      `json:"ledger_hash,omitempty"`
 	LedgerIndex common.LedgerSpecifier `json:"ledger_index,omitempty"`
@@ -20,6 +22,10 @@ type CurrenciesRequest struct {
 
 func (*CurrenciesRequest) Method() string {
 	return "account_currencies"
+}
+
+func (*CurrenciesRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement (V2)

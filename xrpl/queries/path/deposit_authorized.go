@@ -2,6 +2,7 @@ package path
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -12,6 +13,7 @@ import (
 // The deposit_authorized command indicates whether one account is authorized to
 // send payments directly to another.
 type DepositAuthorizedRequest struct {
+	common.BaseRequest
 	SourceAccount      types.Address          `json:"source_account"`
 	DestinationAccount types.Address          `json:"destination_account"`
 	LedgerHash         common.LedgerHash      `json:"ledger_hash,omitempty"`
@@ -20,6 +22,10 @@ type DepositAuthorizedRequest struct {
 
 func (*DepositAuthorizedRequest) Method() string {
 	return "deposit_authorized"
+}
+
+func (*DepositAuthorizedRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

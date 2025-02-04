@@ -2,6 +2,8 @@ package clio
 
 import (
 	cliotypes "github.com/Peersyst/xrpl-go/xrpl/queries/clio/types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -12,6 +14,7 @@ import (
 // The nfts_by_issuer method returns a list of NFTokens issued by the account.
 // The order of the NFTs is not associated with the date the NFTs were minted.
 type NFTsByIssuerRequest struct {
+	common.BaseRequest
 	Issuer   types.Address `json:"issuer"`
 	Marker   any           `json:"marker,omitempty"`
 	Limit    int           `json:"limit,omitempty"`
@@ -20,6 +23,10 @@ type NFTsByIssuerRequest struct {
 
 func (*NFTsByIssuerRequest) Method() string {
 	return "nfts_by_issuer"
+}
+
+func (*NFTsByIssuerRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

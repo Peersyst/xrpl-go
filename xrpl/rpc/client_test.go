@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
+	account "github.com/Peersyst/xrpl-go/xrpl/queries/account"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
 	"github.com/Peersyst/xrpl-go/xrpl/rpc/testutil"

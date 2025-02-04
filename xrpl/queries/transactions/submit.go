@@ -1,9 +1,10 @@
-package transaction
+package transactions
 
 import (
 	"errors"
 
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 )
 
@@ -18,12 +19,17 @@ var (
 // The submit method applies a transaction and sends it to the network to be
 // confirmed and included in future ledgers.
 type SubmitRequest struct {
+	common.BaseRequest
 	TxBlob   string `json:"tx_blob"`
 	FailHard bool   `json:"fail_hard,omitempty"`
 }
 
 func (*SubmitRequest) Method() string {
 	return "submit"
+}
+
+func (*SubmitRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 func (req *SubmitRequest) Validate() error {

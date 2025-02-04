@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 )
 
 // ############################################################################
@@ -13,10 +14,15 @@ import (
 // for the transaction cost. This requires the FeeEscalation amendment to be
 // enabled.
 type FeeRequest struct {
+	common.BaseRequest
 }
 
 func (*FeeRequest) Method() string {
 	return "fee"
+}
+
+func (*FeeRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

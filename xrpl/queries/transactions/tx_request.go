@@ -1,7 +1,8 @@
-package transaction
+package transactions
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
@@ -13,6 +14,7 @@ import (
 // The tx method retrieves information on a single transaction, by its
 // identifying hash.
 type TxRequest struct {
+	common.BaseRequest
 	Transaction string             `json:"transaction"`
 	Binary      bool               `json:"binary,omitempty"`
 	MinLedger   common.LedgerIndex `json:"min_ledger,omitempty"`
@@ -21,6 +23,10 @@ type TxRequest struct {
 
 func (*TxRequest) Method() string {
 	return "tx"
+}
+
+func (*TxRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

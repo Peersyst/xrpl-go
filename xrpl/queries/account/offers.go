@@ -3,6 +3,7 @@ package account
 import (
 	accounttypes "github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -13,6 +14,7 @@ import (
 // The account_offers method retrieves a list of offers made by a given account
 // that are outstanding as of a particular ledger version.
 type OffersRequest struct {
+	common.BaseRequest
 	Account     types.Address          `json:"account"`
 	LedgerHash  common.LedgerHash      `json:"ledger_hash,omitempty"`
 	LedgerIndex common.LedgerSpecifier `json:"ledger_index,omitempty"`
@@ -23,6 +25,10 @@ type OffersRequest struct {
 
 func (*OffersRequest) Method() string {
 	return "account_offers"
+}
+
+func (*OffersRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement (V2)

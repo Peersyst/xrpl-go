@@ -3,6 +3,7 @@ package account
 import (
 	accounttypes "github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -13,6 +14,7 @@ import (
 // The `account_nfts` method retrieves all of the NFTs currently owned by the
 // specified account.
 type NFTsRequest struct {
+	common.BaseRequest
 	Account     types.Address          `json:"account"`
 	LedgerIndex common.LedgerSpecifier `json:"ledger_index,omitempty"`
 	LedgerHash  common.LedgerHash      `json:"ledger_hash,omitempty"`
@@ -22,6 +24,10 @@ type NFTsRequest struct {
 
 func (*NFTsRequest) Method() string {
 	return "account_nfts"
+}
+
+func (*NFTsRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement (V2)

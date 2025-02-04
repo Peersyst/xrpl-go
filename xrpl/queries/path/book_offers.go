@@ -3,6 +3,7 @@ package path
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	pathtypes "github.com/Peersyst/xrpl-go/xrpl/queries/path/types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -13,6 +14,7 @@ import (
 // The book_offers method retrieves a list of offers, also known as the order
 // book, between two currencies.
 type BookOffersRequest struct {
+	common.BaseRequest
 	TakerGets   pathtypes.BookOfferCurrency `json:"taker_gets"`
 	TakerPays   pathtypes.BookOfferCurrency `json:"taker_pays"`
 	Taker       types.Address               `json:"taker,omitempty"`
@@ -23,6 +25,10 @@ type BookOffersRequest struct {
 
 func (*BookOffersRequest) Method() string {
 	return "book_offers"
+}
+
+func (*BookOffersRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

@@ -3,6 +3,7 @@ package path
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	pathtypes "github.com/Peersyst/xrpl-go/xrpl/queries/path/types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -13,6 +14,7 @@ import (
 // The ripple_path_find method is a simplified version of the path_find method
 // that provides a single response with a payment path you can use right away.
 type RipplePathFindRequest struct {
+	common.BaseRequest
 	SourceAccount      types.Address                      `json:"source_account"`
 	DestinationAccount types.Address                      `json:"destination_account"`
 	DestinationAmount  types.CurrencyAmount               `json:"destination_amount"`
@@ -24,6 +26,10 @@ type RipplePathFindRequest struct {
 
 func (*RipplePathFindRequest) Method() string {
 	return "ripple_path_find"
+}
+
+func (*RipplePathFindRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

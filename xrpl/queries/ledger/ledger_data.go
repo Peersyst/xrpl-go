@@ -4,6 +4,7 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	ledgertypes "github.com/Peersyst/xrpl-go/xrpl/queries/ledger/types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 )
 
 // ############################################################################
@@ -14,6 +15,7 @@ import (
 // iterate through several calls to retrieve the entire contents of a single
 // ledger version.
 type DataRequest struct {
+	common.BaseRequest
 	LedgerHash  common.LedgerHash      `json:"ledger_hash,omitempty"`
 	LedgerIndex common.LedgerSpecifier `json:"ledger_index,omitempty"`
 	Binary      bool                   `json:"binary,omitempty"`
@@ -24,6 +26,10 @@ type DataRequest struct {
 
 func (*DataRequest) Method() string {
 	return "ledger_data"
+}
+
+func (*DataRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

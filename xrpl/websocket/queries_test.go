@@ -19,7 +19,7 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
 	servertypes "github.com/Peersyst/xrpl-go/xrpl/queries/server/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/utility"
-	transaction "github.com/Peersyst/xrpl-go/xrpl/transaction"
+	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket/testutil"
 	"github.com/gorilla/websocket"

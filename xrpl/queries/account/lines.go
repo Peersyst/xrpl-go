@@ -3,6 +3,7 @@ package account
 import (
 	accounttypes "github.com/Peersyst/xrpl-go/xrpl/queries/account/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
@@ -14,6 +15,7 @@ import (
 // including balances in all non-XRP currencies and assets. All information
 // retrieved is relative to a particular version of the ledger.
 type LinesRequest struct {
+	common.BaseRequest
 	Account     types.Address          `json:"account"`
 	LedgerHash  common.LedgerHash      `json:"ledger_hash,omitempty"`
 	LedgerIndex common.LedgerSpecifier `json:"ledger_index,omitempty"`
@@ -24,6 +26,10 @@ type LinesRequest struct {
 
 func (*LinesRequest) Method() string {
 	return "account_lines"
+}
+
+func (*LinesRequest) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement (V2)

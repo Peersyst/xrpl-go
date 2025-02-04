@@ -4,6 +4,7 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	ledgertypes "github.com/Peersyst/xrpl-go/xrpl/queries/ledger/types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 )
 
 // ############################################################################
@@ -12,6 +13,7 @@ import (
 
 // Retrieve information about the public ledger.
 type Request struct {
+	common.BaseRequest
 	LedgerHash   common.LedgerHash      `json:"ledger_hash,omitempty"`
 	LedgerIndex  common.LedgerSpecifier `json:"ledger_index,omitempty"`
 	Full         bool                   `json:"full,omitempty"`
@@ -26,6 +28,10 @@ type Request struct {
 
 func (*Request) Method() string {
 	return "ledger"
+}
+
+func (*Request) APIVersion() int {
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2
