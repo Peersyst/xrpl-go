@@ -6,6 +6,12 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 )
 
+// ############################################################################
+// Request
+// ############################################################################
+
+// The `ledger_entry` method returns a single ledger object from the XRP Ledger
+// in its raw format. Expects a response in the form of a EntryResponse.
 type EntryRequest struct {
 	common.BaseRequest
 	MPTIssuance                     bool                    `json:"mp_issuance,omitempty"`
@@ -44,6 +50,11 @@ func (e *EntryRequest) Validate() error {
 	return nil
 }
 
+// ############################################################################
+// Response
+// ############################################################################
+
+// The expected response from the ledger_entry method.
 type EntryResponse struct {
 	Index              string             `json:"index"`
 	LedgerCurrentIndex common.LedgerIndex `json:"ledger_current_index"`
