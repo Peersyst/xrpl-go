@@ -26,7 +26,6 @@ type EntryDepositPreauth struct {
 }
 
 type EntryDirectory struct {
-	// TODO: CHECK TYPE
 	SubIndex uint32 `json:"sub_index,omitempty"`
 	DirRoot  string `json:"dir_root,omitempty"`
 	Owner    string `json:"owner,omitempty"`

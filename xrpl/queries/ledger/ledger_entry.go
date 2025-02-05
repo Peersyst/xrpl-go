@@ -14,8 +14,8 @@ import (
 // in its raw format. Expects a response in the form of a EntryResponse.
 type EntryRequest struct {
 	common.BaseRequest
-	MPTIssuance                     bool                    `json:"mp_issuance,omitempty"`
-	MPToken                         interface{}             `json:"mp_token,omitempty"`
+	MPTIssuance                     bool                    `json:"mpt_issuance,omitempty"`
+	MPToken                         interface{}             `json:"mptoken,omitempty"`
 	AMM                             types.EntryAssetPair    `json:"amm,omitempty"`
 	IncludeDeleted                  bool                    `json:"include_deleted,omitempty"`
 	Binary                          bool                    `json:"binary,omitempty"`
