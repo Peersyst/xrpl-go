@@ -40,7 +40,7 @@ func TestLedgerEntryRequest(t *testing.T) {
 		},
 	}
 	j := `{
-	"mp_issuance": true,
+	"mpt_issuance": true,
 	"amm": {
 		"asset": {
 			"currency": "XRP"
