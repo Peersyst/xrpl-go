@@ -81,7 +81,7 @@ func main() {
 		BaseTx: transaction.BaseTx{
 			Account: master.GetAddress(),
 		},
-		SignerQuorum: uint32Ptr(2),
+		SignerQuorum: uint32(2),
 		SignerEntries: []ledger.SignerEntryWrapper{
 			{
 				SignerEntry: ledger.SignerEntry{
@@ -177,9 +177,4 @@ func main() {
 
 	fmt.Println("✅ Multisigned transaction submitted!")
 	fmt.Printf("🌐 Result: %s\n", mRes.EngineResult)
-}
-
-// Utility function to create a pointer to uint32
-func uint32Ptr(value uint32) *uint32 {
-	return &value
 }

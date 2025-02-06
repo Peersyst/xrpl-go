@@ -28,7 +28,7 @@ func TestSignerListSet_Flatten(t *testing.T) {
 					Account: "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 					Fee:     types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(3),
+				SignerQuorum: uint32(3),
 				SignerEntries: []ledger.SignerEntryWrapper{
 					{
 						SignerEntry: ledger.SignerEntry{
@@ -84,7 +84,7 @@ func TestSignerListSet_Flatten(t *testing.T) {
 					Account: "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 					Fee:     types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(0),
+				SignerQuorum: uint32(0),
 			},
 			expected: `{
 				"TransactionType": "SignerListSet",
@@ -133,7 +133,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					TransactionType: SignerListSetTx,
 					Fee:             types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(3),
+				SignerQuorum: uint32(3),
 				SignerEntries: []ledger.SignerEntryWrapper{
 					{
 						SignerEntry: ledger.SignerEntry{
@@ -168,7 +168,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					Account: "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 					Fee:     types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(3),
+				SignerQuorum: uint32(3),
 				SignerEntries: []ledger.SignerEntryWrapper{
 					{
 						SignerEntry: ledger.SignerEntry{
@@ -195,7 +195,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					TransactionType: SignerListSetTx,
 					Fee:             types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(3),
+				SignerQuorum: uint32(3),
 			},
 			wantValid: false,
 			wantErr:   true,
@@ -208,7 +208,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					TransactionType: SignerListSetTx,
 					Fee:             types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(3),
+				SignerQuorum: uint32(3),
 				SignerEntries: func() []ledger.SignerEntryWrapper {
 					entries := make([]ledger.SignerEntryWrapper, 33)
 					for i := range entries {
@@ -233,7 +233,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					TransactionType: SignerListSetTx,
 					Fee:             types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(3),
+				SignerQuorum: uint32(3),
 				SignerEntries: []ledger.SignerEntryWrapper{
 					{
 						SignerEntry: ledger.SignerEntry{
@@ -255,7 +255,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					TransactionType: SignerListSetTx,
 					Fee:             types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(5),
+				SignerQuorum: uint32(5),
 				SignerEntries: []ledger.SignerEntryWrapper{
 					{
 						SignerEntry: ledger.SignerEntry{
@@ -282,7 +282,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					TransactionType: SignerListSetTx,
 					Fee:             types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(2),
+				SignerQuorum: uint32(2),
 				SignerEntries: []ledger.SignerEntryWrapper{
 					{
 						SignerEntry: ledger.SignerEntry{
@@ -309,7 +309,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					TransactionType: SignerListSetTx,
 					Fee:             types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(0),
+				SignerQuorum: uint32(0),
 			},
 			wantValid: true,
 			wantErr:   false,
@@ -322,7 +322,7 @@ func TestSignerListSet_Validate(t *testing.T) {
 					TransactionType: SignerListSetTx,
 					Fee:             types.XRPCurrencyAmount(12),
 				},
-				SignerQuorum: uint32Ptr(0),
+				SignerQuorum: uint32(0),
 				SignerEntries: []ledger.SignerEntryWrapper{
 					{
 						SignerEntry: ledger.SignerEntry{
@@ -355,9 +355,4 @@ func TestSignerListSet_Validate(t *testing.T) {
 			}
 		})
 	}
-}
-
-// Utility function to create a pointer to uint32
-func uint32Ptr(value uint32) *uint32 {
-	return &value
 }
