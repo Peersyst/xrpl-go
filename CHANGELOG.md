@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### xrpl
 
-- Updated SignerQuorum in SignerListSet to be a pointer (\*uint32) instead of a value (uint32).
+- Updated field `SignerQuorum` in `SignerListSet` type to interface{} with uint32 asserted as the type.
   - This allows distinguishing between an unset (nil) and an explicitly set value, including 0 to delete a signer list.
   - Ensures SignerQuorum is only included in the Flatten() output when explicitly defined.
   - Updates the `Validate` method to make sure `SignerEntries` is not set when `SignerQuorum` is set to 0
