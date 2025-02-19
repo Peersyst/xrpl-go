@@ -8,11 +8,14 @@ import (
 )
 
 type Transaction struct {
-	LedgerIndex uint64                      `json:"ledger_index"`
-	Meta        transaction.TxObjMeta       `json:"meta"`
-	Tx          transaction.FlatTransaction `json:"tx"`
-	TxBlob      string                      `json:"tx_blob"`
-	Validated   bool                        `json:"validated"`
+	CloseTimeISO string                      `json:"close_time_iso"`
+	Hash         common.LedgerHash           `json:"hash"`
+	LedgerHash   common.LedgerHash           `json:"ledger_hash"`
+	LedgerIndex  uint64                      `json:"ledger_index"`
+	Meta         transaction.TxObjMeta       `json:"meta"`
+	Tx           transaction.FlatTransaction `json:"tx_json"`
+	TxBlob       string                      `json:"tx_blob"`
+	Validated    bool                        `json:"validated"`
 }
 
 // ############################################################################

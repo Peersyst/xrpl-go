@@ -766,7 +766,7 @@ func TestClient_GetAccountTransactions(t *testing.T) {
 					"account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 					"transactions": [
 						{
-							"tx": {
+							"tx_json": {
 								"Account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 								"Amount": "100000000",
 								"Destination": "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",

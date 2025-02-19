@@ -1074,7 +1074,7 @@ func TestClient_GetAccountTransactions(t *testing.T) {
 					"account": "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
 					"transactions": []map[string]any{
 						{
-							"tx": map[string]any{
+							"tx_json": map[string]any{
 								"Account":         "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
 								"Fee":             "10",
 								"SigningPubKey":   "0330E7FC9D56BB25D6893BA3F317AE5BCF33B3291BD63DB32654A313222F7FD020",
