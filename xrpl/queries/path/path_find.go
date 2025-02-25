@@ -36,7 +36,7 @@ func (*FindCreateRequest) Method() string {
 }
 
 func (*FindCreateRequest) APIVersion() int {
-	return version.RippledAPIV1
+	return version.RippledAPIV2
 }
 
 // TODO: Implement V2

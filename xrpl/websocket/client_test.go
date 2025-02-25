@@ -1,13 +1,13 @@
 package websocket
 
 import (
-	"encoding/json"
 	"errors"
 	"reflect"
 	"testing"
 
 	commonconstants "github.com/Peersyst/xrpl-go/xrpl/common"
 	account "github.com/Peersyst/xrpl-go/xrpl/queries/account"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket/interfaces"
@@ -36,9 +36,11 @@ func TestClient_Disconnect(t *testing.T) {
 func TestClient_IsConnected(t *testing.T) {
 	ws := NewClient(NewClientConfig().WithHost("wss://s.altnet.rippletest.net"))
 	require.False(t, ws.IsConnected())
-	ws.Connect()
+	err := ws.Connect()
+	require.NoError(t, err)
 	require.True(t, ws.IsConnected())
-	ws.Disconnect()
+	err = ws.Disconnect()
+	require.NoError(t, err)
 	require.False(t, ws.IsConnected())
 }
 
@@ -68,11 +70,11 @@ func TestClient_SendRequest(t *testing.T) {
 							"destination_account": "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 							"public_key":          "aBR7mdD75Ycs8DRhMgQ4EMUEmBArF8SEh1hfjrT2V9DQTLNbJVqw",
 							"public_key_hex":      "03CFD18E689434F032A4E84C63E2A3A6472D684EAF4FD52CA67742F3E24BAE81B2",
-							"settle_delay":        json.Number("60"),
+							"settle_delay":        float64(60),
 						},
 					},
 					"ledger_hash":  "1EDBBA3C793863366DF5B31C2174B6B5E6DF6DB89A7212B86838489148E2A581",
-					"ledger_index": json.Number("71766314"),
+					"ledger_index": float64(71766314),
 					"validated":    true,
 				},
 			},
@@ -91,18 +93,18 @@ func TestClient_SendRequest(t *testing.T) {
 								"destination_account": "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 								"public_key":          "aBR7mdD75Ycs8DRhMgQ4EMUEmBArF8SEh1hfjrT2V9DQTLNbJVqw",
 								"public_key_hex":      "03CFD18E689434F032A4E84C63E2A3A6472D684EAF4FD52CA67742F3E24BAE81B2",
-								"settle_delay":        60,
+								"settle_delay":        float64(60),
 							},
 						},
 						"ledger_hash":  "1EDBBA3C793863366DF5B31C2174B6B5E6DF6DB89A7212B86838489148E2A581",
-						"ledger_index": 71766314,
+						"ledger_index": common.LedgerIndex(71766314),
 						"validated":    true,
 					},
 				},
 			},
 		},
 		{
-			description: "Invalid ID",
+			description: "invalid id - timeout",
 			req: &account.ChannelsRequest{
 				Account: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
 			},
@@ -118,15 +120,15 @@ func TestClient_SendRequest(t *testing.T) {
 							"destination_account": "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 							"public_key":          "aBR7mdD75Ycs8DRhMgQ4EMUEmBArF8SEh1hfjrT2V9DQTLNbJVqw",
 							"public_key_hex":      "03CFD18E689434F032A4E84C63E2A3A6472D684EAF4FD52CA67742F3E24BAE81B2",
-							"settle_delay":        json.Number("60"),
+							"settle_delay":        float64(60),
 						},
 					},
 					"ledger_hash":  "1EDBBA3C793863366DF5B31C2174B6B5E6DF6DB89A7212B86838489148E2A581",
-					"ledger_index": json.Number("71766314"),
+					"ledger_index": common.LedgerIndex(71766314),
 					"validated":    true,
 				},
 			},
-			expectedErr: ErrIncorrectID,
+			expectedErr: ErrRequestTimedOut,
 			serverMessages: []map[string]any{
 				{
 					"id": 2,
@@ -141,18 +143,18 @@ func TestClient_SendRequest(t *testing.T) {
 								"destination_account": "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 								"public_key":          "aBR7mdD75Ycs8DRhMgQ4EMUEmBArF8SEh1hfjrT2V9DQTLNbJVqw",
 								"public_key_hex":      "03CFD18E689434F032A4E84C63E2A3A6472D684EAF4FD52CA67742F3E24BAE81B2",
-								"settle_delay":        60,
+								"settle_delay":        float64(60),
 							},
 						},
 						"ledger_hash":  "1EDBBA3C793863366DF5B31C2174B6B5E6DF6DB89A7212B86838489148E2A581",
-						"ledger_index": 71766314,
+						"ledger_index": common.LedgerIndex(71766314),
 						"validated":    true,
 					},
 				},
 			},
 		},
 		{
-			description: "Error response",
+			description: "error response",
 			req: &account.ChannelsRequest{
 				Account: "r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59",
 			},
@@ -169,11 +171,11 @@ func TestClient_SendRequest(t *testing.T) {
 							"destination_account": "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
 							"public_key":          "aBR7mdD75Ycs8DRhMgQ4EMUEmBArF8SEh1hfjrT2V9DQTLNbJVqw",
 							"public_key_hex":      "03CFD18E689434F032A4E84C63E2A3A6472D684EAF4FD52CA67742F3E24BAE81B2",
-							"settle_delay":        json.Number("60"),
+							"settle_delay":        float64(60),
 						},
 					},
 					"ledger_hash":  "1EDBBA3C793863366DF5B31C2174B6B5E6DF6DB89A7212B86838489148E2A581",
-					"ledger_index": json.Number("71766314"),
+					"ledger_index": common.LedgerIndex(71766314),
 					"validated":    true,
 				},
 			},
@@ -197,23 +199,8 @@ func TestClient_SendRequest(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.description, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tc.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tc.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						println("error writing message")
-					}
-				}
-			})
-			defer s.Close()
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{cfg: ClientConfig{
-				host: url,
-			}}
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tc.serverMessages)
+			defer cleanup()
 
 			res, err := cl.Request(tc.req)
 
@@ -223,8 +210,6 @@ func TestClient_SendRequest(t *testing.T) {
 				require.NoError(t, err)
 				require.EqualValues(t, tc.res, res)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -492,27 +477,8 @@ func TestClient_setTransactionNextValidSequenceNumber(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			err := cl.setTransactionNextValidSequenceNumber(&tt.tx)
 
@@ -537,8 +503,6 @@ func TestClient_setTransactionNextValidSequenceNumber(t *testing.T) {
 				}
 				t.Errorf("Expected %v but got %v", tt.expected, tt.tx)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -622,29 +586,11 @@ func TestClient_calculateFeePerTransactionType(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host:       url,
-					feeCushion: tt.feeCushion,
-					maxFeeXRP:  DefaultMaxFeeXRP,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl.cfg.feeCushion = tt.feeCushion
+			cl.cfg.maxFeeXRP = DefaultMaxFeeXRP
 
 			err := cl.calculateFeePerTransactionType(&tt.tx, 0)
 
@@ -660,8 +606,6 @@ func TestClient_calculateFeePerTransactionType(t *testing.T) {
 					t.Errorf("Expected fee %v, but got %v", tt.expectedFee, tt.tx["Fee"])
 				}
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -692,27 +636,8 @@ func TestClient_setLastLedgerSequence(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			err := cl.setLastLedgerSequence(&tt.tx)
 
@@ -774,11 +699,7 @@ func TestClient_checkAccountDeleteBlockers(t *testing.T) {
 			defer s.Close()
 
 			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
+			cl := NewClient(NewClientConfig().WithHost(url))
 
 			if err := cl.Connect(); err != nil {
 				t.Errorf("Error connecting to server: %v", err)

@@ -11,6 +11,7 @@ type ClientConfig struct {
 	host       string
 	maxRetries int
 	retryDelay time.Duration
+	timeout    time.Duration
 
 	// Fee config
 	feeCushion float32
@@ -27,6 +28,7 @@ func NewClientConfig() *ClientConfig {
 		maxFeeXRP:  common.DefaultMaxFeeXRP,
 		maxRetries: common.DefaultMaxRetries,
 		retryDelay: common.DefaultRetryDelay,
+		timeout:    common.DefaultTimeout,
 	}
 }
 
@@ -69,5 +71,12 @@ func (wc ClientConfig) WithMaxRetries(maxRetries int) ClientConfig {
 // Default: 1 second
 func (wc ClientConfig) WithRetryDelay(retryDelay time.Duration) ClientConfig {
 	wc.retryDelay = retryDelay
+	return wc
+}
+
+// WithTimeout sets the timeout for a request.
+// Default: 10 seconds
+func (wc ClientConfig) WithTimeout(timeout time.Duration) ClientConfig {
+	wc.timeout = timeout
 	return wc
 }

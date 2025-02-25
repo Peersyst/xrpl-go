@@ -16,6 +16,7 @@ func TestNewClientConfig(t *testing.T) {
 	require.Equal(t, config.host, common.DefaultHost)
 	require.Equal(t, config.feeCushion, common.DefaultFeeCushion)
 	require.Equal(t, config.maxFeeXRP, common.DefaultMaxFeeXRP)
+	require.Equal(t, config.timeout, common.DefaultTimeout)
 }
 
 func TestWithMaxRetries(t *testing.T) {
@@ -41,4 +42,9 @@ func TestWithMaxFeeXRP(t *testing.T) {
 func TestWithFaucetProvider(t *testing.T) {
 	config := NewClientConfig().WithFaucetProvider(faucet.NewTestnetFaucetProvider())
 	require.NotNil(t, config.faucetProvider)
+}
+
+func TestWithTimeout(t *testing.T) {
+	config := NewClientConfig().WithTimeout(10 * time.Second)
+	require.Equal(t, config.timeout, 10*time.Second)
 }

@@ -1,7 +1,6 @@
-package subscribe
+package v1
 
 import (
-	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
@@ -19,7 +18,6 @@ type UnsubscribeOrderBook struct {
 // The unsubscribe command tells the server to stop sending messages for a
 // particular subscription or set of subscriptions.
 type UnsubscribeRequest struct {
-	common.BaseRequest
 	Streams          []string               `json:"streams,omitempty"`
 	Accounts         []types.Address        `json:"accounts,omitempty"`
 	AccountsProposed []types.Address        `json:"accounts_proposed,omitempty"`
@@ -36,7 +34,7 @@ func (*UnsubscribeRequest) Validate() error {
 }
 
 func (*UnsubscribeRequest) APIVersion() int {
-	return version.RippledAPIV2
+	return version.RippledAPIV1
 }
 
 // ############################################################################

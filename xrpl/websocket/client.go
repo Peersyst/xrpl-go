@@ -1,7 +1,6 @@
 package websocket
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -19,11 +18,13 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/server"
+	streamtypes "github.com/Peersyst/xrpl-go/xrpl/queries/subscription/types"
 	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/Peersyst/xrpl-go/xrpl/websocket/interfaces"
-	"github.com/gorilla/websocket"
+	wstypes "github.com/Peersyst/xrpl-go/xrpl/websocket/types"
+	ws "github.com/gorilla/websocket"
 
 	commonconstants "github.com/Peersyst/xrpl-go/xrpl/common"
 )
@@ -36,11 +37,23 @@ const (
 var (
 	ErrIncorrectID          = errors.New("incorrect id")
 	ErrNotConnectedToServer = errors.New("not connected to server")
+	ErrRequestTimedOut      = errors.New("request timed out")
 )
 
 type Client struct {
 	cfg  ClientConfig
-	conn *websocket.Conn
+	conn *Connection
+
+	// Channels
+	errChan          chan error
+	requestChan      chan *ClientResponse
+	ledgerClosedChan chan *streamtypes.LedgerStream
+	validationChan   chan *streamtypes.ValidationStream
+	transactionChan  chan *streamtypes.TransactionStream
+	peerStatusChan   chan *streamtypes.PeerStatusStream
+	orderBookChan    chan *streamtypes.OrderBookStream
+	bookChangesChan  chan *streamtypes.BookChangesStream
+	consensusChan    chan *streamtypes.ConsensusStream
 
 	idCounter atomic.Uint32
 	NetworkID uint32
@@ -50,39 +63,31 @@ type Client struct {
 // This client will open and close a websocket connection for each request.
 func NewClient(cfg ClientConfig) *Client {
 	return &Client{
-		cfg: cfg,
+		cfg:         cfg,
+		requestChan: make(chan *ClientResponse),
+		errChan:     make(chan error),
+		conn:        NewConnection(cfg.host),
 	}
 }
 
-// Connect opens a websocket connection to the server.
+// Connect opens a websocket connection to the server. It starts reading messages in a goroutine.
 func (c *Client) Connect() error {
-	conn, _, err := websocket.DefaultDialer.Dial(c.cfg.host, nil)
+	err := c.conn.Connect()
 	if err != nil {
 		return err
 	}
-	c.conn = conn
+	go c.readMessages()
 	return nil
 }
 
 // Disconnect closes the websocket connection.
-func (c *Client) Disconnect() {
-	if c.conn == nil {
-		return
-	}
-	if err := c.conn.Close(); err != nil {
-		fmt.Println("Error closing websocket connection: ", err)
-	}
-	c.conn = nil
+func (c *Client) Disconnect() error {
+	return c.conn.Disconnect()
 }
 
 // IsConnected returns true if the client is connected to the server.
 func (c *Client) IsConnected() bool {
-	return c.conn != nil
-}
-
-// Conn returns the websocket connection.
-func (c *Client) Conn() *websocket.Conn {
-	return c.conn
+	return c.conn.IsConnected()
 }
 
 // Autofill fills in the missing fields in a transaction.
@@ -188,19 +193,13 @@ func (c *Client) Request(req interfaces.Request) (*ClientResponse, error) {
 		return nil, ErrNotConnectedToServer
 	}
 
-	err = c.Conn().WriteMessage(websocket.TextMessage, msg)
+	err = c.conn.WriteMessage(msg)
 	if err != nil {
+		fmt.Println("Error writing message: ", err)
 		return nil, err
 	}
 
-	_, v, err := c.Conn().ReadMessage()
-	if err != nil {
-		return nil, err
-	}
-	jDec := json.NewDecoder(bytes.NewReader(json.RawMessage(v)))
-	jDec.UseNumber()
-	var res ClientResponse
-	err = jDec.Decode(&res)
+	res, err := c.awaitResponse(int(id))
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +211,7 @@ func (c *Client) Request(req interfaces.Request) (*ClientResponse, error) {
 		return nil, err
 	}
 
-	return &res, nil
+	return res, nil
 }
 
 // Submit sends a transaction to the server and returns the response.
@@ -571,4 +570,98 @@ func (c *Client) setTransactionFlags(tx *transaction.FlatTransaction) error {
 	}
 
 	return nil
+}
+
+func (c *Client) awaitResponse(id int) (*ClientResponse, error) {
+	for {
+		select {
+		case res := <-c.requestChan:
+			if res.ID == id {
+				return res, nil
+			}
+		case <-time.After(c.cfg.timeout):
+			return nil, ErrRequestTimedOut
+		}
+	}
+}
+
+func (c *Client) handleMessage(message []byte) {
+	var stream wstypes.Message
+	c.unmarshalMessage(message, &stream)
+	if stream.IsRequest() {
+		c.handleRequest(message)
+	} else if stream.IsStream() {
+		c.handleStream(stream.Type, message)
+	}
+}
+
+func (c *Client) handleRequest(message []byte) {
+	var res ClientResponse
+	c.unmarshalMessage(message, &res)
+	c.requestChan <- &res
+}
+
+func (c *Client) unmarshalMessage(message []byte, v any) {
+	if err := json.Unmarshal(message, v); err != nil {
+		if c.errChan == nil {
+			c.errChan = make(chan error)
+		}
+		c.errChan <- err
+	}
+}
+
+func (c *Client) handleStream(t streamtypes.Type, message []byte) {
+	switch t {
+	case streamtypes.LedgerStreamType:
+		var ledger streamtypes.LedgerStream
+		c.unmarshalMessage(message, &ledger)
+		c.ledgerClosedChan <- &ledger
+	case streamtypes.TransactionStreamType:
+		var transaction streamtypes.TransactionStream
+		c.unmarshalMessage(message, &transaction)
+		c.transactionChan <- &transaction
+	case streamtypes.ValidationStreamType:
+		var validation streamtypes.ValidationStream
+		c.unmarshalMessage(message, &validation)
+		c.validationChan <- &validation
+	case streamtypes.PeerStatusStreamType:
+		var peerStatus streamtypes.PeerStatusStream
+		c.unmarshalMessage(message, &peerStatus)
+		c.peerStatusChan <- &peerStatus
+	case streamtypes.ConsensusStreamType:
+		var consensus streamtypes.ConsensusStream
+		c.unmarshalMessage(message, &consensus)
+		c.consensusChan <- &consensus
+	default:
+		if c.errChan == nil {
+			c.errChan = make(chan error)
+		}
+		c.errChan <- fmt.Errorf("unknown stream type: %v", t)
+	}
+}
+
+func (c *Client) readMessages() {
+	for {
+		if c.conn == nil {
+			return
+		}
+		message, err := c.conn.ReadMessage()
+		switch {
+		case ws.IsCloseError(err) || ws.IsUnexpectedCloseError(err):
+			connErr := c.conn.Connect()
+			if connErr != nil {
+				if c.errChan == nil {
+					c.errChan = make(chan error)
+				}
+				c.errChan <- connErr
+				return // Break out of outer loop
+			}
+		case err != nil:
+			c.errChan <- err
+			return // Break out of outer loop
+		default:
+			// Send the message to the channel
+			c.handleMessage(message)
+		}
+	}
 }

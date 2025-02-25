@@ -1,9 +1,9 @@
-package subscribe
+package v1
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
-	streamtypes "github.com/Peersyst/xrpl-go/xrpl/queries/subscription/types"
+	streamtypes "github.com/Peersyst/xrpl-go/xrpl/queries/subscription/v1/types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/version"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
@@ -15,7 +15,6 @@ import (
 // The subscribe method requests periodic notifications from the server when
 // certain events happen.
 type Request struct {
-	common.BaseRequest
 	Streams          []string                `json:"streams,omitempty"`
 	Accounts         []types.Address         `json:"accounts,omitempty"`
 	AccountsProposed []types.Address         `json:"accounts_proposed,omitempty"`
@@ -35,7 +34,7 @@ func (*Request) Validate() error {
 }
 
 func (*Request) APIVersion() int {
-	return version.RippledAPIV2
+	return version.RippledAPIV1
 }
 
 // ############################################################################

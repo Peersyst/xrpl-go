@@ -2,6 +2,7 @@ package types
 
 import (
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
+	"github.com/Peersyst/xrpl-go/xrpl/queries/common"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
@@ -15,7 +16,7 @@ type BaseLedger struct {
 	CloseTimeResolution int                           `json:"close_time_resolution"`
 	Closed              bool                          `json:"closed"`
 	LedgerHash          string                        `json:"ledger_hash"`
-	LedgerIndex         uint32                        `json:"ledger_index"`
+	LedgerIndex         common.LedgerIndex            `json:"ledger_index"`
 	ParentCloseTime     int                           `json:"parent_close_time"`
 	ParentHash          string                        `json:"parent_hash"`
 	TotalCoins          types.XRPCurrencyAmount       `json:"total_coins"`

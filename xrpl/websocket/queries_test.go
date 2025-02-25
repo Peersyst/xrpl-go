@@ -2,8 +2,10 @@ package websocket
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/account"
@@ -25,6 +27,35 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/websocket/testutil"
 	"github.com/gorilla/websocket"
 )
+
+func setupTestClient(t *testing.T, messages []map[string]any) (*Client, func()) {
+	ws := &testutil.MockWebSocketServer{Msgs: messages}
+	s := ws.TestWebSocketServer(func(c *websocket.Conn) {
+		for _, m := range messages {
+			err := c.WriteJSON(m)
+			if err != nil {
+				t.Errorf("error writing message: %v", err)
+			}
+		}
+	})
+
+	url, _ := testutil.ConvertHTTPToWS(s.URL)
+	cl := NewClient(NewClientConfig().
+		WithHost(url).
+		WithTimeout(1 * time.Second))
+
+	if err := cl.Connect(); err != nil {
+		t.Fatalf("Error connecting to server: %v", err)
+	}
+
+	cleanup := func() {
+		fmt.Println("Disconnecting from server")
+		cl.Disconnect()
+		s.Close()
+	}
+
+	return cl, cleanup
+}
 
 func TestClient_GetServerInfo(t *testing.T) {
 	tests := []struct {
@@ -67,36 +98,32 @@ func TestClient_GetServerInfo(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Server error"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetServerInfo(&server.InfoRequest{})
 
@@ -113,8 +140,6 @@ func TestClient_GetServerInfo(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -161,36 +186,32 @@ func TestClient_GetAccountInfo(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Account not found"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAccountInfo(&account.InfoRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
@@ -209,8 +230,6 @@ func TestClient_GetAccountInfo(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -260,41 +279,32 @@ func TestClient_GetAccountChannels(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name: "Error response",
-			serverMessages: []map[string]any{{
-				"id":     1,
-				"error":  "invalidParams",
-				"status": "error",
-				"type":   "response",
-			}},
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
 			expected:    nil,
-			expectedErr: errors.New("invalidParams"),
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAccountChannels(&account.ChannelsRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
@@ -313,8 +323,6 @@ func TestClient_GetAccountChannels(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -366,36 +374,32 @@ func TestClient_GetAccountObjects(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Account not found"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAccountObjects(&account.ObjectsRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
@@ -414,8 +418,6 @@ func TestClient_GetAccountObjects(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -443,36 +445,30 @@ func TestClient_GetXrpBalance(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Account not found"}},
-			expected:       "",
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetXrpBalance("rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn")
 
@@ -489,8 +485,6 @@ func TestClient_GetXrpBalance(t *testing.T) {
 			if tt.expected != result {
 				t.Errorf("Expected %s, but got %s", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -533,36 +527,32 @@ func TestClient_GetAccountLines(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Account not found"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAccountLines(&account.LinesRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
@@ -581,8 +571,6 @@ func TestClient_GetAccountLines(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -652,36 +640,32 @@ func TestClient_GetGatewayBalances(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "actNotFound"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetGatewayBalances(&account.GatewayBalancesRequest{
 				Account: "rMwjYedjc7qqtKYVLiAccJSmCwih4LnE2q",
@@ -700,8 +684,6 @@ func TestClient_GetGatewayBalances(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -726,36 +708,30 @@ func TestClient_GetLedgerIndex(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Server error"}},
-			expected:       common.LedgerIndex(0),
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetLedgerIndex()
 
@@ -772,8 +748,6 @@ func TestClient_GetLedgerIndex(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -823,36 +797,32 @@ func TestClient_GetAccountNFTs(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Account not found"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAccountNFTs(&account.NFTsRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
@@ -871,8 +841,6 @@ func TestClient_GetAccountNFTs(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -904,36 +872,32 @@ func TestClient_GetAccountCurrencies(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Account not found"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAccountCurrencies(&account.CurrenciesRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
@@ -952,8 +916,6 @@ func TestClient_GetAccountCurrencies(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1005,36 +967,32 @@ func TestClient_GetAccountOffers(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Account not found"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAccountOffers(&account.OffersRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
@@ -1053,8 +1011,6 @@ func TestClient_GetAccountOffers(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1108,36 +1064,32 @@ func TestClient_GetAccountTransactions(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Account not found"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAccountTransactions(&account.TransactionsRequest{
 				Account: "rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn",
@@ -1156,8 +1108,6 @@ func TestClient_GetAccountTransactions(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1185,36 +1135,32 @@ func TestClient_GetChannelVerify(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Server error"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetChannelVerify(&channel.VerifyRequest{})
 
@@ -1231,8 +1177,6 @@ func TestClient_GetChannelVerify(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1260,36 +1204,32 @@ func TestClient_GetClosedLedger(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Server error"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetClosedLedger()
 
@@ -1306,8 +1246,6 @@ func TestClient_GetClosedLedger(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1333,36 +1271,32 @@ func TestClient_GetCurrentLedger(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Server error"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetCurrentLedger()
 
@@ -1379,8 +1313,6 @@ func TestClient_GetCurrentLedger(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1422,36 +1354,32 @@ func TestClient_GetLedgerData(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Server error"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetLedgerData(&ledgerqueries.DataRequest{})
 
@@ -1468,8 +1396,6 @@ func TestClient_GetLedgerData(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1487,7 +1413,7 @@ func TestClient_GetLedger(t *testing.T) {
 				"id": 1,
 				"result": map[string]any{
 					"ledger": map[string]any{
-						"ledger_index":          14380380,
+						"ledger_index":          uint32(14380380),
 						"total_coins":           "99999999999999997",
 						"parent_hash":           "ABC123",
 						"transaction_hash":      "DEF456",
@@ -1517,36 +1443,32 @@ func TestClient_GetLedger(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Server error"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetLedger(&ledgerqueries.Request{})
 
@@ -1563,8 +1485,6 @@ func TestClient_GetLedger(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1608,41 +1528,32 @@ func TestClient_GetNFTBuyOffers(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
 			name: "error response",
 			serverMessages: []map[string]any{
 				{
-					"id":    2,
+					"id":    1,
 					"error": "incorrect id",
 				},
 			},
 			expected:    nil,
-			expectedErr: errors.New("incorrect id"),
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetNFTBuyOffers(&nft.NFTokenBuyOffersRequest{})
 
@@ -1659,8 +1570,6 @@ func TestClient_GetNFTBuyOffers(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1704,41 +1613,32 @@ func TestClient_GetNFTSellOffers(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
 			name: "error response",
 			serverMessages: []map[string]any{
 				{
-					"id":    2,
+					"id":    1,
 					"error": "incorrect id",
 				},
 			},
 			expected:    nil,
-			expectedErr: errors.New("incorrect id"),
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetNFTSellOffers(&nft.NFTokenSellOffersRequest{})
 
@@ -1755,8 +1655,6 @@ func TestClient_GetNFTSellOffers(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1806,41 +1704,32 @@ func TestClient_GetBookOffers(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
 			name: "error response",
 			serverMessages: []map[string]any{
 				{
-					"id":    2,
+					"id":    1,
 					"error": "incorrect id",
 				},
 			},
 			expected:    nil,
-			expectedErr: errors.New("incorrect id"),
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetBookOffers(&path.BookOffersRequest{})
 
@@ -1857,8 +1746,6 @@ func TestClient_GetBookOffers(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -1894,36 +1781,32 @@ func TestClient_GetDepositAuthorized(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Error response",
-			serverMessages: []map[string]any{{"error": "Server error"}},
-			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			name: "invalid id - timeout",
+			serverMessages: []map[string]any{
+				{
+					"id": 2,
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expected:    nil,
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetDepositAuthorized(&path.DepositAuthorizedRequest{})
 
@@ -1940,8 +1823,6 @@ func TestClient_GetDepositAuthorized(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2001,36 +1882,23 @@ func TestClient_FindPathCreate(t *testing.T) {
 			expectedErr: nil,
 		},
 		{
-			name:           "Invalid ID",
+			name:           "error response",
+			serverMessages: []map[string]any{{"id": 1, "error": "incorrect id"}},
+			expected:       nil,
+			expectedErr:    ErrIncorrectID,
+		},
+		{
+			name:           "invalid id timeout",
 			serverMessages: []map[string]any{{"id": 2, "result": map[string]any{}}},
 			expected:       nil,
-			expectedErr:    errors.New("incorrect id"),
+			expectedErr:    ErrRequestTimedOut,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.FindPathCreate(&path.FindCreateRequest{})
 
@@ -2047,8 +1915,6 @@ func TestClient_FindPathCreate(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2096,33 +1962,24 @@ func TestClient_FindPathClose(t *testing.T) {
 				},
 			},
 			expected:    nil,
-			expectedErr: errors.New("incorrect id"),
+			expectedErr: ErrRequestTimedOut,
+		},
+		{
+			name: "error response",
+			serverMessages: []map[string]any{
+				{
+					"id":    1,
+					"error": "incorrect id",
+				},
+			},
+			expectedErr: ErrIncorrectID,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.FindPathClose(&path.FindCloseRequest{})
 
@@ -2139,8 +1996,6 @@ func TestClient_FindPathClose(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2208,27 +2063,8 @@ func TestClient_FindPathStatus(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.FindPathStatus(&path.FindStatusRequest{})
 
@@ -2245,8 +2081,6 @@ func TestClient_FindPathStatus(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2306,27 +2140,8 @@ func TestClient_GetRipplePathFind(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetRipplePathFind(&path.RipplePathFindRequest{})
 
@@ -2343,8 +2158,6 @@ func TestClient_GetRipplePathFind(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2403,27 +2216,8 @@ func TestClient_GetAllFeatures(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAllFeatures(&server.FeatureAllRequest{})
 
@@ -2440,8 +2234,6 @@ func TestClient_GetAllFeatures(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2495,27 +2287,8 @@ func TestClient_GetFeature(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetFeature(&server.FeatureOneRequest{Feature: "testFeature"})
 
@@ -2532,8 +2305,6 @@ func TestClient_GetFeature(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2610,27 +2381,8 @@ func TestClient_GetFee(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetFee(&server.FeeRequest{})
 
@@ -2647,8 +2399,6 @@ func TestClient_GetFee(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2708,27 +2458,8 @@ func TestClient_GetManifest(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetManifest(&server.ManifestRequest{})
 
@@ -2745,8 +2476,6 @@ func TestClient_GetManifest(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2823,27 +2552,8 @@ func TestClient_GetServerState(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetServerState(&server.StateRequest{})
 
@@ -2860,8 +2570,6 @@ func TestClient_GetServerState(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2907,27 +2615,8 @@ func TestClient_GetAggregatePrice(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetAggregatePrice(&oracle.GetAggregatePriceRequest{})
 
@@ -2944,8 +2633,6 @@ func TestClient_GetAggregatePrice(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -2988,27 +2675,8 @@ func TestClient_Ping(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.Ping(&utility.PingRequest{})
 
@@ -3025,8 +2693,6 @@ func TestClient_Ping(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
@@ -3066,27 +2732,8 @@ func TestClient_GetRandom(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ws := &testutil.MockWebSocketServer{Msgs: tt.serverMessages}
-			s := ws.TestWebSocketServer(func(c *websocket.Conn) {
-				for _, m := range tt.serverMessages {
-					err := c.WriteJSON(m)
-					if err != nil {
-						t.Errorf("error writing message: %v", err)
-					}
-				}
-			})
-			defer s.Close()
-
-			url, _ := testutil.ConvertHTTPToWS(s.URL)
-			cl := &Client{
-				cfg: ClientConfig{
-					host: url,
-				},
-			}
-
-			if err := cl.Connect(); err != nil {
-				t.Errorf("Error connecting to server: %v", err)
-			}
+			cl, cleanup := setupTestClient(t, tt.serverMessages)
+			defer cleanup()
 
 			result, err := cl.GetRandom(&utility.RandomRequest{})
 
@@ -3103,8 +2750,6 @@ func TestClient_GetRandom(t *testing.T) {
 			if !reflect.DeepEqual(tt.expected, result) {
 				t.Errorf("Expected %+v, but got %+v", tt.expected, result)
 			}
-
-			cl.Disconnect()
 		})
 	}
 }
