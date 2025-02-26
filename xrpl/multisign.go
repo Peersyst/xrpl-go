@@ -2,7 +2,6 @@ package xrpl
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 
 	binarycodec "github.com/Peersyst/xrpl-go/binary-codec"
@@ -41,7 +40,6 @@ func Multisign(blobs ...string) (string, error) {
 
 	blob, err := binarycodec.Encode(tx)
 	if err != nil {
-		fmt.Println("err", err)
 		return "", err
 	}
 

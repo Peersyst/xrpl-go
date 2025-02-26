@@ -55,6 +55,34 @@ test-ci:
 	@go test $(EXCLUDED_TEST_PACKAGES) -parallel $(PARALLEL_TESTS) -timeout $(TEST_TIMEOUT)
 	@echo "Tests complete!"
 
+run-localnet-linux/arm64:
+	@echo "Running localnet..."
+	@docker run -p 6006:6006 --rm -it -d --platform linux/arm64 --name rippled_standalone --volume $(PWD)/.ci-config:/etc/opt/ripple/ --entrypoint bash rippleci/rippled:2.3.0 -c 'rippled -a'
+	@echo "Localnet running!"
+
+run-localnet-linux/amd64:
+	@echo "Running localnet..."
+	@docker run -p 6006:6006 --rm -it -d --platform linux/amd64 --name rippled_standalone --volume $(PWD)/.ci-config:/etc/opt/ripple/ --entrypoint bash rippleci/rippled:2.3.0 -c 'rippled -a'
+	@echo "Localnet running!"
+
+test-integration-localnet:
+	@echo "Running Go tests for integration package..."
+	@go clean -testcache
+	@INTEGRATION=localnet go test $(EXCLUDED_TEST_PACKAGES) -parallel $(PARALLEL_TESTS) -timeout $(TEST_TIMEOUT)
+	@echo "Tests complete!"
+
+test-integration-devnet:
+	@echo "Running Go tests for integration package..."
+	@go clean -testcache
+	@INTEGRATION=devnet go test $(EXCLUDED_TEST_PACKAGES) -parallel $(PARALLEL_TESTS) -timeout $(TEST_TIMEOUT)
+	@echo "Tests complete!"
+
+test-integration-testnet:
+	@echo "Running Go tests for integration package..."
+	@go clean -testcache
+	@INTEGRATION=testnet go test $(EXCLUDED_TEST_PACKAGES) -parallel $(PARALLEL_TESTS) -timeout $(TEST_TIMEOUT)
+	@echo "Tests complete!"
+
 coverage-unit:
 	@echo "Generating unit test coverage report..."
 	@go test -coverprofile=coverage.out $(EXCLUDED_COVERAGE_PACKAGES)
