@@ -1,1 +1,0 @@
-* @Peersyst/xrpl-go
