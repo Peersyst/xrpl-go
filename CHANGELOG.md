@@ -64,6 +64,14 @@ Support for the XLS-77d (deep freeze)
 
 ## [v0.1.3]
 
+### Added
+
+#### xrpl
+
+- Added `LedgerEntry` query.
+
+## [v0.1.3]
+
 ### Added
 
 - Added `APIVersion` field to the `Client` struct.
