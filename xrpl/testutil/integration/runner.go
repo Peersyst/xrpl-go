@@ -74,7 +74,7 @@ func (r *Runner) TestTransaction(flatTx *transaction.FlatTransaction, signer *wa
 	}
 
 	require.NoError(r.t, err)
-	require.Equal(r.t, tx.EngineResult, expectedEngineResult)
+	require.Equal(r.t, expectedEngineResult, tx.EngineResult)
 	require.Equal(r.t, hash, tx.Tx["hash"].(string))
 
 	return tx, nil
@@ -89,7 +89,7 @@ func (r *Runner) TestMultisigTransaction(blob string, expectedEngineResult strin
 	}
 
 	require.NoError(r.t, err)
-	require.Equal(r.t, tx.EngineResult, expectedEngineResult)
+	require.Equal(r.t, expectedEngineResult, tx.EngineResult)
 
 	return tx, nil
 }

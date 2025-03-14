@@ -2,6 +2,7 @@ package transaction
 
 type TxType string
 
+// nolint // otherwise issues with the Credential transaction types
 const (
 	AccountSetTx                        TxType = "AccountSet"
 	AccountDeleteTx                     TxType = "AccountDelete"
@@ -15,6 +16,9 @@ const (
 	CheckCashTx                         TxType = "CheckCash"
 	CheckCreateTx                       TxType = "CheckCreate"
 	ClawbackTx                          TxType = "Clawback"
+	CredentialAcceptTx                  TxType = "CredentialAccept"
+	CredentialCreateTx                  TxType = "CredentialCreate"
+	CredentialDeleteTx                  TxType = "CredentialDelete"
 	DepositPreauthTx                    TxType = "DepositPreauth"
 	DIDDeleteTx                         TxType = "DIDDelete"
 	DIDSetTx                            TxType = "DIDSet"

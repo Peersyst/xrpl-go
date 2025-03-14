@@ -30,34 +30,35 @@
     "Metadata": 10004
   },
   "LEDGER_ENTRY_TYPES": {
-    "Invalid": -1,
     "AccountRoot": 97,
-    "DirectoryNode": 100,
-    "RippleState": 114,
-    "Ticket": 84,
-    "SignerList": 83,
-    "Offer": 111,
-    "Bridge": 105,
-    "LedgerHashes": 104,
     "Amendments": 102,
-    "XChainOwnedClaimID": 113,
-    "XChainOwnedCreateAccountClaimID": 116,
-    "FeeSettings": 115,
-    "Escrow": 117,
-    "PayChannel": 120,
-    "Check": 67,
-    "DepositPreauth": 112,
-    "NegativeUNL": 78,
-    "NFTokenPage": 80,
-    "NFTokenOffer": 55,
     "AMM": 121,
-    "DID": 73,
-    "Oracle": 128,
     "Any": -3,
+    "Bridge": 105,
+    "Check": 67,
     "Child": -2,
-    "Nickname": 110,
     "Contract": 99,
-    "GeneratorMap": 103
+    "Credential": 129,
+    "DepositPreauth": 112,
+    "DID": 73,
+    "DirectoryNode": 100,
+    "Escrow": 117,
+    "FeeSettings": 115,
+    "GeneratorMap": 103,
+    "Invalid": -1,
+    "LedgerHashes": 104,
+    "NegativeUNL": 78,
+    "NFTokenOffer": 55,
+    "NFTokenPage": 80,
+    "Nickname": 110,
+    "Offer": 111,
+    "Oracle": 128,
+    "PayChannel": 120,
+    "RippleState": 114,
+    "SignerList": 83,
+    "Ticket": 84,
+    "XChainOwnedClaimID": 113,
+    "XChainOwnedCreateAccountClaimID": 116
   },
   "FIELDS": [
     [
@@ -1071,6 +1072,16 @@
       }
     ],
     [
+      "SubjectNode",
+      {
+        "nth": 28,
+        "isVLEncoded": false,
+        "isSerialized": true,
+        "isSigningField": true,
+        "type": "UInt64"
+      }
+    ],
+    [
       "EmailHash",
       {
         "nth": 1,
@@ -1981,6 +1992,16 @@
       }
     ],
     [
+      "CredentialType",
+      {
+        "nth": 31,
+        "isVLEncoded": true,
+        "isSerialized": true,
+        "isSigningField": true,
+        "type": "Blob"
+      }
+    ],
+    [
       "Account",
       {
         "nth": 1,
@@ -2181,6 +2202,16 @@
       }
     ],
     [
+      "CredentialIDs",
+      {
+        "nth": 5,
+        "isVLEncoded": true,
+        "isSerialized": true,
+        "isSigningField": true,
+        "type": "Vector256"
+      }
+    ],
+    [
       "Paths",
       {
         "nth": 1,
@@ -2258,6 +2289,16 @@
         "isSerialized": true,
         "isSigningField": true,
         "type": "XChainBridge"
+      }
+    ],
+    [
+      "Subject",
+      {
+        "nth": 24,
+        "isVLEncoded": true,
+        "isSerialized": true,
+        "isSigningField": true,
+        "type": "AccountID"
       }
     ],
     [
@@ -2551,6 +2592,16 @@
       }
     ],
     [
+      "Credential",
+      {
+        "nth": 33,
+        "isVLEncoded": false,
+        "isSerialized": true,
+        "isSigningField": true,
+        "type": "STObject"
+      }
+    ],
+    [
       "Signers",
       {
         "nth": 3,
@@ -2739,6 +2790,36 @@
         "isSigningField": true,
         "type": "STArray"
       }
+    ],
+    [
+      "AuthorizeCredentials",
+      {
+        "nth": 26,
+        "isVLEncoded": false,
+        "isSerialized": true,
+        "isSigningField": true,
+        "type": "STArray"
+      }
+    ],
+    [
+      "UnauthorizeCredentials",
+      {
+        "nth": 27,
+        "isVLEncoded": false,
+        "isSerialized": true,
+        "isSigningField": true,
+        "type": "STArray"
+      }
+    ],
+    [
+      "AcceptedCredentials",
+      {
+        "nth": 28,
+        "isVLEncoded": false,
+        "isSerialized": true,
+        "isSigningField": true,
+        "type": "STArray"
+      }
     ]
   ],
   "TRANSACTION_RESULTS": {
@@ -2847,6 +2928,7 @@
 
     "tesSUCCESS": 0,
 
+    "tecBAD_CREDENTIALS": 193,
     "tecCLAIM": 100,
     "tecPATH_PARTIAL": 101,
     "tecUNFUNDED_ADD": 102,
@@ -2926,56 +3008,59 @@
     "tecARRAY_TOO_LARGE": 191
   },
   "TRANSACTION_TYPES": {
-    "Invalid": -1,
-    "Payment": 0,
+    "AccountDelete": 21,
+    "AccountSet": 3,
+    "AMMBid": 39,
+    "AMMCreate": 35,
+    "AMMDelete": 40,
+    "AMMDeposit": 36,
+    "AMMVote": 38,
+    "AMMWithdraw": 37,
+    "CheckCancel": 18,
+    "CheckCash": 17,
+    "CheckCreate": 16,
+    "Clawback": 30,
+    "Contract": 9,
+    "CredentialAccept": 59,
+    "CredentialCreate": 58,
+    "CredentialDelete": 60,
+    "DepositPreauth": 19,
+    "DIDDelete": 50,
+    "DIDSet": 49,
+    "EnableAmendment": 100,
+    "EscrowCancel": 4,
     "EscrowCreate": 1,
     "EscrowFinish": 2,
-    "AccountSet": 3,
-    "EscrowCancel": 4,
-    "SetRegularKey": 5,
+    "Invalid": -1,
+    "NFTokenAcceptOffer": 29,
+    "NFTokenBurn": 26,
+    "NFTokenCancelOffer": 28,
+    "NFTokenCreateOffer": 27,
+    "NFTokenMint": 25,
     "NickNameSet": 6,
-    "OfferCreate": 7,
     "OfferCancel": 8,
-    "Contract": 9,
-    "TicketCreate": 10,
-    "TicketCancel": 11,
-    "SignerListSet": 12,
+    "OfferCreate": 7,
+    "OracleDelete": 52,
+    "OracleSet": 51,
+    "Payment": 0,
+    "PaymentChannelClaim": 15,
     "PaymentChannelCreate": 13,
     "PaymentChannelFund": 14,
-    "PaymentChannelClaim": 15,
-    "CheckCreate": 16,
-    "CheckCash": 17,
-    "CheckCancel": 18,
-    "DepositPreauth": 19,
-    "TrustSet": 20,
-    "AccountDelete": 21,
-    "SetHook": 22,
-    "NFTokenMint": 25,
-    "NFTokenBurn": 26,
-    "NFTokenCreateOffer": 27,
-    "NFTokenCancelOffer": 28,
-    "NFTokenAcceptOffer": 29,
-    "Clawback": 30,
-    "AMMCreate": 35,
-    "AMMDeposit": 36,
-    "AMMWithdraw": 37,
-    "AMMVote": 38,
-    "AMMBid": 39,
-    "AMMDelete": 40,
-    "XChainCreateClaimID": 41,
-    "XChainCommit": 42,
-    "XChainClaim": 43,
-    "XChainAccountCreateCommit": 44,
-    "XChainAddClaimAttestation": 45,
-    "XChainAddAccountCreateAttestation": 46,
-    "XChainModifyBridge": 47,
-    "XChainCreateBridge": 48,
-    "DIDSet": 49,
-    "DIDDelete": 50,
-    "OracleSet": 51,
-    "OracleDelete": 52,
-    "EnableAmendment": 100,
     "SetFee": 101,
-    "UNLModify": 102
+    "SetHook": 22,
+    "SetRegularKey": 5,
+    "SignerListSet": 12,
+    "TicketCancel": 11,
+    "TicketCreate": 10,
+    "TrustSet": 20,
+    "UNLModify": 102,
+    "XChainAccountCreateCommit": 44,
+    "XChainAddAccountCreateAttestation": 46,
+    "XChainAddClaimAttestation": 45,
+    "XChainClaim": 43,
+    "XChainCommit": 42,
+    "XChainCreateBridge": 48,
+    "XChainCreateClaimID": 41,
+    "XChainModifyBridge": 47
   }
 }

@@ -13,6 +13,7 @@ const (
 	AMMEntry                             EntryType = "AMM"
 	BridgeEntry                          EntryType = "Bridge"
 	CheckEntry                           EntryType = "Check"
+	CredentialEntry                      EntryType = "Credential"
 	DepositPreauthObjEntry               EntryType = "DepositPreauth"
 	DIDEntry                             EntryType = "DID"
 	DirectoryNodeEntry                   EntryType = "DirectoryNode"
@@ -54,6 +55,8 @@ func EmptyLedgerObject(t string) (Object, error) {
 		return &Bridge{}, nil
 	case CheckEntry:
 		return &Check{}, nil
+	case CredentialEntry:
+		return &Credential{}, nil
 	case DepositPreauthObjEntry:
 		return &DepositPreauthObj{}, nil
 	case DIDEntry:
@@ -113,6 +116,8 @@ func UnmarshalLedgerObject(data []byte) (Object, error) {
 		o = &Bridge{}
 	case CheckEntry:
 		o = &Check{}
+	case CredentialEntry:
+		o = &Credential{}
 	case DepositPreauthObjEntry:
 		o = &DepositPreauthObj{}
 	case DIDEntry:
@@ -146,6 +151,7 @@ func UnmarshalLedgerObject(data []byte) (Object, error) {
 	case XChainOwnedClaimIDEntry:
 		o = &XChainOwnedClaimID{}
 	case XChainOwnedCreateAccountClaimIDEntry:
+		o = &XChainOwnedCreateAccountClaimID{}
 	default:
 		return nil, fmt.Errorf("unsupported ledger object of type %s", h.LedgerEntryType)
 	}

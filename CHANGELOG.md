@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+#### xrpl
+
+- Added support for all the Credential transaction types:
+  - CredentialCreate
+  - CredentialAccept
+  - CredentialDelete
+
 ### Fixed
 
 #### xrpl
@@ -41,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `WalletLocator`
   - `WalletSize`
   - `TransferRate`
+
 - Adds more tests for setting some `asf` flags in `AccountSet`.
 - Fixed `Transaction` field in `account_tx` response.
 - Fixed `Ledger` field in `ledger` response. LedgerIndex is now an uint32 instead of a string.
