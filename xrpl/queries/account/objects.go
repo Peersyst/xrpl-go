@@ -11,6 +11,7 @@ type ObjectType string
 
 const (
 	CheckObject          ObjectType = "check"
+	CredentialObject     ObjectType = "credential"
 	DepositPreauthObject ObjectType = "deposit_preauth"
 	EscrowObject         ObjectType = "escrow"
 	NFTOfferObject       ObjectType = "nft_offer"

@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+
+### Added
+
+#### xrpl
+
+- Added support for the Credential fields in the following transaction types:
+  - Payment
+  - DepositPreauth
+  - AccountDelete
+  - PaymentChannelClaim
+  - EscrowFinish
+- Added the `credential` ledger entry for the `account_objects` request.
+
 ## [v0.1.8]
 
 ### Added

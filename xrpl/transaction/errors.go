@@ -13,6 +13,8 @@ var (
 	ErrInvalidCheckID = errors.New("invalid CheckID, must be a valid 64-character hexadecimal string")
 	// ErrInvalidCredentialType is returned when the CredentialType is not a valid hexadecimal string between 1 and 64 bytes.
 	ErrInvalidCredentialType = errors.New("invalid credential type, must be a hexadecimal string between 1 and 64 bytes")
+	// ErrInvalidCredentialIDs is returned when the CredentialIDs field is empty or not a valid hexadecimal string array.
+	ErrInvalidCredentialIDs = errors.New("invalid credential IDs, must be a valid hexadecimal string array")
 	// ErrInvalidDestination is returned when the Destination field does not meet XRPL address standards.
 	ErrInvalidDestination = errors.New("invalid xrpl address for Destination")
 	// ErrInvalidIssuer is returned when the issuer address is an invalid xrpl address.

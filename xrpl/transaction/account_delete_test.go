@@ -41,11 +41,27 @@ func TestAccountDelete_Flatten(t *testing.T) {
 				"DestinationTag":  uint32(13),
 			},
 		},
+		{
+			name: "pass - with credential IDs",
+			tx: &AccountDelete{
+				BaseTx: BaseTx{
+					Account: types.Address("rWYkbWkCeg8dP6rXALnjgZSjjLyih5NXm"),
+				},
+				Destination:   types.Address("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe"),
+				CredentialIDs: types.CredentialIDs{"1234567890abcdef"},
+			},
+			expected: FlatTransaction{
+				"Account":         "rWYkbWkCeg8dP6rXALnjgZSjjLyih5NXm",
+				"TransactionType": AccountDeleteTx.String(),
+				"Destination":     "rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe",
+				"CredentialIDs":   []string{"1234567890abcdef"},
+			},
+		},
 	}
 
 	for _, testcase := range testcases {
 		t.Run(testcase.name, func(t *testing.T) {
-			require.Equal(t, testcase.tx.Flatten(), testcase.expected)
+			require.Equal(t, testcase.expected, testcase.tx.Flatten())
 		})
 	}
 }
@@ -78,6 +94,18 @@ func TestAccountDelete_Validate(t *testing.T) {
 			},
 			valid: false,
 			err:   ErrInvalidDestinationAddress,
+		},
+		{
+			name: "fail - invalid CredentialIDs",
+			tx: &AccountDelete{
+				BaseTx: BaseTx{
+					Account:         types.Address("rWYkbWkCeg8dP6rXALnjgZSjjLyih5NXm"),
+					TransactionType: AccountDeleteTx,
+				},
+				CredentialIDs: types.CredentialIDs{"invalid"},
+			},
+			valid: false,
+			err:   ErrInvalidCredentialIDs,
 		},
 		{
 			name: "pass - basic",
