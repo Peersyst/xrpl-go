@@ -6,6 +6,7 @@ type TxType string
 const (
 	AccountSetTx                        TxType = "AccountSet"
 	AccountDeleteTx                     TxType = "AccountDelete"
+	AMMClawbackTx						TxType = "AMMClawback"
 	AMMBidTx                            TxType = "AMMBid"
 	AMMCreateTx                         TxType = "AMMCreate"
 	AMMDeleteTx                         TxType = "AMMDelete"
