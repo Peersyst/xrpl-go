@@ -44,8 +44,6 @@ var (
 type AMMClawback struct {
 	BaseTx
 
-	// The issuer of the asset being clawed back. Only the issuer can submit this transaction.
-	Account types.Address
 	// Holder is the account holding the asset to be clawed back.
 	Holder types.Address
 	// The definition for one of the assets in the AMM's pool. In JSON, this is an object with currency and issuer fields (omit issuer for XRP).
@@ -54,7 +52,7 @@ type AMMClawback struct {
 	Asset2 ledger.Asset
 	// Amount is the maximum amount to claw back. It is optional.
 	// If omitted, or if the value exceeds the holder's balance, all tokens will be clawed back.
-	Amount *types.IssuedCurrencyAmount `json:",omitempty"`
+	Amount types.IssuedCurrencyAmount `json:",omitempty"`
 }
 
 const (
@@ -78,9 +76,6 @@ func (*AMMClawback) TxType() TxType {
 func (a *AMMClawback) Flatten() FlatTransaction {
 	flattened := a.BaseTx.Flatten()
 	flattened["TransactionType"] = "AMMClawback"
-
-
-	flattened["Account"] = a.Account.String()
 
 	flattened["Holder"] = a.Holder.String()
 
@@ -120,18 +115,18 @@ func (a *AMMClawback) Validate() (bool, error) {
 	if ok, err := IsAsset(a.Asset2); !ok {
 		return false, err
 	}
-	if ok, err := IsIssuedCurrency(a.Amount); !ok {
-		return false, err
-	}
 
-	if a.Amount != nil {
+	if !a.Amount.IsZero() {
+		if ok, err := IsIssuedCurrency(a.Amount); !ok {
+			return false, err
+		}
+
 		if a.Amount.Currency != a.Asset.Currency {
 			return false, ErrAmountCurrencyMismatch
 		}
 		if a.Amount.Issuer != a.Asset.Issuer {
 			return false, ErrAmountIssuerMismatch
 		}
-		
 	}
 
 	return true, nil
