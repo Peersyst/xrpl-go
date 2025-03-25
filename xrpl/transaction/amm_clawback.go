@@ -49,7 +49,7 @@ type AMMClawback struct {
 	Asset2 ledger.Asset
 	// Amount is the maximum amount to claw back. It is optional.
 	// If omitted, or if the value exceeds the holder's balance, all tokens will be clawed back.
-	Amount types.IssuedCurrencyAmount `json:",omitempty"`
+	Amount *types.IssuedCurrencyAmount `json:",omitempty"`
 }
 
 const (
