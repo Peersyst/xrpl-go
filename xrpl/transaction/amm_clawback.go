@@ -1,14 +1,18 @@
 package transaction
 
 import (
+	"errors"
+
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
 	ledger "github.com/Peersyst/xrpl-go/xrpl/ledger-entry-types"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
-
 var (
-	// TODO ERRors
+	ErrHolderMatchesIssuer    = errors.New("AMMClawback: Holder and Asset.issuer must be distinct")
+	ErrAccountMismatch        = errors.New("AMMClawback: Account must be the same as Asset.issuer")
+	ErrAmountCurrencyMismatch = errors.New("AMMClawback: Amount.currency must match Asset.currency")
+	ErrAmountIssuerMismatch   = errors.New("AMMClawback: Amount.issuer must match Asset.issuer")
 )
 
 // Claw back tokens from a holder who has deposited your issued tokens into an AMM pool.
@@ -40,6 +44,7 @@ var (
 type AMMClawback struct {
 	BaseTx
 
+	// The issuer of the asset being clawed back. Only the issuer can submit this transaction.
 	Account types.Address
 	// Holder is the account holding the asset to be clawed back.
 	Holder types.Address
@@ -73,13 +78,17 @@ func (*AMMClawback) TxType() TxType {
 func (a *AMMClawback) Flatten() FlatTransaction {
 	flattened := a.BaseTx.Flatten()
 	flattened["TransactionType"] = "AMMClawback"
+
+
+	flattened["Account"] = a.Account.String()
+
 	flattened["Holder"] = a.Holder.String()
 
 	flattened["Asset"] = a.Asset.Flatten()
 
 	flattened["Asset2"] = a.Asset2.Flatten()
 
-	if a.Amount.IsZero() {
+	if !a.Amount.IsZero() {
 		flattened["Amount"] = a.Amount.Flatten()
 	}
 	return flattened
@@ -93,7 +102,15 @@ func (a *AMMClawback) Validate() (bool, error) {
 	}
 
 	if !addresscodec.IsValidAddress(a.Holder.String()) {
-		return false, ErrInvalidDestinationAddress
+		return false, ErrInvalidAccount
+	}
+
+	if a.Holder == a.Asset.Issuer {
+		return false, ErrHolderMatchesIssuer
+	}
+
+	if a.Account != a.Asset.Issuer {
+		return false, ErrAccountMismatch
 	}
 
 	if ok, err := IsAsset(a.Asset); !ok {
@@ -107,6 +124,15 @@ func (a *AMMClawback) Validate() (bool, error) {
 		return false, err
 	}
 
+	if a.Amount != nil {
+		if a.Amount.Currency != a.Asset.Currency {
+			return false, ErrAmountCurrencyMismatch
+		}
+		if a.Amount.Issuer != a.Asset.Issuer {
+			return false, ErrAmountIssuerMismatch
+		}
+		
+	}
 
 	return true, nil
 }
