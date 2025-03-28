@@ -24,6 +24,10 @@ import (
 // ```
 type AccountDelete struct {
 	BaseTx
+	// Set of Credentials to authorize a deposit made by this transaction.
+	// Each member of the array must be the ledger entry ID of a Credential entry in the ledger.
+	// For details see https://xrpl.org/docs/references/protocol/transactions/types/payment#credential-ids
+	CredentialIDs types.CredentialIDs `json:",omitempty"`
 	// The address of an account to receive any leftover XRP after deleting the sending account.
 	// Must be a funded account in the ledger, and must not be the sending account.
 	Destination types.Address
@@ -42,6 +46,10 @@ func (s *AccountDelete) Flatten() FlatTransaction {
 	flatTx := s.BaseTx.Flatten()
 	flatTx["TransactionType"] = s.TxType().String()
 
+	if len(s.CredentialIDs) > 0 {
+		flatTx["CredentialIDs"] = s.CredentialIDs.Flatten()
+	}
+
 	if s.Destination != "" {
 		flatTx["Destination"] = s.Destination.String()
 	}
@@ -57,6 +65,10 @@ func (s *AccountDelete) Validate() (bool, error) {
 	_, err := s.BaseTx.Validate()
 	if err != nil {
 		return false, err
+	}
+
+	if s.CredentialIDs != nil && !s.CredentialIDs.IsValid() {
+		return false, ErrInvalidCredentialIDs
 	}
 
 	if !addresscodec.IsValidAddress(s.Destination.String()) {

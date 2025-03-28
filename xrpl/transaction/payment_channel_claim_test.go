@@ -114,11 +114,12 @@ func TestPaymentChannelClaim_Flatten(t *testing.T) {
 					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 					TransactionType: PaymentChannelClaimTx,
 				},
-				Channel:   types.Hash256("ABC123"),
-				Balance:   types.XRPCurrencyAmount(1000),
-				Amount:    types.XRPCurrencyAmount(2000),
-				Signature: "ABCDEF",
-				PublicKey: "123456",
+				Channel:       types.Hash256("ABC123"),
+				Balance:       types.XRPCurrencyAmount(1000),
+				Amount:        types.XRPCurrencyAmount(2000),
+				Signature:     "ABCDEF",
+				PublicKey:     "123456",
+				CredentialIDs: types.CredentialIDs{"1234567890abcdef"},
 			},
 			expected: `{
 				"Account": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
@@ -127,7 +128,8 @@ func TestPaymentChannelClaim_Flatten(t *testing.T) {
 				"Balance": "1000",
 				"Amount": "2000",
 				"Signature": "ABCDEF",
-				"PublicKey": "123456"
+				"PublicKey": "123456",
+				"CredentialIDs": ["1234567890abcdef"]
 			}`,
 		},
 	}
@@ -155,10 +157,11 @@ func TestPaymentChannelClaim_Validate(t *testing.T) {
 					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 					TransactionType: PaymentChannelClaimTx,
 				},
-				Balance:   types.XRPCurrencyAmount(1000),
-				Channel:   "ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC1",
-				Signature: "ABCDEF",
-				PublicKey: "ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC1",
+				Balance:       types.XRPCurrencyAmount(1000),
+				Channel:       "ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC1",
+				Signature:     "ABCDEF",
+				PublicKey:     "ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC1",
+				CredentialIDs: types.CredentialIDs{"1234567890abcdef"},
 			},
 			wantValid: true,
 			wantErr:   false,
@@ -229,6 +232,20 @@ func TestPaymentChannelClaim_Validate(t *testing.T) {
 			wantValid:   false,
 			wantErr:     true,
 			expectedErr: ErrInvalidHexPublicKey,
+		},
+		{
+			name: "fail - invalid CredentialIDs",
+			claim: PaymentChannelClaim{
+				BaseTx: BaseTx{
+					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+					TransactionType: PaymentChannelClaimTx,
+				},
+				Channel:       "ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC123ABC1",
+				CredentialIDs: types.CredentialIDs{"invalid"},
+			},
+			wantValid:   false,
+			wantErr:     true,
+			expectedErr: ErrInvalidCredentialIDs,
 		},
 	}
 

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/Peersyst/xrpl-go/xrpl/testutil"
+	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,6 +30,7 @@ func TestEscrowFinish_Flatten(t *testing.T) {
 				OfferSequence: 7,
 				Condition:     "A0258020E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855810100",
 				Fulfillment:   "A0028000",
+				CredentialIDs: types.CredentialIDs{"1234567890abcdef"},
 			},
 			expected: `{
 				"TransactionType": "EscrowFinish",
@@ -36,7 +38,8 @@ func TestEscrowFinish_Flatten(t *testing.T) {
 				"Owner": "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 				"OfferSequence":   7,
 				"Condition": "A0258020E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855810100",
-				"Fulfillment": "A0028000"
+				"Fulfillment": "A0028000",
+				"CredentialIDs": ["1234567890abcdef"]
 			}`,
 		},
 		{
@@ -134,6 +137,20 @@ func TestEscrowFinish_Validate(t *testing.T) {
 					TransactionType: EscrowFinishTx,
 				},
 				Owner: "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+			},
+			wantValid: false,
+			wantErr:   true,
+		},
+		{
+			name: "fail - invalid CredentialIDs",
+			entry: &EscrowFinish{
+				BaseTx: BaseTx{
+					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+					TransactionType: EscrowFinishTx,
+				},
+				Owner:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+				OfferSequence: 7,
+				CredentialIDs: types.CredentialIDs{"invalid"},
 			},
 			wantValid: false,
 			wantErr:   true,

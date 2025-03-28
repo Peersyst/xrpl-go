@@ -109,6 +109,7 @@ func TestPayment_Validate(t *testing.T) {
 				},
 				Destination:    "rDgHn3T2P7eNAaoHh43iRudhAUjAHmDgEP",
 				DestinationTag: types.DestinationTag(123),
+				CredentialIDs:  types.CredentialIDs{"0000000000000000000000000000000000000000000000000000000000000000"},
 			},
 			wantValid: true,
 			wantErr:   false,
@@ -407,6 +408,21 @@ func TestPayment_Validate(t *testing.T) {
 			wantErr:     true,
 			expectedErr: ErrPartialPaymentFlagRequired,
 		},
+		{
+			name: "fail - invalid CredentialIDs",
+			payment: Payment{
+				BaseTx: BaseTx{
+					Account:         "r3EeETxLb1JwmN2xWuZZdKrrEkqw7qgeYf",
+					TransactionType: PaymentTx,
+				},
+				Amount:        types.XRPCurrencyAmount(1),
+				Destination:   "ra2ASKcVifxurMgUpTnb59mGDAf7JSVyzh",
+				CredentialIDs: types.CredentialIDs{"invalid"},
+			},
+			wantValid:   false,
+			wantErr:     true,
+			expectedErr: ErrInvalidCredentialIDs,
+		},
 	}
 
 	for _, tt := range tests {
@@ -478,6 +494,10 @@ func TestPayment_Flatten(t *testing.T) {
 					Issuer:   "r3dFAtNXwRFCyBGz5BcWhMj9a4cm7qkzzn",
 					Value:    "3",
 				},
+				CredentialIDs: types.CredentialIDs{
+					"0000000000000000000000000000000000000000000000000000000000000000",
+					"6D795F63726564656E7469616C",
+				},
 			},
 			expected: FlatTransaction{
 				"Account":         "rJwjoukM94WwKwxM428V7b9npHjpkSvif",
@@ -520,6 +540,10 @@ func TestPayment_Flatten(t *testing.T) {
 					"currency": "USD",
 					"issuer":   "r3dFAtNXwRFCyBGz5BcWhMj9a4cm7qkzzn",
 					"value":    "3",
+				},
+				"CredentialIDs": []string{
+					"0000000000000000000000000000000000000000000000000000000000000000",
+					"6D795F63726564656E7469616C",
 				},
 			},
 		},
