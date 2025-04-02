@@ -1,8 +1,19 @@
 package types
 
 import (
+	"errors"
+
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
 	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
+)
+
+var (
+	ErrUnexpectedIssueJSONType = errors.New("unexpected type for Issue JSON")
+	ErrCurrencyFieldMissing    = errors.New("currency field missing")
+	ErrCurrencyFieldNotString  = errors.New("currency field must be a string")
+	ErrFailedToDecodeCurrency  = errors.New("failed to decode currency")
+	ErrIssuerFieldNotString    = errors.New("issuer field must be a string")
+	ErrFailedToDecodeIssuer    = errors.New("failed to decode issuer")
 )
 
 // Issue represents an XRPL Issue, which is essentially an AccountID.
@@ -16,13 +27,58 @@ type Issue struct{}
 // It uses the addresscodec package to decode the classic address.
 // If the input is not a valid classic address, it returns an error.
 func (i *Issue) FromJSON(json any) ([]byte, error) {
-	_, accountID, err := addresscodec.DecodeClassicAddressToAccountID(json.(string))
-
-	if err != nil {
-		return nil, err
+	// Handle classic address string.
+	if s, ok := json.(string); ok {
+		_, accountID, err := addresscodec.DecodeClassicAddressToAccountID(s)
+		if err != nil {
+			return nil, err
+		}
+		return accountID, nil
 	}
 
-	return accountID, nil
+	// Otherwise, expect a map.
+	m, ok := json.(map[string]interface{})
+	if !ok {
+		return nil, ErrUnexpectedIssueJSONType
+	}
+
+	// Extract the currency field.
+	currencyVal, ok := m["currency"]
+	if !ok {
+		return nil, ErrCurrencyFieldMissing
+	}
+	currencyStr, ok := currencyVal.(string)
+	if !ok {
+		return nil, ErrCurrencyFieldNotString
+	}
+
+	// If currency is "XRP", no issuer is needed.
+	if currencyStr == "XRP" {
+		return []byte("XRP"), nil
+	}
+
+	// Use the helper from the Amount type to decode the currency.
+	currencyBytes, err := serializeIssuedCurrencyCode(currencyStr)
+	if err != nil {
+		return nil, ErrFailedToDecodeCurrency
+	}
+
+	// If an issuer is provided, decode it and concatenate.
+	if issuerVal, exists := m["issuer"]; exists {
+		issuerStr, ok := issuerVal.(string)
+		if !ok {
+			return nil, ErrIssuerFieldNotString
+		}
+		_, issuerBytes, err := addresscodec.DecodeClassicAddressToAccountID(issuerStr)
+		if err != nil {
+			return nil, ErrFailedToDecodeIssuer
+		}
+		combined := append(currencyBytes, issuerBytes...)
+		return combined, nil
+	}
+
+	// Return just the currency bytes if no issuer.
+	return currencyBytes, nil
 }
 
 // ToJSON converts an AccountID byte slice back to a classic address string.
