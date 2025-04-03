@@ -3012,6 +3012,7 @@
     "AccountSet": 3,
     "AMMBid": 39,
     "AMMCreate": 35,
+    "AMMClawback": 31,
     "AMMDelete": 40,
     "AMMDeposit": 36,
     "AMMVote": 38,

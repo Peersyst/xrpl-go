@@ -5,6 +5,7 @@ import (
 
 	"github.com/Peersyst/xrpl-go/pkg/crypto"
 	"github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
+	requests "github.com/Peersyst/xrpl-go/xrpl/queries/transactions"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction"
 	"github.com/Peersyst/xrpl-go/xrpl/wallet"
 	"github.com/stretchr/testify/require"
@@ -137,3 +138,31 @@ func (r *Runner) processTransaction(flatTx *transaction.FlatTransaction, signer 
 		attempts++
 	}
 }
+
+func (r *Runner) ProcessTransactionAndWait(flatTx *transaction.FlatTransaction, signer *wallet.Wallet) (*requests.TxResponse, string, error) {
+	attempts := 0
+
+	for {
+		err := r.client.Autofill(flatTx)
+		if err != nil {
+			return nil, "", err
+		}
+
+		blob, hash, err := signer.Sign(*flatTx)
+		if err != nil {
+			return nil, hash, err
+		}
+
+		txResp, err := r.client.SubmitAndWait(blob, true)
+		if err != nil {
+			if attempts < r.config.MaxRetries && err.Error() == "transaction failed to submit with engine result: tefPAST_SEQ" {
+				attempts++
+				continue
+			}
+			return nil, hash, err
+		}
+
+		return txResp, hash, nil
+	}
+}
+
