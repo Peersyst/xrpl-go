@@ -5,6 +5,7 @@ import (
 
 	addresscodec "github.com/Peersyst/xrpl-go/address-codec"
 	"github.com/Peersyst/xrpl-go/binary-codec/types/interfaces"
+	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 )
 
 var (
@@ -65,10 +66,11 @@ func (i *Issue) FromJSON(json any) ([]byte, error) {
 
 	// If an issuer is provided, decode it and concatenate.
 	if issuerVal, exists := m["issuer"]; exists {
-		issuerStr, ok := issuerVal.(string)
+		issuer, ok := issuerVal.(types.Address)
 		if !ok {
 			return nil, ErrIssuerFieldNotString
 		}
+		issuerStr := issuer.String()
 		_, issuerBytes, err := addresscodec.DecodeClassicAddressToAccountID(issuerStr)
 		if err != nil {
 			return nil, ErrFailedToDecodeIssuer
