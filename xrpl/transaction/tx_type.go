@@ -7,6 +7,7 @@ const (
 	AccountSetTx                        TxType = "AccountSet"
 	AccountDeleteTx                     TxType = "AccountDelete"
 	AMMBidTx                            TxType = "AMMBid"
+	AMMClawbackTx                       TxType = "AMMClawback"
 	AMMCreateTx                         TxType = "AMMCreate"
 	AMMDeleteTx                         TxType = "AMMDelete"
 	AMMDepositTx                        TxType = "AMMDeposit"

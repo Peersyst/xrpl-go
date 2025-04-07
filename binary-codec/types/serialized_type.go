@@ -55,6 +55,8 @@ func GetSerializedType(t string) SerializedType {
 		return &XChainBridge{}
 	case "Issue":
 		return &Issue{}
+	case "Currency":
+		return &Currency{}
 	}
 	return nil
 }

@@ -85,6 +85,11 @@ func TestGetSerializedType(t *testing.T) {
 			expected: &PathSet{},
 		},
 		{
+			name:     "pass - currency",
+			input:    "Currency",
+			expected: &Currency{},
+		},
+		{
 			name:     "fail - unknown type",
 			input:    "Unknown",
 			expected: nil,
