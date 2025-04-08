@@ -47,6 +47,8 @@
     "GeneratorMap": 103,
     "Invalid": -1,
     "LedgerHashes": 104,
+    "MPToken": 127,
+    "MPTokenIssuance": 126,
     "NegativeUNL": 78,
     "NFTokenOffer": 55,
     "NFTokenPage": 80,
@@ -2003,6 +2005,16 @@
       }
     ],
     [
+      "MPTokenMetadata",
+      {
+        "isSerialized": true,
+        "isSigningField": true,
+        "isVLEncoded": true,
+        "nth": 30,
+        "type": "Blob"
+      }
+    ],
+    [
       "CredentialType",
       {
         "nth": 31,
@@ -2250,6 +2262,16 @@
         "isSerialized": true,
         "isSigningField": true,
         "type": "Currency"
+      }
+    ],
+    [
+      "MPTokenIssuanceID",
+      {
+        "isSerialized": true,
+        "isSigningField": true,
+        "isVLEncoded": false,
+        "nth": 1,
+        "type": "Hash192"
       }
     ],
     [
@@ -3057,6 +3079,10 @@
     "PaymentChannelClaim": 15,
     "PaymentChannelCreate": 13,
     "PaymentChannelFund": 14,
+    "MPTokenAuthorize": 57,
+    "MPTokenIssuanceCreate": 54,
+    "MPTokenIssuanceDestroy": 55,
+    "MPTokenIssuanceSet": 56,
     "PermissionedDomainDelete": 63,
     "PermissionedDomainSet": 62,
     "SetFee": 101,

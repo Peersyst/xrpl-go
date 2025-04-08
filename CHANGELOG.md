@@ -5,18 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# [v0.1.10]
+## [Unreleased]
 
-## BREAKING CHANGES
+### Added
 
-### xrpl
+#### binary-codec
+
+- Added `MPToken` definitions. 
+- Adds `Hash192` type.
+
+#### xrpl
+
+- Adds `MPTokenAuthorize`, `MPTokenIssuanceCreate`, `MPTokenIssuanceDestroy`, `MPTokenIssuanceSet` transactions. It also adds the `types.Holder`, `types.AssetScale`, `types.MPTokenMetadata` and `types.TransferFee` types to represent the holder of the token, the asset scale, the metadata and the transfer fee of the token respectively.
+
+## [v0.1.10]
+
+### BREAKING CHANGES
+
+#### xrpl
 
 - `Submit` client method is renamed to `SubmitTxBlob` in both clients.
 - `SubmitAndWait` client method is renamed to `SubmitTxBlobAndWait` in both clients.
 
-## Added
+### Added
 
-### xrpl
+#### xrpl
 
 - Added `SubmitTx` and `SubmitTxAndWait` client methods to both clients.
 - Added support for the Credential fields in the following transaction types:
@@ -31,13 +44,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `PermissionedDomainSet`
   - `PermissionedDomainDelete`
 
-## Fixed
+### Fixed
 
-### binary-codec
+#### binary-codec
 
 - Added native `uint8` type support for `Uint8` type.
 
-### big-decimal
+#### big-decimal
 
 - Fixed `BigDecimal` precision.
 
