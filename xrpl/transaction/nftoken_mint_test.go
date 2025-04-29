@@ -3,9 +3,9 @@ package transaction
 import (
 	"testing"
 
-	"github.com/Peersyst/xrpl-go/xrpl/testutil"
 	"github.com/Peersyst/xrpl-go/xrpl/transaction/types"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestNFTokenMint_TxType(t *testing.T) {
@@ -48,6 +48,13 @@ func TestNFTokenMint_Flags(t *testing.T) {
 			expected: tfTransferable,
 		},
 		{
+			name: "pass - SetMutableFlag",
+			setter: func(n *NFTokenMint) {
+				n.SetMutableFlag()
+			},
+			expected: tfMutable,
+		},
+		{
 			name: "pass - SetBurnableFlag and SetTransferableFlag",
 			setter: func(n *NFTokenMint) {
 				n.SetBurnableFlag()
@@ -81,7 +88,7 @@ func TestNFTokenMint_Flatten(t *testing.T) {
 	tests := []struct {
 		name     string
 		nft      *NFTokenMint
-		expected string
+		expected FlatTransaction
 	}{
 		{
 			name: "pass - Flatten with all fields",
@@ -94,16 +101,30 @@ func TestNFTokenMint_Flatten(t *testing.T) {
 				Issuer:       "rsA2LpzuawewSBQXkiju3YQTMzW13pAAdW",
 				TransferFee:  314,
 				URI:          "697066733A2F2F62616679626569676479727A74357366703775646D37687537367568377932366E6634646675796C71616266336F636C67747179353566627A6469",
+				Amount: types.IssuedCurrencyAmount{
+					Currency: "USD",
+					Issuer:   "r3Q1i8Y2e5v4Z2u7eFYTEXSwuJYfV2Jpn",
+					Value:    "1000",
+				},
+				Expiration:  1234567890,
+				Destination: "rM8JHG9dzYuPxHEir2qAi998Vsnr3jccUw",
 			},
-			expected: `{
+			expected: FlatTransaction{
 				"Account":         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 				"TransactionType": "NFTokenMint",
 				"Fee":             "10",
-				"NFTokenTaxon":    12345,
+				"NFTokenTaxon":    uint32(12345),
 				"Issuer":          "rsA2LpzuawewSBQXkiju3YQTMzW13pAAdW",
-				"TransferFee":     314,
-				"URI":             "697066733A2F2F62616679626569676479727A74357366703775646D37687537367568377932366E6634646675796C71616266336F636C67747179353566627A6469"
-			}`,
+				"TransferFee":     uint16(314),
+				"URI":             "697066733A2F2F62616679626569676479727A74357366703775646D37687537367568377932366E6634646675796C71616266336F636C67747179353566627A6469",
+				"Amount": map[string]interface{}{
+					"currency": "USD",
+					"issuer":   "r3Q1i8Y2e5v4Z2u7eFYTEXSwuJYfV2Jpn",
+					"value":    "1000",
+				},
+				"Expiration":  uint32(1234567890),
+				"Destination": "rM8JHG9dzYuPxHEir2qAi998Vsnr3jccUw",
+			},
 		},
 		{
 			name: "pass - Flatten with minimal fields",
@@ -115,25 +136,18 @@ func TestNFTokenMint_Flatten(t *testing.T) {
 				},
 				NFTokenTaxon: 12345,
 			},
-			expected: `{
+			expected: FlatTransaction{
 				"Account":         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
 				"TransactionType": "NFTokenMint",
 				"Fee":             "10",
-				"NFTokenTaxon":    12345
-			}`,
+				"NFTokenTaxon":    uint32(12345),
+			},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			for _, tt := range tests {
-				t.Run(tt.name, func(t *testing.T) {
-					err := testutil.CompareFlattenAndExpected(tt.nft.Flatten(), []byte(tt.expected))
-					if err != nil {
-						t.Error(err)
-					}
-				})
-			}
+			require.Equal(t, tt.expected, tt.nft.Flatten())
 		})
 	}
 }
@@ -264,6 +278,97 @@ func TestNFTokenMint_Validate(t *testing.T) {
 			},
 			wantValid: true,
 			wantErr:   false,
+		},
+		{
+			name: "pass - all fields",
+			nft: &NFTokenMint{
+				BaseTx: BaseTx{
+					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+					TransactionType: NFTokenMintTx,
+					Fee:             types.XRPCurrencyAmount(10),
+				},
+				NFTokenTaxon: 12345,
+				TransferFee:  314,
+				Amount: types.IssuedCurrencyAmount{
+					Currency: "USD",
+					Issuer:   "rbBGwDkFSkTknJ4GA9nhaJdoDwWqSTpLE",
+					Value:    "1000",
+				},
+				Expiration:  1234567890,
+				Destination: "rM8JHG9dzYuPxHEir2qAi998Vsnr3jccUw",
+			},
+			setter: func(n *NFTokenMint) {
+				n.SetTransferableFlag()
+			},
+			wantValid: true,
+			wantErr:   false,
+		},
+		{
+			name: "fail - invalid Destination",
+			nft: &NFTokenMint{
+				BaseTx: BaseTx{
+					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+					TransactionType: NFTokenMintTx,
+					Fee:             types.XRPCurrencyAmount(10),
+				},
+				NFTokenTaxon: 12345,
+				TransferFee:  314,
+				Amount: types.IssuedCurrencyAmount{
+					Currency: "USD",
+					Issuer:   "rbBGwDkFSkTknJ4GA9nhaJdoDwWqSTpLE",
+					Value:    "1000",
+				},
+				Expiration:  1234567890,
+				Destination: "invalid",
+			},
+			setter: func(n *NFTokenMint) {
+				n.SetTransferableFlag()
+			},
+			wantValid:  false,
+			wantErr:    true,
+			errMessage: ErrInvalidDestination,
+		},
+		{
+			name: "fail - missing Amount when Expiration is set",
+			nft: &NFTokenMint{
+				BaseTx: BaseTx{
+					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+					TransactionType: NFTokenMintTx,
+					Fee:             types.XRPCurrencyAmount(10),
+				},
+				NFTokenTaxon: 12345,
+				TransferFee:  314,
+				Expiration:   1234567890,
+			},
+			setter: func(n *NFTokenMint) {
+				n.SetTransferableFlag()
+			},
+			wantValid:  false,
+			wantErr:    true,
+			errMessage: ErrExpirationRequiresAmount,
+		},
+		{
+			name: "fail - invalid issuer Amount",
+			nft: &NFTokenMint{
+				BaseTx: BaseTx{
+					Account:         "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn",
+					TransactionType: NFTokenMintTx,
+					Fee:             types.XRPCurrencyAmount(10),
+				},
+				NFTokenTaxon: 12345,
+				TransferFee:  314,
+				Amount: types.IssuedCurrencyAmount{
+					Currency: "USD",
+					Issuer:   "invalid",
+					Value:    "1000",
+				},
+			},
+			setter: func(n *NFTokenMint) {
+				n.SetTransferableFlag()
+			},
+			wantValid:  false,
+			wantErr:    true,
+			errMessage: ErrInvalidIssuer,
 		},
 	}
 

@@ -3070,6 +3070,7 @@
     "NFTokenCancelOffer": 28,
     "NFTokenCreateOffer": 27,
     "NFTokenMint": 25,
+    "NFTokenModify": 61,
     "NickNameSet": 6,
     "OfferCancel": 8,
     "OfferCreate": 7,

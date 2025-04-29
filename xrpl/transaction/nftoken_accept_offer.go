@@ -65,15 +65,15 @@ func (n *NFTokenAcceptOffer) Flatten() FlatTransaction {
 	flattened["TransactionType"] = "NFTokenAcceptOffer"
 
 	if n.NFTokenSellOffer != "" {
-		flattened["NFTokenSellOffer"] = n.NFTokenSellOffer
+		flattened["NFTokenSellOffer"] = n.NFTokenSellOffer.String()
 	}
 
 	if n.NFTokenBuyOffer != "" {
-		flattened["NFTokenBuyOffer"] = n.NFTokenBuyOffer
+		flattened["NFTokenBuyOffer"] = n.NFTokenBuyOffer.String()
 	}
 
 	if n.NFTokenBrokerFee != nil {
-		flattened["NFTokenBrokerFee"] = n.NFTokenBrokerFee
+		flattened["NFTokenBrokerFee"] = n.NFTokenBrokerFee.Flatten()
 	}
 
 	return flattened

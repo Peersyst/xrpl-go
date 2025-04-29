@@ -45,7 +45,11 @@ func (n *NFTokenCancelOffer) Flatten() FlatTransaction {
 	flattened["TransactionType"] = "NFTokenCancelOffer"
 
 	if len(n.NFTokenOffers) > 0 {
-		flattened["NFTokenOffers"] = n.NFTokenOffers
+		flattenedOffers := make([]string, len(n.NFTokenOffers))
+		for i, offer := range n.NFTokenOffers {
+			flattenedOffers[i] = offer.String()
+		}
+		flattened["NFTokenOffers"] = flattenedOffers
 	}
 
 	return flattened

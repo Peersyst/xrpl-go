@@ -11,19 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### binary-codec
 
-- Added `MPToken` definitions. 
+- Added `MPToken` definitions.
 - Adds `Hash192` type.
 
 #### xrpl
 
 - Added `AMMClawback` transaction type.
 - Adds `MPTokenAuthorize`, `MPTokenIssuanceCreate`, `MPTokenIssuanceDestroy`, `MPTokenIssuanceSet` transactions. It also adds the `types.Holder`, `types.AssetScale`, `types.MPTokenMetadata` and `types.TransferFee` types to represent the holder of the token, the asset scale, the metadata and the transfer fee of the token respectively.
+- Adds `NFTokenModify` transaction type.
 
 ## Changed
 
 ### binary-codec
 
 - Refactor on `Issue` codec type to support `Currency` and `Issuer` fields.
+
+## Fixed
+
+### xrpl
+
+- Fixed some flattening fields with the `Flatten` function for `NFTokenMint`, `NFTokenCancel`, `NFTokenCreate`, `NFTokenBurn`
 
 ## [v0.1.10]
 

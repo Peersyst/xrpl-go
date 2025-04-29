@@ -72,6 +72,21 @@ func TestNFTokenCancelOffer_Validate(t *testing.T) {
 		errMessage error
 	}{
 		{
+			name: "pass - Valid NFTokenCancelOffer",
+			tx: &NFTokenCancelOffer{
+				BaseTx: BaseTx{
+					Account:         "ra5nK24KXen9AHvsdFTKHSANinZseWnPcX",
+					TransactionType: NFTokenCancelOfferTx,
+				},
+				NFTokenOffers: []types.NFTokenID{
+					types.NFTokenID("9C92E061381C1EF37A8CDE0E8FC35188BFC30B1883825042A64309AC09F4C36D"),
+					types.NFTokenID("0008000095CC60265CE05AB4D4281338ED985F224E7090093C1C2FC00023F125"),
+				},
+			},
+			wantValid: true,
+			wantErr:   false,
+		},
+		{
 			name: "fail - Invalid NFTokenCancelOffer - Empty NFTokenOffers",
 			tx: &NFTokenCancelOffer{
 				BaseTx: BaseTx{

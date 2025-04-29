@@ -38,6 +38,7 @@ const (
 	NFTokenCancelOfferTx                TxType = "NFTokenCancelOffer"
 	NFTokenCreateOfferTx                TxType = "NFTokenCreateOffer"
 	NFTokenMintTx                       TxType = "NFTokenMint"
+	NFTokenModifyTx                     TxType = "NFTokenModify"
 	OfferCreateTx                       TxType = "OfferCreate"
 	OfferCancelTx                       TxType = "OfferCancel"
 	OracleDeleteTx                      TxType = "OracleDelete"

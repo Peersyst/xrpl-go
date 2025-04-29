@@ -54,11 +54,11 @@ func (n *NFTokenBurn) Flatten() FlatTransaction {
 	flattened["TransactionType"] = "NFTokenBurn"
 
 	if n.Owner != "" {
-		flattened["Owner"] = n.Owner
+		flattened["Owner"] = n.Owner.String()
 	}
 
 	if n.NFTokenID != "" {
-		flattened["NFTokenID"] = n.NFTokenID
+		flattened["NFTokenID"] = n.NFTokenID.String()
 	}
 
 	return flattened

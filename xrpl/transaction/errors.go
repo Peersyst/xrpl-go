@@ -27,4 +27,8 @@ var (
 	ErrInvalidTransactionType = errors.New("invalid or missing TransactionType")
 	// ErrInvalidSubject is returned when the Subject field is an invalid xrpl address.
 	ErrInvalidSubject = errors.New("invalid xrpl address for Subject")
+	// ErrInvalidURI is returned when the URI is not a valid hexadecimal string.
+	ErrInvalidURI = errors.New("invalid URI, must be a valid hexadecimal string")
+	// ErrOwnerAccountConflict is returned when the owner is the same as the account.
+	ErrOwnerAccountConflict = errors.New("owner must be different from the account")
 )
