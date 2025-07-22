@@ -218,10 +218,10 @@ func getTrustlineQuantity(node *normalizedNode) ([]balanceChange, error) {
 	negatedValue := new(big.Float).Neg(bigFloatValue)
 
 	flippedResult := balanceChange{
-		Account: types.Address(result.Balance.Issuer),
+		Account: types.Address(result.Issuer),
 		Balance: Balance{
 			Issuer:   result.Account.String(),
-			Currency: result.Balance.Currency,
+			Currency: result.Currency,
 			Value:    negatedValue.String(),
 		},
 	}

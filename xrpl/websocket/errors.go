@@ -11,10 +11,10 @@ var (
 	ErrRawTransactionsFieldIsNotAnArray = errors.New("RawTransactions field is not an array")
 	ErrRawTransactionFieldIsNotAnObject = errors.New("RawTransaction field is not an object")
 
-	ErrSigningPubKeyFieldMustBeEmpty = errors.New("SigningPubKey field must be empty")
-	ErrTxnSignatureFieldMustBeEmpty  = errors.New("TxnSignature field must be empty")
-	ErrSignersFieldMustBeEmpty       = errors.New("Signers field must be empty")
-	ErrAccountFieldIsNotAString      = errors.New("Account field is not a string")
+	ErrSigningPubKeyFieldMustBeEmpty = errors.New("signingPubKey field must be empty")
+	ErrTxnSignatureFieldMustBeEmpty  = errors.New("txnSignature field must be empty")
+	ErrSignersFieldMustBeEmpty       = errors.New("signers field must be empty")
+	ErrAccountFieldIsNotAString      = errors.New("account field is not a string")
 )
 
 // Dynamic errors

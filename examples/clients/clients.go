@@ -6,8 +6,8 @@ import (
 	"github.com/Peersyst/xrpl-go/xrpl/websocket"
 )
 
-// GetDevnetRpcClient returns a new rpc client for the devnet
-func GetDevnetRpcClient() *rpc.Client {
+// GetDevnetRPCClient returns a new rpc client for the devnet
+func GetDevnetRPCClient() *rpc.Client {
 	cfg, err := rpc.NewClientConfig(
 		"https://s.devnet.rippletest.net:51234",
 		rpc.WithFaucetProvider(faucet.NewDevnetFaucetProvider()),
@@ -19,8 +19,8 @@ func GetDevnetRpcClient() *rpc.Client {
 	return rpc.NewClient(cfg)
 }
 
-// GetTestnetRpcClient returns a new rpc client for the testnet
-func GetTestnetRpcClient() *rpc.Client {
+// GetTestnetRPCClient returns a new rpc client for the testnet
+func GetTestnetRPCClient() *rpc.Client {
 	cfg, err := rpc.NewClientConfig(
 		"https://s.altnet.rippletest.net:51234",
 		rpc.WithFaucetProvider(faucet.NewTestnetFaucetProvider()),

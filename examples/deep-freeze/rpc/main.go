@@ -22,7 +22,7 @@ type SubmittableTransaction interface {
 }
 
 func main() {
-	client := getRpcClient()
+	client := getRPCClient()
 
 	// Configure wallets
 
@@ -300,8 +300,8 @@ func main() {
 	submitAndWait(client, payment, holderWallet2)
 }
 
-// getRpcClient returns a new rpc client
-func getRpcClient() *rpc.Client {
+// getRPCClient returns a new rpc client
+func getRPCClient() *rpc.Client {
 	cfg, err := rpc.NewClientConfig(
 		// DeepFreeze only available on Devnet as of February 2025, change to testnet/mainnet once the amendment passes.
 		"https://s.devnet.rippletest.net:51234",

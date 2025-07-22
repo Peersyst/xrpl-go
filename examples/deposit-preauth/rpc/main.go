@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	client := clients.GetDevnetRpcClient()
+	client := clients.GetDevnetRPCClient()
 
 	// Configure wallets
 

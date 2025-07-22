@@ -1,39 +1,51 @@
+version: "2"
+
 linters:
   enable:
-    - gofmt
     - govet
-    # - dupl TODO: enable
-    - gocritic
     - errcheck
     - staticcheck
     - ineffassign
-    - typecheck
-    - gosimple
+    - unused
+    - gocritic
+    - gosec
     - misspell
     - unparam
-    - unused
-    - gosec
     - revive
+  exclusions:
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - gosec
+          - errcheck
+        path: examples/
+      - linters:
+          - errcheck
+        path: _test\.go
+      - linters:
+          - errcheck
+          - unused
+        path: _mock\.go
+      - linters: [revive]
+        text: "avoid meaningless package names"
+formatters:
+  enable:
+    - gofmt
+
 
 run:
-  timeout: 1m
   tests: false
+  timeout: 1m
 
-issues:
-  exclude-rules:
-    - path: examples/
-      linters:
-        - gosec
-    - path: _test\.go
-      linters:
-        - errcheck
-    - path: _mock\.go
-      linters:
-        - errcheck
-        - unused
 
 output:
   formats:
-    - format: colored-line-number
-  print-issued-lines: true
-  print-linter-name: true
+    text:
+      path: stdout
+      color: true
+      print-linter-name: true
+      print-issued-lines: true

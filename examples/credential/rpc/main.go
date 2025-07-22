@@ -15,7 +15,7 @@ import (
 
 func main() {
 	// As of February 2025, Credential is only available on Devnet.
-	client := clients.GetDevnetRpcClient()
+	client := clients.GetDevnetRPCClient()
 
 	// Configure wallets
 

@@ -313,7 +313,7 @@ func main() {
 	submitAndWait(client, payment, holderWallet2)
 }
 
-// getRpcClient returns a new rpc client
+// getRPCClient returns a new rpc client
 func getClient() *websocket.Client {
 	client := websocket.NewClient(
 		websocket.NewClientConfig().
